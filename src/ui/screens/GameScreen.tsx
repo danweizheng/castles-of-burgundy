@@ -1,10 +1,9 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { pickMove, suggestMove, type Difficulty } from '../../ai/heuristic'
-import { pickRandomMove } from '../../ai/random'
+import { useEffect, useMemo, useState } from 'react'
+import { opponentMove } from '../../ai/opponentMove'
+import { suggestMove, type Difficulty } from '../../ai/heuristic'
 import { castleSpacesOf } from '../../engine/board'
 import { axialKey } from '../../engine/hex'
-import { listLegalMoves, type DieRef, type Move } from '../../engine/moves'
-import { createRng, nextInt } from '../../engine/rng'
+import { type DieRef, type Move } from '../../engine/moves'
 import { finalScore } from '../../engine/scoring'
 import { playerById, type GameState, type PendingChoice } from '../../engine/state'
 import type { BoardSpace, DieValue, GoodsKind } from '../../engine/types'
@@ -99,9 +98,6 @@ export function GameScreen() {
   const [showOpponent, setShowOpponent] = useState(false)
   const offlineState = useOfflineState()
   const [hint, setHint] = useState<string | null>(null)
-  /** 对手决策用的随机源；每次决策前推进一下，避免相同局面永远得到同一套噪声 */
-  const opponentRng = useRef(createRng(Math.floor(Math.random() * 1_000_000_000)))
-
   // 启动时尝试恢复上一局
   useEffect(() => {
     void hydrate()
@@ -141,14 +137,7 @@ export function GameScreen() {
     if (state.activePlayerId === HUMAN) return
     const timer = window.setTimeout(
       () => {
-        const moves = listLegalMoves(config, state)
-        if (moves.length === 0) return
-        const rng = opponentRng.current
-        nextInt(rng, 1_000_000)
-        const move =
-          difficulty === 'random'
-            ? pickRandomMove(moves)
-            : pickMove(config, state, state.activePlayerId, { difficulty, rng })
+        const move = opponentMove(config, state, difficulty)
         if (move !== undefined) play(move)
       },
       difficulty === 'hard' ? 420 : 300,

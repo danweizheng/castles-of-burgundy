@@ -1,15 +1,18 @@
 /**
- * 临时占位对手：从合法行动里随机挑一个。
+ * 最弱的一档对手：从合法行动里随机挑一个。
  *
- * 它存在的唯一目的，是让界面现在就能完整走完一局，用来验证流程与交互。
- * 下一阶段的 Automa 拟人对手会替换掉它 —— 接口完全一样：
- * 「给定合法行动列表，返回一个行动」。所以替换时 UI 一行都不用改。
+ * 注意它**必须接收 rng**，不能用 Math.random()。
+ * 早先这里用的是 Math.random()，于是"随机"档成了唯一不遵守
+ * 「所有随机都来自 GameState 的 seed」这条红线的对手 ——
+ * 后果与界面层那个外部随机源一样：撤销之后 AI 会改下另一手、读档之后行为也会变。
  */
 
+import { nextInt, type RngState } from '../engine/rng'
 import type { Move } from '../engine/moves'
 
-export function pickRandomMove(moves: readonly Move[]): Move | undefined {
+export function pickRandomMove(moves: readonly Move[], rng: RngState): Move | undefined {
   if (moves.length === 0) return undefined
-  const index = Math.floor(Math.random() * moves.length)
-  return moves[index]
+  // 克隆一份再用：不改动调用方传进来的随机状态，让"这是纯函数"一眼可辨
+  const local: RngState = { s: rng.s }
+  return moves[nextInt(local, moves.length)]
 }
