@@ -195,13 +195,23 @@ describe('选招', () => {
     expect(elapsed).toBeLessThan(3000)
   })
 
-  it('评估预算上限会被尊重（可以主动调小）', () => {
+  it('预算被压到极小时仍返回一个合法动作（退回贪心，不会返回 undefined）', () => {
+    // 这条测试早先叫"评估预算上限会被尊重"，但实际只断言了 move 非空 ——
+    // 名字声称的事没有被验证（断言质量审查工具把它挑了出来）。
+    // 现在改成描述它真正验证的东西，并加上真正能证伪的断言：
+    // 预算为 1 时束搜索会立刻退出、退回一层贪心，返回的仍必须是合法动作。
+    // （"预算真的限制了工作量"由上面那条耗时断言间接覆盖：界面要的是不卡。）
     const move = pickMove(CONFIG, BASE_STATE, ACTIVE, {
       difficulty: 'hard',
       rng: createRng(3),
-      maxEvaluations: 50,
+      maxEvaluations: 1,
     })
     expect(move).toBeDefined()
+    const legal = listLegalMoves(CONFIG, BASE_STATE)
+    expect(
+      legal.some((candidate) => JSON.stringify(candidate) === JSON.stringify(move)),
+      '返回值必须真的是当前局面下的合法动作',
+    ).toBe(true)
   })
 })
 

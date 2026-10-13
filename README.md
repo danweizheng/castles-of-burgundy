@@ -54,6 +54,9 @@ node tools/check-deploy.mjs
 
 # 真实浏览器完整对局冒烟：脚本自动打完一整局，必须出现终局结算
 pwsh tools/smoke-play.ps1
+
+# 断言质量审查：统计"一条断言都没有"与"只由弱断言构成"的测试块
+node tools/audit-assertions.mjs --verbose
 ```
 
 ## 版图录入器
