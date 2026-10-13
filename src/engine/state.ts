@@ -47,7 +47,6 @@ export type PendingChoice =
   | {
       readonly kind: 'takeTileFromAnyDepot'
       readonly colors: readonly TileColor[]
-      readonly source: 'building'
     }
   /**
    * 市政厅：从仓储再放一枚板块进领地。

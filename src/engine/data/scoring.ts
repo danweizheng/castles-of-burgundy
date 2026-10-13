@@ -105,3 +105,13 @@ export const FINAL_VP_PER_SILVERLING = 1
 /** 拿满 100 分时把 100/200 分数板放上桌面（纯展示用）。 */
 export const VP_TILE_THRESHOLD = 100
 export const VP_TILE_SECOND_THRESHOLD = 200
+
+/**
+ * ⚠️ Q8：市政厅（City Hall）的「再放一枚、不受颜色限制」是否**也取消点数限制**。
+ *
+ * 官方原文只说 "regardless of colour"，没有提点数；而点数在正常放置里来自骰子，
+ * 市政厅的额外放置不消耗骰子，所以两种读法都说得通。
+ * 默认 false = 保留点数限制（数字须等于放置市政厅那一格的点数），这是更保守的读法。
+ * 确认后改这一行即可，不影响其他任何代码。
+ */
+export const CITY_HALL_IGNORES_NUMBER = false
