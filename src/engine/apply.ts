@@ -514,7 +514,9 @@ function applyActionMove(config: RulesetConfig, state: GameState, move: Move): A
     case 'takeWorkers':
       return applyTakeWorkers(state, move)
     case 'buyTile':
-      return applyBuyTile(config, state, move)
+      return applyBuyTile(state, move)
+    case 'workerTakeBuilding':
+      return applyWorkerTakeBuilding(config, state, move)
     case 'endTurn':
       return applyEndTurn(config, state)
     default:
@@ -622,7 +624,6 @@ function applyTakeWorkers(state: GameState, move: Extract<Move, { kind: 'takeWor
 }
 
 function applyBuyTile(
-  config: RulesetConfig,
   state: GameState,
   move: Extract<Move, { kind: 'buyTile' }>,
 ): ApplyResult {
@@ -636,20 +637,11 @@ function applyBuyTile(
   // 先把来源取成 const：TypeScript 不会在回调里保留对参数属性的类型收窄
   const source = move.source
 
-  if (source.kind === 'black') {
+  {
     const found = state.blackDepot.find((candidate) => candidate.id === source.tileId)
     if (found === undefined) throw new Error('黑洞里没有这枚板块')
     tile = found
     s = { ...s, blackDepot: s.blackDepot.filter((candidate) => candidate.id !== found.id) }
-  } else {
-    const slot = activeSlots(config.gameBoard, state.playerCount).find(
-      (candidate) => candidate.id === source.slotId,
-    )
-    if (slot === undefined) throw new Error(`找不到编号仓库格位 ${source.slotId}`)
-    const found = state.depotSlots[slot.id] ?? null
-    if (found === null) throw new Error(`编号仓库格位 ${slot.id} 是空的`)
-    tile = found
-    s = { ...s, depotSlots: { ...s.depotSlots, [slot.id]: null } }
   }
 
   const paid: GameState = {
@@ -663,6 +655,54 @@ function applyBuyTile(
     state: put.state,
     events: [
       { kind: 'boughtTile', player: player.id, tileId: tile.id, color: tile.color },
+      ...put.events,
+    ],
+  }
+}
+
+/**
+ * 6 号知识板块（Special Edition）：每回合限一次，花 2 个工人从任意编号仓库取一枚米色建筑。
+ *
+ * 它不是骰子行动、也不算一个"行动"，所以可以在两个骰子都用完之后再做。
+ */
+function applyWorkerTakeBuilding(
+  config: RulesetConfig,
+  state: GameState,
+  move: Extract<Move, { kind: 'workerTakeBuilding' }>,
+): ApplyResult {
+  const player = currentPlayer(state)
+  const caps = capabilitiesOf(player)
+
+  if (caps.takeBuildingWithWorkersCost <= 0) {
+    throw new Error('没有 6 号知识板块，不能使用这个行动')
+  }
+  if (state.usedWorkerTakeThisTurn) throw new Error('这个效果每回合只能用一次')
+  if (player.workers < caps.takeBuildingWithWorkersCost) {
+    throw new Error(`工人不足 ${caps.takeBuildingWithWorkersCost} 枚`)
+  }
+
+  const slot = activeSlots(config.gameBoard, state.playerCount).find(
+    (candidate) => candidate.id === move.slotId,
+  )
+  if (slot === undefined) throw new Error(`找不到编号仓库格位 ${move.slotId}`)
+  if (slot.color !== 'building') throw new Error('这个效果只能取米色建筑板块')
+  const tile = state.depotSlots[slot.id] ?? null
+  if (tile === null) throw new Error(`编号仓库格位 ${slot.id} 是空的`)
+
+  const spent: GameState = {
+    ...state,
+    usedWorkerTakeThisTurn: true,
+    depotSlots: { ...state.depotSlots, [slot.id]: null },
+    players: state.players.map((p) =>
+      p.id === player.id ? { ...p, workers: p.workers - caps.takeBuildingWithWorkersCost } : p,
+    ),
+  }
+  const put = putTileIntoStorage(spent, tile, move.discardStorageIndex)
+
+  return {
+    state: put.state,
+    events: [
+      { kind: 'tookTile', player: player.id, tileId: tile.id, color: tile.color },
       ...put.events,
     ],
   }

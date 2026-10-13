@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { createRng } from '../rng'
 import {
-  PLACEHOLDER_BLACK_TILE_INVENTORY,
-  PLACEHOLDER_TILE_INVENTORY,
+  OFFICIAL_BLACK_TILE_INVENTORY,
+  OFFICIAL_TILE_INVENTORY,
   buildTilePool,
   tileCountsByColor,
   totalTilesOf,
@@ -44,28 +44,89 @@ function expectedSignatures(faces: readonly TileFaceSpec[]): string[] {
 }
 
 describe('板块池：数量与构成', () => {
-  it('⚠️ 两张占位库存表之和等于官方组件数 164（拆分值是臆造的，待规则书替换）', () => {
-    // 官方组件清单只给出"164 枚六边形板块"这个总数，未给出各色拆分。
-    // 官方设置章节还要求"按背面的颜色分堆"，其中黑背面是独立的一堆（供中央黑洞抽取），
-    // 所以黑背面板块也在这 164 枚之内 —— 因此断言的是两表之和。
-    expect(totalTilesOf(PLACEHOLDER_TILE_INVENTORY)).toBe(136)
-    expect(totalTilesOf(PLACEHOLDER_BLACK_TILE_INVENTORY)).toBe(28)
-    expect(
-      totalTilesOf(PLACEHOLDER_TILE_INVENTORY) + totalTilesOf(PLACEHOLDER_BLACK_TILE_INVENTORY),
-    ).toBe(164)
+  it('库存与官方规则书第 2 页的组件清单一致：124 有色背面 + 40 黑背面 = 164', () => {
+    expect(totalTilesOf(OFFICIAL_TILE_INVENTORY)).toBe(124)
+    expect(totalTilesOf(OFFICIAL_BLACK_TILE_INVENTORY)).toBe(40)
+    expect(totalTilesOf(OFFICIAL_TILE_INVENTORY) + totalTilesOf(OFFICIAL_BLACK_TILE_INVENTORY)).toBe(
+      164,
+    )
   })
 
-  it('知识板块恰好 26 枚，编号 1–26 各 1 枚', () => {
-    const knowledge = PLACEHOLDER_TILE_INVENTORY.filter((f) => f.color === 'knowledge')
-    expect(knowledge).toHaveLength(26)
-    expect(knowledge.map((f) => f.knowledge).sort((a, b) => (a ?? 0) - (b ?? 0))).toEqual(
-      Array.from({ length: 26 }, (_, i) => i + 1),
-    )
-    for (const face of knowledge) expect(face.count).toBe(1)
+  it('各色数量与官方清单逐项一致（7x8 建筑 / 7x4 动物 / 12 矿 / 26 船 / 26 知识 / 16 城堡）', () => {
+    const colored = tileCountsByColor(OFFICIAL_TILE_INVENTORY)
+    const black = tileCountsByColor(OFFICIAL_BLACK_TILE_INVENTORY)
+
+    expect(colored.building).toBe(40)
+    expect(black.building).toBe(16)
+    expect(colored.animal).toBe(20)
+    expect(black.animal).toBe(8)
+    expect(colored.mine).toBe(10)
+    expect(black.mine).toBe(2)
+    expect(colored.ship).toBe(20)
+    expect(black.ship).toBe(6)
+    expect(colored.knowledge).toBe(20)
+    expect(black.knowledge).toBe(6)
+    expect(colored.castle).toBe(14)
+    expect(black.castle).toBe(2)
+
+    expect((colored.building ?? 0) + (black.building ?? 0)).toBe(56)
+    expect((colored.animal ?? 0) + (black.animal ?? 0)).toBe(28)
+    expect((colored.mine ?? 0) + (black.mine ?? 0)).toBe(12)
+    expect((colored.ship ?? 0) + (black.ship ?? 0)).toBe(26)
+    expect((colored.knowledge ?? 0) + (black.knowledge ?? 0)).toBe(26)
+    expect((colored.castle ?? 0) + (black.castle ?? 0)).toBe(16)
+  })
+
+  it('每种建筑恰好 7 枚（5 米色背 + 2 黑背）', () => {
+    const countOf = (faces: readonly TileFaceSpec[], building: string): number =>
+      faces
+        .filter((f) => f.building === building)
+        .reduce((sum, f) => sum + f.count, 0)
+
+    for (const building of [
+      'warehouse',
+      'carpenter',
+      'church',
+      'market',
+      'boardingHouse',
+      'bank',
+      'cityHall',
+      'watchtower',
+    ]) {
+      expect(countOf(OFFICIAL_TILE_INVENTORY, building), building).toBe(5)
+      expect(countOf(OFFICIAL_BLACK_TILE_INVENTORY, building), building).toBe(2)
+    }
+  })
+
+  it('每种动物恰好 7 枚（5 绿背 + 2 黑背）', () => {
+    const countOf = (faces: readonly TileFaceSpec[], animal: string): number =>
+      faces.filter((f) => f.animal === animal).reduce((sum, f) => sum + f.count, 0)
+
+    for (const animal of ['chicken', 'sheep', 'pig', 'cow']) {
+      expect(countOf(OFFICIAL_TILE_INVENTORY, animal), animal).toBe(5)
+      expect(countOf(OFFICIAL_BLACK_TILE_INVENTORY, animal), animal).toBe(2)
+    }
+  })
+
+  it('知识板块共 26 种、各 1 枚，分成 20 枚黄背 + 6 枚黑背', () => {
+    const colored = OFFICIAL_TILE_INVENTORY.filter((f) => f.color === 'knowledge')
+    const black = OFFICIAL_BLACK_TILE_INVENTORY.filter((f) => f.color === 'knowledge')
+    expect(colored).toHaveLength(20)
+    expect(black).toHaveLength(6)
+
+    const allIds = [...colored, ...black]
+      .map((f) => f.knowledge)
+      .sort((a, b) => (a ?? 0) - (b ?? 0))
+    expect(allIds).toEqual(Array.from({ length: 26 }, (_, i) => i + 1))
+    for (const face of [...colored, ...black]) expect(face.count).toBe(1)
+
+    // 两堆之间不能重复同一张知识板块
+    const coloredIds = new Set(colored.map((f) => f.knowledge))
+    for (const face of black) expect(coloredIds.has(face.knowledge)).toBe(false)
   })
 
   it('动物板块都指定了种类与只数，且只数在 2–4 之间', () => {
-    const animals = PLACEHOLDER_TILE_INVENTORY.filter((f) => f.color === 'animal')
+    const animals = OFFICIAL_TILE_INVENTORY.filter((f) => f.color === 'animal')
     expect(animals.length).toBeGreaterThan(0)
     for (const face of animals) {
       expect(face.animal).toBeDefined()
@@ -74,46 +135,46 @@ describe('板块池：数量与构成', () => {
   })
 
   it('建筑板块都指定了建筑种类，且覆盖全部 8 种', () => {
-    const buildings = PLACEHOLDER_TILE_INVENTORY.filter((f) => f.color === 'building')
+    const buildings = OFFICIAL_TILE_INVENTORY.filter((f) => f.color === 'building')
     expect(new Set(buildings.map((f) => f.building)).size).toBe(8)
     for (const face of buildings) expect(face.building).toBeDefined()
   })
 
   it('按颜色统计的合计等于总数', () => {
-    const counts = tileCountsByColor(PLACEHOLDER_TILE_INVENTORY)
+    const counts = tileCountsByColor(OFFICIAL_TILE_INVENTORY)
     const sum = Object.values(counts).reduce((a, b) => a + b, 0)
-    expect(sum).toBe(totalTilesOf(PLACEHOLDER_TILE_INVENTORY))
+    expect(sum).toBe(totalTilesOf(OFFICIAL_TILE_INVENTORY))
   })
 })
 
 describe('板块池：构建与洗牌', () => {
   it('洗好的池长度与正面多重集合都和库存表一致（元素不增不减）', () => {
-    const pool = buildTilePool(PLACEHOLDER_TILE_INVENTORY, createRng(20240101))
-    expect(pool).toHaveLength(totalTilesOf(PLACEHOLDER_TILE_INVENTORY))
-    expect(pool.map(faceSignature).sort()).toEqual(expectedSignatures(PLACEHOLDER_TILE_INVENTORY))
+    const pool = buildTilePool(OFFICIAL_TILE_INVENTORY, createRng(20240101))
+    expect(pool).toHaveLength(totalTilesOf(OFFICIAL_TILE_INVENTORY))
+    expect(pool.map(faceSignature).sort()).toEqual(expectedSignatures(OFFICIAL_TILE_INVENTORY))
   })
 
   it('每枚板块的 id 唯一（存档与撤销都靠它定位板块）', () => {
-    const pool = buildTilePool(PLACEHOLDER_TILE_INVENTORY, createRng(7))
+    const pool = buildTilePool(OFFICIAL_TILE_INVENTORY, createRng(7))
     const ids = pool.map((t) => t.id)
     expect(new Set(ids).size).toBe(ids.length)
   })
 
   it('同一种子和同一份库存表 → 完全相同的抽取顺序（可复现对局）', () => {
-    const a = buildTilePool(PLACEHOLDER_TILE_INVENTORY, createRng(12345))
-    const b = buildTilePool(PLACEHOLDER_TILE_INVENTORY, createRng(12345))
+    const a = buildTilePool(OFFICIAL_TILE_INVENTORY, createRng(12345))
+    const b = buildTilePool(OFFICIAL_TILE_INVENTORY, createRng(12345))
     expect(a.map((t) => t.id)).toEqual(b.map((t) => t.id))
   })
 
   it('不同种子的抽取顺序不同', () => {
-    const a = buildTilePool(PLACEHOLDER_TILE_INVENTORY, createRng(1))
-    const b = buildTilePool(PLACEHOLDER_TILE_INVENTORY, createRng(2))
+    const a = buildTilePool(OFFICIAL_TILE_INVENTORY, createRng(1))
+    const b = buildTilePool(OFFICIAL_TILE_INVENTORY, createRng(2))
     expect(a.map((t) => t.id)).not.toEqual(b.map((t) => t.id))
   })
 
   it('id 与抽取顺序无关，只由"颜色 + 该色内序号"决定', () => {
-    const a = buildTilePool(PLACEHOLDER_TILE_INVENTORY, createRng(1))
-    const b = buildTilePool(PLACEHOLDER_TILE_INVENTORY, createRng(2))
+    const a = buildTilePool(OFFICIAL_TILE_INVENTORY, createRng(1))
+    const b = buildTilePool(OFFICIAL_TILE_INVENTORY, createRng(2))
     expect([...a.map((t) => t.id)].sort()).toEqual([...b.map((t) => t.id)].sort())
   })
 
@@ -122,8 +183,8 @@ describe('板块池：构建与洗牌', () => {
   })
 
   it('两副牌堆用不同前缀时不会撞 id（有色背面与黑背面是两副独立牌堆）', () => {
-    const main = buildTilePool(PLACEHOLDER_TILE_INVENTORY, createRng(1))
-    const black = buildTilePool(PLACEHOLDER_BLACK_TILE_INVENTORY, createRng(2), 'black-')
+    const main = buildTilePool(OFFICIAL_TILE_INVENTORY, createRng(1))
+    const black = buildTilePool(OFFICIAL_BLACK_TILE_INVENTORY, createRng(2), 'black-')
     const ids = [...main.map((t) => t.id), ...black.map((t) => t.id)]
     expect(new Set(ids).size).toBe(ids.length)
   })
@@ -132,8 +193,8 @@ describe('板块池：构建与洗牌', () => {
     // 这条是"特征测试"：它锁住的是"为什么需要前缀"这个原因。
     // 已知两副牌都有 building / animal / knowledge / mine / ship / castle，
     // 且各自的序号都从 1 开始，所以不带前缀时 id 一定会重复。
-    const main = buildTilePool(PLACEHOLDER_TILE_INVENTORY, createRng(1))
-    const black = buildTilePool(PLACEHOLDER_BLACK_TILE_INVENTORY, createRng(2))
+    const main = buildTilePool(OFFICIAL_TILE_INVENTORY, createRng(1))
+    const black = buildTilePool(OFFICIAL_BLACK_TILE_INVENTORY, createRng(2))
     const ids = [...main.map((t) => t.id), ...black.map((t) => t.id)]
     expect(new Set(ids).size).toBeLessThan(ids.length)
   })

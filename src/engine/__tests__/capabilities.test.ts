@@ -16,7 +16,7 @@ describe('能力派生：默认值（没有任何知识板块）', () => {
     expect(caps.silverlingsPerSell).toBe(1)
     expect(caps.workersPerSell).toBe(0)
     expect(caps.shipTakesTwoGoodsSpaces).toBe(false)
-    expect(caps.buyFromAllDepots).toBe(false)
+    expect(caps.takeBuildingWithWorkersCost).toBe(0)
     expect(caps.animalTileBonusVp).toBe(0)
     expect(caps.dieStepsPerWorker).toBe(1)
     expect(caps.freeDieAdjustColors.size).toBe(0)
@@ -71,11 +71,16 @@ describe('能力派生：逐张知识板块', () => {
     expect(deriveCapabilities([16, 17, 18, 19, 20, 21, 22, 23]).finalVpPerBuilding.size).toBe(8)
   })
 
-  it('15 / 24 / 25 / 26 号的终局分值', () => {
-    expect(deriveCapabilities([15]).finalVpPerSoldGoodsType).toBe(3)
+  it('15 / 24 / 25 / 26 号的终局分值（按 Special Edition 规则书）', () => {
+    expect(deriveCapabilities([15]).finalVpPerSoldGoodsType).toBe(2)
     expect(deriveCapabilities([24]).finalVpPerAnimalType).toBe(4)
     expect(deriveCapabilities([25]).finalVpPerSoldGoodsTile).toBe(1)
-    expect(deriveCapabilities([26]).finalVpPerBonusTile).toBe(2)
+    expect(deriveCapabilities([26]).finalVpPerBonusTile).toBe(3)
+  })
+
+  it('6 号：Special Edition 是"花 2 个工人取一枚建筑"，不是经典版的"从 7 个仓库购买"', () => {
+    expect(deriveCapabilities([6]).takeBuildingWithWorkersCost).toBe(2)
+    expect(deriveCapabilities([]).takeBuildingWithWorkersCost).toBe(0)
   })
 
   it('把全部 26 张都放上时不会崩，且各能力都取到上限', () => {

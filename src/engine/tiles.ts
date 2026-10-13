@@ -7,6 +7,7 @@
  */
 
 import { shuffle, type RngState } from './rng'
+import { ANIMAL_KINDS, BUILDING_KINDS } from './types'
 import type { AnimalKind, BuildingKind, HexTile, KnowledgeId, TileColor } from './types'
 
 /** 一种板块正面及其数量。 */
@@ -88,95 +89,83 @@ export function buildTilePool(
 }
 
 /**
- * ⚠️ 占位库存表（**必须**用规则书组件清单替换，见 rules/规则规格.md 第 12 节第 3 项）。
+ * 板块库存 —— 数字来自**官方规则书第 2 页的组件清单**（Special Edition）。
  *
- * 已知的事实与未知的部分：
- * - 官方组件清单给出"164 枚六边形板块"，但**未给出**各色拆分；
- * - 官方设置章节说要把六边形板块"按背面的颜色分堆"，其中**黑背面是独立的一堆**
- *   （供中央黑洞抽取），所以黑背面板块属于这 164 枚之内；
- * - 因此本文件给出两张表，**两者之和**应当等于 164：
- *     `PLACEHOLDER_TILE_INVENTORY`（有色背面）140 枚 + `PLACEHOLDER_BLACK_TILE_INVENTORY` 24 枚
- * - 唯一有依据的明细是 knowledge 的 26（"26 different yellow tiles"）。
+ * 原文：
+ *   164 hex tiles:
+ *   7x 8 buildings (40 beige, 16 black)
+ *   7x 4 livestock (20 green, 8 black)
+ *   12 mines       (10 gray, 2 black)
+ *   26 ships       (20 blue, 6 black)
+ *   26 monasteries (20 yellow, 6 black)
+ *   16 castles     (14 burgundy, 2 black)
+ * 合计 56+28+12+26+26+16 = 164；其中**黑背面 40 枚**、有色背面 124 枚。
  *
- * 除此之外的每一个数字都是臆造的。替换方式：只改这两个常量；测试里有一条
- * "两表之和须为 164"的断言，改错会立刻失败。
+ * 仍然未知的部分（已在 rules/规则规格.md 标注）：
+ * - 每种动物 5 枚绿背具体是几只动物（2/3/4）的分布 —— 这里是占位
+ * - 26 张知识板块里哪 6 张是黑背面 —— 这里是占位
  */
-export const PLACEHOLDER_ANIMAL_TILE_COUNTS: Readonly<Record<string, number>> = {
-  'chicken-2': 3,
-  'chicken-3': 3,
-  'chicken-4': 2,
-  'sheep-2': 3,
-  'sheep-3': 3,
-  'sheep-4': 2,
-  'pig-2': 3,
-  'pig-3': 2,
-  'pig-4': 2,
-  'cow-2': 3,
-  'cow-3': 3,
-  'cow-4': 3,
-}
+export const OFFICIAL_TILE_COUNTS = {
+  buildings: { colored: 40, black: 16, perType: 7 },
+  livestock: { colored: 20, black: 8, perType: 7 },
+  mines: { colored: 10, black: 2 },
+  ships: { colored: 20, black: 6 },
+  monasteries: { colored: 20, black: 6 },
+  castles: { colored: 14, black: 2 },
+} as const
 
-/** 动物正面的生成（占位数量见上表）。 */
-function placeholderAnimalFaces(): TileFaceSpec[] {
-  return Object.entries(PLACEHOLDER_ANIMAL_TILE_COUNTS).map(([key, count]) => {
-    const [animal, animals] = key.split('-')
-    return {
-      color: 'animal' as const,
-      animal: animal as AnimalKind,
-      animals: Number(animals) as 2 | 3 | 4,
-      count,
-    }
-  })
-}
-
-/** 有色背面的板块（占位）。合计 136。 */
-export const PLACEHOLDER_TILE_INVENTORY: readonly TileFaceSpec[] = [
-  { color: 'castle', count: 12 },
-  { color: 'mine', count: 12 },
-  { color: 'ship', count: 12 },
-  { color: 'building', building: 'warehouse', count: 5 },
-  { color: 'building', building: 'carpenter', count: 5 },
-  { color: 'building', building: 'church', count: 5 },
-  { color: 'building', building: 'market', count: 5 },
-  { color: 'building', building: 'boardingHouse', count: 6 },
-  { color: 'building', building: 'bank', count: 6 },
-  { color: 'building', building: 'cityHall', count: 5 },
-  { color: 'building', building: 'watchtower', count: 5 },
-  ...placeholderAnimalFaces(),
-  ...Array.from({ length: 26 }, (_, i) => ({
-    color: 'knowledge' as const,
-    knowledge: i + 1,
-    count: 1,
-  })),
-]
+/** 每种建筑 7 枚：5 枚米色背 + 2 枚黑背。 */
+const BUILDING_COLORED_PER_TYPE = 5
+const BUILDING_BLACK_PER_TYPE = 2
 
 /**
- * 黑背面的板块（占位，供中央黑洞抽取）。合计 28。
- *
- * 官方把黑背面单独成堆，但没有给出它的构成。这里假设它是各色混合。
+ * ⚠️ 占位：每种动物的 5 枚绿背板块里，2/3/4 只动物各几枚。
+ * 规则书只给了每种动物 7 枚（5 绿 + 2 黑），没给"每枚画几只"的分布。
  */
-export const PLACEHOLDER_BLACK_TILE_INVENTORY: readonly TileFaceSpec[] = [
-  { color: 'building', building: 'warehouse', count: 1 },
-  { color: 'building', building: 'carpenter', count: 1 },
-  { color: 'building', building: 'church', count: 1 },
-  { color: 'building', building: 'market', count: 1 },
-  { color: 'building', building: 'boardingHouse', count: 1 },
-  { color: 'building', building: 'bank', count: 1 },
-  { color: 'building', building: 'cityHall', count: 1 },
-  { color: 'building', building: 'watchtower', count: 1 },
-  { color: 'animal', animal: 'chicken', animals: 2, count: 1 },
-  { color: 'animal', animal: 'chicken', animals: 3, count: 1 },
-  { color: 'animal', animal: 'sheep', animals: 2, count: 1 },
-  { color: 'animal', animal: 'sheep', animals: 3, count: 1 },
-  { color: 'animal', animal: 'pig', animals: 2, count: 1 },
-  { color: 'animal', animal: 'pig', animals: 3, count: 1 },
-  { color: 'animal', animal: 'cow', animals: 2, count: 1 },
-  { color: 'animal', animal: 'cow', animals: 3, count: 1 },
-  { color: 'mine', count: 3 },
-  { color: 'ship', count: 3 },
-  { color: 'castle', count: 2 },
-  { color: 'knowledge', knowledge: 8, count: 1 },
-  { color: 'knowledge', knowledge: 11, count: 1 },
-  { color: 'knowledge', knowledge: 17, count: 1 },
-  { color: 'knowledge', knowledge: 24, count: 1 },
+const ANIMAL_FACE_SPLIT_COLORED: Readonly<Record<string, number>> = { '2': 2, '3': 2, '4': 1 }
+/** ⚠️ 占位：每种动物的 2 枚黑背板块里的只数分布。 */
+const ANIMAL_FACE_SPLIT_BLACK: Readonly<Record<string, number>> = { '2': 1, '3': 1 }
+
+/** 26 张知识板块里，⚠️ 占位认为这 6 张是黑背面。 */
+const BLACK_KNOWLEDGE_IDS: readonly KnowledgeId[] = [1, 6, 8, 11, 17, 24]
+
+function animalFaces(split: Readonly<Record<string, number>>): TileFaceSpec[] {
+  const faces: TileFaceSpec[] = []
+  for (const animal of ANIMAL_KINDS) {
+    for (const [animalsText, count] of Object.entries(split)) {
+      if (count <= 0) continue
+      faces.push({ color: 'animal', animal, animals: Number(animalsText) as 2 | 3 | 4, count })
+    }
+  }
+  return faces
+}
+
+function buildingFaces(perType: number): TileFaceSpec[] {
+  return BUILDING_KINDS.map((building) => ({ color: 'building' as const, building, count: perType }))
+}
+
+/** 有色背面的板块（124 枚）。 */
+export const OFFICIAL_TILE_INVENTORY: readonly TileFaceSpec[] = [
+  { color: 'castle', count: OFFICIAL_TILE_COUNTS.castles.colored },
+  { color: 'mine', count: OFFICIAL_TILE_COUNTS.mines.colored },
+  { color: 'ship', count: OFFICIAL_TILE_COUNTS.ships.colored },
+  ...buildingFaces(BUILDING_COLORED_PER_TYPE),
+  ...animalFaces(ANIMAL_FACE_SPLIT_COLORED),
+  ...Array.from({ length: 26 }, (_, i) => i + 1)
+    .filter((id) => !BLACK_KNOWLEDGE_IDS.includes(id))
+    .map((id) => ({ color: 'knowledge' as const, knowledge: id, count: 1 })),
+]
+
+/** 黑背面的板块（40 枚，供中央黑洞抽取）。 */
+export const OFFICIAL_BLACK_TILE_INVENTORY: readonly TileFaceSpec[] = [
+  { color: 'castle', count: OFFICIAL_TILE_COUNTS.castles.black },
+  { color: 'mine', count: OFFICIAL_TILE_COUNTS.mines.black },
+  { color: 'ship', count: OFFICIAL_TILE_COUNTS.ships.black },
+  ...buildingFaces(BUILDING_BLACK_PER_TYPE),
+  ...animalFaces(ANIMAL_FACE_SPLIT_BLACK),
+  ...BLACK_KNOWLEDGE_IDS.map((id) => ({
+    color: 'knowledge' as const,
+    knowledge: id,
+    count: 1,
+  })),
 ]

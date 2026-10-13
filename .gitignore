@@ -6,3 +6,7 @@ dev-dist/
 .vite/
 coverage/
 *.log
+
+# 规则书原件与抽出的图片：体积大且属于外部资料，不入库（文本已单独保存）
+rules/*.pdf
+rules/pages/

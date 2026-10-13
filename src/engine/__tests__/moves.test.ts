@@ -302,7 +302,7 @@ describe('购买（自由行动）', () => {
     expect(kinds(listLegalMoves(CONFIG, bought))).not.toContain('buyTile')
   })
 
-  it('没有 6 号知识板块时只能从黑洞买', () => {
+  it('没有 6 号知识板块时，只能从黑洞买', () => {
     let state: GameState = BASE_STATE
     const active = state.activePlayerId
     state = patchPlayer(state, active, { silverlings: 2 })
@@ -312,17 +312,29 @@ describe('购买（自由行动）', () => {
     }
   })
 
-  it('6 号知识板块让购买来源扩展到全部 7 个仓库', () => {
+  it('6 号知识板块（Special Edition）：每回合限一次，花 2 个工人从任意编号仓库取一枚米色建筑', () => {
     let state: GameState = BASE_STATE
     const active = state.activePlayerId
     state = estateOf(state, active, [[{ q: -2, r: 0 }, knowledgeTile('k6', 6)]])
-    state = patchPlayer(state, active, { silverlings: 2 })
+    state = patchPlayer(state, active, { workers: 3 })
+    state = setDice(state, active, [1, 1])
 
-    const sources = listLegalMoves(CONFIG, state)
-      .filter((m) => m.kind === 'buyTile')
-      .map((m) => (m.kind === 'buyTile' ? m.source.kind : 'black'))
-    expect(sources).toContain('depot')
-    expect(sources).toContain('black')
+    const takes = listLegalMoves(CONFIG, state).filter((m) => m.kind === 'workerTakeBuilding')
+    expect(takes.length).toBeGreaterThan(0)
+    for (const move of takes) {
+      if (move.kind !== 'workerTakeBuilding') continue
+      const slot = activeSlots(CONFIG.gameBoard, 2).find((s) => s.id === move.slotId)
+      // 只能取米色建筑格位
+      expect(slot?.color).toBe('building')
+    }
+
+    // 工人不足 2 枚时没有这个行动
+    const poor = patchPlayer(state, active, { workers: 1 })
+    expect(listLegalMoves(CONFIG, poor).some((m) => m.kind === 'workerTakeBuilding')).toBe(false)
+
+    // 没有这张板块时也没有这个行动
+    const without = patchPlayer(BASE_STATE, active, { workers: 3 })
+    expect(listLegalMoves(CONFIG, without).some((m) => m.kind === 'workerTakeBuilding')).toBe(false)
   })
 })
 

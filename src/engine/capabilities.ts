@@ -20,12 +20,16 @@ import {
   type TileColor,
 } from './types'
 
-/** 终局计分型知识板块每单位的分值（官方：除 15 号是 3 分外其余都是 4 分）。 */
+/** 终局计分型知识板块每单位的分值（官方规则书第 12 页）。 */
 const BUILDING_SCORING_VP = 4
-const SOLD_GOODS_TYPE_VP = 3
+/** 15 号：每种已卖出的货物类型 2 分（规则书原文 "4 types x 2 = 8 victory points"）。 */
+const SOLD_GOODS_TYPE_VP = 2
 const ANIMAL_TYPE_VP = 4
 const SOLD_GOODS_TILE_VP = 1
-const BONUS_TILE_VP = 2
+/** 26 号：每枚奖励板块 3 分。 */
+const BONUS_TILE_VP = 3
+/** 6 号：花几个工人从任意编号仓库取一枚建筑。 */
+const WORKERS_FOR_BUILDING_TILE = 2
 
 export interface Capabilities {
   /** 1 号：忽略"每个城市每种建筑只能 1 座"。 */
@@ -38,8 +42,11 @@ export interface Capabilities {
   readonly workersPerSell: number
   /** 5 号：摆船时可取两个相邻货物格。 */
   readonly shipTakesTwoGoodsSpaces: boolean
-  /** 6 号：可从全部 7 个仓库购买。 */
-  readonly buyFromAllDepots: boolean
+  /**
+   * 6 号（Special Edition）：每回合限一次，可花 2 个工人从任意编号仓库取一枚米色建筑。
+   * 用 `takeBuildingWithWorkersCost` 表示需要几个工人；0 表示没有这张板块。
+   */
+  readonly takeBuildingWithWorkersCost: number
   /** 7 号：每枚计分的动物板块额外 +1 分（否则 0）。 */
   readonly animalTileBonusVp: number
   /** 8 号：每个工人可调整 ±2（否则 ±1）。 */
@@ -87,7 +94,9 @@ export function deriveCapabilities(placedKnowledgeIds: Iterable<KnowledgeId>): C
     silverlingsPerSell: ids.has(K.extraSilverlingPerSell) ? 2 : 1,
     workersPerSell: ids.has(K.workerPerSell) ? 1 : 0,
     shipTakesTwoGoodsSpaces: ids.has(K.shipTakesTwoGoodsSpaces),
-    buyFromAllDepots: ids.has(K.buyFromAllDepots),
+    takeBuildingWithWorkersCost: ids.has(K.takeBuildingWithWorkers)
+      ? WORKERS_FOR_BUILDING_TILE
+      : 0,
     animalTileBonusVp: ids.has(K.extraVpPerScoringAnimalTile) ? 1 : 0,
     dieStepsPerWorker: ids.has(K.dieAdjustTwoPerWorker) ? 2 : 1,
     freeDieAdjustColors,

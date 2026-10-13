@@ -16,12 +16,16 @@ import {
   setupPhase,
 } from '../setup'
 import { currentRoundGoods, playerById, type GameState } from '../state'
-import { PLACEHOLDER_BLACK_TILE_INVENTORY, PLACEHOLDER_TILE_INVENTORY, totalTilesOf } from '../tiles'
+import {
+  OFFICIAL_BLACK_TILE_INVENTORY,
+  OFFICIAL_TILE_INVENTORY,
+  totalTilesOf,
+} from '../tiles'
 import type { GoodsKind } from '../types'
 
 const CONFIG = DEFAULT_RULESET
 const TOTAL_TILE_COUNT =
-  totalTilesOf(PLACEHOLDER_TILE_INVENTORY) + totalTilesOf(PLACEHOLDER_BLACK_TILE_INVENTORY)
+  totalTilesOf(OFFICIAL_TILE_INVENTORY) + totalTilesOf(OFFICIAL_BLACK_TILE_INVENTORY)
 
 function sumGoods(goods: Readonly<Record<string, number>>): number {
   return Object.values(goods).reduce((a, b) => a + b, 0)

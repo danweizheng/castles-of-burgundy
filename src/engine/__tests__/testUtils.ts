@@ -12,7 +12,11 @@ import { distinctGoodsKinds, listLegalMoves } from '../moves'
 import { createRng, nextInt } from '../rng'
 import { countAllTiles, createGame } from '../setup'
 import { playerById, updatePlayer, type GameState } from '../state'
-import { PLACEHOLDER_BLACK_TILE_INVENTORY, PLACEHOLDER_TILE_INVENTORY, totalTilesOf } from '../tiles'
+import {
+  OFFICIAL_BLACK_TILE_INVENTORY,
+  OFFICIAL_TILE_INVENTORY,
+  totalTilesOf,
+} from '../tiles'
 import type {
   AnimalKind,
   BoardSpace,
@@ -28,7 +32,7 @@ export const CONFIG = DEFAULT_RULESET
 export const BOARD = CONFIG.playerBoards['1'] as PlayerBoardDef
 export const BOARD_SIZE = BOARD.spaces.length
 export const TOTAL_TILE_COUNT =
-  totalTilesOf(PLACEHOLDER_TILE_INVENTORY) + totalTilesOf(PLACEHOLDER_BLACK_TILE_INVENTORY)
+  totalTilesOf(OFFICIAL_TILE_INVENTORY) + totalTilesOf(OFFICIAL_BLACK_TILE_INVENTORY)
 
 /** 固定种子的开局状态。所有测试都从它派生，保证可复现。 */
 export const BASE_STATE: GameState = createGame(CONFIG, { seed: 31337 })

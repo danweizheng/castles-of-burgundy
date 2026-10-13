@@ -38,10 +38,12 @@ export type DieRef =
   | { readonly kind: 'die'; readonly index: DieIndex }
   | { readonly kind: 'virtual' }
 
-/** 购买来源：中央黑洞，或（6 号知识板块）任意编号仓库。 */
-export type BuySource =
-  | { readonly kind: 'black'; readonly tileId: string }
-  | { readonly kind: 'depot'; readonly slotId: string }
+/** 购买来源：中央黑洞。
+ *
+ * 注：经典版（alea 2011）的 6 号知识板块允许"从全部 7 个仓库购买"，Special Edition 把它
+ * 改成了"花 2 个工人取一枚建筑"。本项目以 Special Edition 为准，所以这里只剩黑洞一种来源；
+ * 若实物是经典版，把 BuySource 加回 depot 分支即可。 */
+export type BuySource = { readonly kind: 'black'; readonly tileId: string }
 
 export type Move =
   | {
@@ -59,6 +61,15 @@ export type Move =
   | { readonly kind: 'sellGoods'; readonly die: DieRef; readonly goods: GoodsKind }
   | { readonly kind: 'takeWorkers'; readonly die: DieRef }
   | { readonly kind: 'buyTile'; readonly source: BuySource; readonly discardStorageIndex?: number }
+  /**
+   * 6 号知识板块（Special Edition）：每回合限一次，花 2 个工人从任意编号仓库取一枚米色建筑。
+   * 它不是骰子行动，也不计入每回合的两个行动，所以可以在用完骰子之后再做。
+   */
+  | {
+      readonly kind: 'workerTakeBuilding'
+      readonly slotId: string
+      readonly discardStorageIndex?: number
+    }
   | { readonly kind: 'resolveShipGoodsSpace'; readonly space: DieValue }
   | { readonly kind: 'resolveShipGoodsSecondSpace'; readonly space: DieValue }
   | { readonly kind: 'resolveWarehouseSellGoods'; readonly goods: GoodsKind }
@@ -335,24 +346,33 @@ function actionMoves(config: RulesetConfig, state: GameState, player: PlayerStat
     }
   }
 
-  // --- 自由行动：从黑洞买一枚（6 号知识板块后可从全部 7 个仓库买） ---
+  // --- 自由行动：从黑洞买一枚 ---
   if (!state.purchasedThisTurn && player.silverlings >= 2) {
-    const sources: BuySource[] = state.blackDepot.map((tile) => ({
-      kind: 'black',
-      tileId: tile.id,
-    }))
-    if (caps.buyFromAllDepots) {
-      for (const slot of activeSlots(config.gameBoard, state.playerCount)) {
-        if ((state.depotSlots[slot.id] ?? null) === null) continue
-        sources.push({ kind: 'depot', slotId: slot.id })
-      }
-    }
-    for (const source of sources) {
+    for (const tile of state.blackDepot) {
       for (const discardStorageIndex of discardChoices) {
         moves.push(
           discardStorageIndex === undefined
-            ? { kind: 'buyTile', source }
-            : { kind: 'buyTile', source, discardStorageIndex },
+            ? { kind: 'buyTile', source: { kind: 'black', tileId: tile.id } }
+            : { kind: 'buyTile', source: { kind: 'black', tileId: tile.id }, discardStorageIndex },
+        )
+      }
+    }
+  }
+
+  // --- 6 号知识板块：花 2 个工人从任意编号仓库取一枚米色建筑（每回合限一次） ---
+  if (
+    caps.takeBuildingWithWorkersCost > 0 &&
+    !state.usedWorkerTakeThisTurn &&
+    player.workers >= caps.takeBuildingWithWorkersCost
+  ) {
+    for (const slot of activeSlots(config.gameBoard, state.playerCount)) {
+      if (slot.color !== 'building') continue
+      if ((state.depotSlots[slot.id] ?? null) === null) continue
+      for (const discardStorageIndex of discardChoices) {
+        moves.push(
+          discardStorageIndex === undefined
+            ? { kind: 'workerTakeBuilding', slotId: slot.id }
+            : { kind: 'workerTakeBuilding', slotId: slot.id, discardStorageIndex },
         )
       }
     }

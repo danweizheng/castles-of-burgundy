@@ -30,7 +30,13 @@ export const K = {
   extraSilverlingPerSell: 3,
   workerPerSell: 4,
   shipTakesTwoGoodsSpaces: 5,
-  buyFromAllDepots: 6,
+  /**
+   * 6 号：**Special Edition 的效果** —— 每回合限一次，花 2 个工人从任意编号仓库取一枚米色建筑。
+   *
+   * 注：经典版（alea 2011）的 6 号是"可从全部 7 个仓库购买"。两份规则书在这里不一致，
+   * 本项目以 Special Edition 规则书为准（用户提供的那本）。若实物是经典版，改这一处即可。
+   */
+  takeBuildingWithWorkers: 6,
   extraVpPerScoringAnimalTile: 7,
   dieAdjustTwoPerWorker: 8,
   freeAdjustBuildings: 9,
@@ -136,10 +142,10 @@ export const KNOWLEDGE_TILES: readonly KnowledgeDef[] = [
     text: '放置船只时，可取两个相邻货物格的货物。',
   },
   {
-    id: K.buyFromAllDepots,
-    name: '黑市门路',
+    id: K.takeBuildingWithWorkers,
+    name: '工匠人脉',
     kind: 'continuous',
-    text: '可从全部 7 个仓库（含黑洞）购买，但仍每回合限一次。',
+    text: '每回合限一次，可花 2 个工人，立即从任意一个编号仓库取一枚米色建筑板块放进仓储。',
   },
   {
     id: K.extraVpPerScoringAnimalTile,
@@ -193,7 +199,7 @@ export const KNOWLEDGE_TILES: readonly KnowledgeDef[] = [
     id: K.finalVpPerSoldGoodsType,
     name: '贸易关系',
     kind: 'finalScoring',
-    text: '终局：每种（至少卖过 1 枚的）货物类型 3 分。',
+    text: '终局：每种（至少卖过 1 枚的）货物类型 2 分。',
   },
   ...BUILDING_SCORING_KNOWLEDGE_IDS.map((id) => ({
     id,
@@ -217,7 +223,7 @@ export const KNOWLEDGE_TILES: readonly KnowledgeDef[] = [
     id: K.finalVpPerBonusTile,
     name: '声望',
     kind: 'finalScoring',
-    text: '终局：每枚已获得的奖励板块 2 分（大 / 小均可）。',
+    text: '终局：每枚已获得的奖励板块 3 分（大 / 小均可）。',
   },
 ]
 

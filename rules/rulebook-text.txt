@@ -1,0 +1,1739 @@
+
+
+===== PAGE 1 =====
+Rulebook
+
+===== PAGE 2 =====
+2
+C/o.sc/m.sc/p.sc/o.sc/n.sc/e.sc/n.sc/t.sc/s.sc
+Worker tokens and silver coins are not intentionally limited. 
+If you run out of these, feel free to use substitutes.
+164 hex tiles:
+1  7x 8 buildings (40 beige, 16 black)
+2  7x 4 livestock (20 green, 8 black)
+3  12 mines (10 gray, 2 black)
+4  26 ships (20 blue, 6 black) 
+5  26 monasteries (20 yellow, 6 black)
+6  16 castles (14 burgundy, 2 black)
+FOR THE BASE GAME :
+26 worker tokens
+4 turn order 
+markers 
+(1 in each of the
+ 4 players colors)
+9 dice (2 each in 
+the/uni00A04 player colors, 
+plus 1 white)
+4 plastic bases 
+for/uni00A0victory point 
+markers
+24 silver coins 4 cloth bags 
+1 game board (double-sided)
+1 rulebook
+4 help sheets
+42 trade goods tiles 
+(square, 7 per color)
+12 bonus tiles 
+(2 in 6 colors)
+4 victory point tiles 
+(100/200 points in each 
+of the/uni00A04 player colors)
+1 2
+5
+6
+3
+4
+• 20 double-sided duchy boards 
+(5 boards in 4 copies, #1-10)
+• 4 player boards
+• 4 player board overlays
+4 victory point 
+markers 
+(1 in each of the
+ 4 player/uni00A0colors)
+
+===== PAGE 3 =====
+3
+FOR THE EXP ANSIONS:
+4 victory point miniatures
+FOR THE "VINEY ARDSEXP ANSION": FOR THE SPECIAL EDITION
+(NOT INCLUDED IN THE CLASSIC PLEDGE ):
+"Châteauma" components are listed on page 22 of this rulebook.
+16 castle miniatures1 vineyard store
+4 additional hex tiles 
+(2nd Expansion)
+9 additional hex tiles: 
+"The/uni00A0White Castles" 
+(5th Expansion)
+5 additional hex tiles: 
+"The/uni00A0Inns" 
+(6th Expansion) 
+18 shield tiles 
+("Shield Expansion")
+2 border post 
+bonus tiles
+1 double-sided duchy board : 
+"The/uni00A0Solo Game" (#33-34) 
+(10th Expansion)
+1  16 double-sided duchy boards 
+(4 boards in 4 copies, #11-18) (1st Expansion)
+2  4 double-sided duchy boards 
+(1 board in 4 copies, #19-20): 
+"Championship German Board (2013)", 
+"Championship German Board (2016)" 
+(3rd and 7th Expansion)
+3  16 double-sided duchy boards 
+(4 boards in 4 copies, #23-30): 
+"The/uni00A0Border Posts" (4th Expansion)
+4  4 double-sided duchy boards 
+(1 board in 4 copies, #21-22) 
+(Special Edition)
+4 double-sided boards: 
+"The/uni00A0Team Game" (#31a, 31b, 32a, 32b) 
+(9th Expansion)
+12 additional tiles: 
+"The/uni00A0Trade Routes" 
+(8th Expansion)
+4 vineyard boards51 double hex tiles
+1 vineyard depot 1 cloth bag
+24 vine bonus tiles 
+(6 types)
+1
+3
+2
+4
+
+===== PAGE 4 =====
+E
+F H
+G
+I
+A
+J H
+H B
+HH
+H
+D
+C
+4
+I/n.sc/t.sc/r.sc/o.sc/d.sc/u.sc/c.sc/t.sc/i.sc/o.sc/n.sc
+t is the/uni00A015th Century in Burgundy, Central France. As an/uni00A0inﬂuential duke, it 
+is your goal to lead your estates to prosperity through strategic expansion 
+and trade.
+Roll your dice to reveal your options and ﬁnd a/uni00A0strategy that/uni00A0will lead you to 
+victory. Whether trading or farming, building or research, many diﬀerent paths 
+lead to prosperity and prestige.
+There are many ways to gain victory points in this building game. Choose your 
+strategy wisely! Thanks to the/uni00A0variety of duchies, "The/uni00A0Castles of Burgundy" 
+oﬀers endless variation and remains challenging even for/uni00A0experienced players.
+The/uni00A0winner is the/uni00A0player with the/uni00A0most victory points at the/uni00A0end of the/uni00A0game.
+G/a.sc/m.sc/e.sc S/e.sc/t.sc/u.sc/p.sc
+(Before playing for/uni00A0the/uni00A0ﬁrst time, carefully remove all tiles from the/uni00A0punchboards.)
+Lay the/uni00A0game board in the/uni00A0middle of the/uni00A0play area. The/uni00A03 and 4-player side shows:
+INTRODUCTION
+Players take on the/uni00A0role of 15th 
+century dukes of Burgundy.
+Over the/uni00A0course of 5 phases, 
+players score victory points 
+through trading, farming, 
+building, or scientiﬁc research.
+The/uni00A0player with the/uni00A0most victory 
+points at the/uni00A0end of the/uni00A0game is 
+the/uni00A0winner.
+A. Central black depot
+B. Turn order track
+C. Victory point track (0-100)
+D. 5 round spaces
+E. 5 phase spaces
+F. Victory point table
+G. 6 bonus tile spaces
+H. 6 numbered depots (1-6), each with four 
+colored hex tile spaces and 1 large space 
+for/uni00A0goods tiles
+I. Inn space (used in "The/uni00A0Inns" expansion)
+J. Border post bonus tile slot 
+(used in "The/uni00A0Border Posts" expansion)
+The/uni00A0back side shows the/uni00A0game board for/uni00A0the/uni00A02-player game (marked with ). 
+The/uni00A0only diﬀerence is the/uni00A0number of hex tiles per depot, including the/uni00A0black depot. 
+See page 10 for/uni00A0more details.
+If you are reading this manual for/uni00A0the/uni00A0ﬁrst time, we recommend ignoring the/uni00A0text in the/uni00A0margin of each page.
+That/uni00A0text serves as a/uni00A0quick rules reference after taking a/uni00A0longer break from the/uni00A0game.
+
+===== PAGE 5 =====
+5
+1. Place the/uni00A0game board on the/uni00A0appropriate side. The/uni00A0side for/uni00A02 players is 
+marked with .
+2. Place the/uni00A024 silver coins and 26 worker tokens as well as the/uni00A0white die next 
+to the/uni00A0game board.
+3. Divide the/uni00A0164 hex tiles by the/uni00A0color of their back. Then place the/uni00A0livestock 
+(green), buildings (beige), monasteries (yellow), and black depot (black) hex 
+tiles into their corresponding cloth bags.
+4. Place the/uni00A0castles (burgundy), ships (blue), and mine (gray) hex tiles 
+in face-up piles next to the/uni00A0game board.
+Note: All the/uni00A0divided hex tiles create a/uni00A0supply.
+5. Shuﬀle the/uni00A042 trade goods tiles (square tiles) face down. Then divide 
+25/uni00A0of/uni00A0them into 5 face-down stacks of 5 tiles. Place one stack on each of 
+the/uni00A05/uni00A0phase spaces lettered A/uni00A0through E on the/uni00A0game board. Set aside 
+the/uni00A0remaining 17 tiles in a/uni00A0face-down pile.
+6. Place the/uni00A012 bonus tiles on their corresponding spaces on the/uni00A0game board. 
+On each space, stack 2 tiles of the/uni00A0matching color with the/uni00A0"5/6/7" tile on the/uni00A0top.
+7. Each player chooses a/uni00A0color and takes:
+– The/uni00A0player board, dice, turn order marker, and victory point marker 
+in the/uni00A0chosen color.
+– One random duchy board. Choose its side and place it on your player 
+board. Then cover it with a/uni00A0player board overlay. 
+Note: If you are playing for/uni00A0the/uni00A0ﬁrst time, we recommend taking the/uni00A0duchy board num-
+bered 1 or 2 (with each player taking the/uni00A0same number).
+– 3 random goods tiles from the/uni00A017 remaining goods tiles; place them face-up on the/uni00A0goods storage spaces in 
+the/uni00A0bottom left of your player board. Stack any goods tiles with the/uni00A0same number on top of each other. Put any 
+remaining goods tiles back into the/uni00A0box as they won't be needed for/uni00A0this game.
+– 1 help sheet; place it next to your player board. The/uni00A0help sheet explains the actions you may take during your 
+turn and the beneﬁts of placing speciﬁc tiles.
+– 1 silver coin; place it on the/uni00A0appropriate space in the/uni00A0top left of your player board.
+8. Each player places their victory point marker at the/uni00A0start of the victory point track (on the/uni00A0space between 1 and 100).
+9. Each player rolls a/uni00A0die to determine the/uni00A0starting player (highest result wins). That/uni00A0player receives 1 worker and 
+places it on the/uni00A0appropriate space on the left side of their player board. The/uni00A0next player in clockwise order receives 
+2 workers, the/uni00A0third player gets 3, and the/uni00A0fourth player gets 4. The/uni00A0starting player now places their/uni00A0turn order 
+marker on the/uni00A0ﬁrst space of the/uni00A0turn order track in the/uni00A0bottom right of the/uni00A0game board. The/uni00A0other players stack 
+their markers underneath in turn order (the/uni00A0last player is on the/uni00A0bottom).
+Note: The/uni00A0turn order may change during the/uni00A0game when a/uni00A0player builds a/uni00A0ship tile. Turns may not always go in clockwise order.
+10. Take 1 castle (burgundy hex tile) and place it face-up on the chosen burgundy space on your duchy board (all play-
+ers do this simultanously). If you're playing for/uni00A0the/uni00A0ﬁrst time and chose the/uni00A0duchy number 1 or 2, we recommend 
+placing the/uni00A0castle on the/uni00A0hex space numbered 6 in the/uni00A0center of your duchy.
+11. Give the white die to the starting player.
+Place the/uni00A024 silver coins, 
+26/uni00A0worker tokens, the/uni00A0white 
+die, and 164 hex tiles face-down 
+next to the/uni00A0game board.
+Place 5 stacks of 5 goods tiles 
+face-down on spaces A-E.
+Place 2 stacks of 6 bonus tiles 
+onto the/uni00A0corresponding spaces 
+on the/uni00A0game board.
+Each player receives:
+• 1 player board
+• 1 duchy board
+• 1 starting castle
+• 3 random goods tiles
+• 1 help sheet
+• 2 dice of their chosen color
+• 1 victory point marker
+• 1 turn order marker
+• 1 victory point tile
+• 1 silver coin
+Determine the/uni00A0starting player 
+and distribute 1 to 4 workers 
+in clockwise order.
+Place the/uni00A0turn order markers 
+on the/uni00A0turn order track.
+The/uni00A0starting player receives 
+the/uni00A0white die.
+Space for 
+duchy board
+Spaces for 
+rolled dice
+Space for 
+white die
+Spaces for 
+used dice
+Space for 
+bonus tiles
+Hex tile 
+storage spaces 
+("key spaces")
+Space 
+for silver 
+coins
+Space 
+for worker 
+tokens
+3 storage 
+spaces for 
+goods tiles
+Sold goods 
+(placed below 
+the player board)
+"The Border Posts" expansion symbol 
+(not used in the base game)
+Plastic 
+overlay
+Duchy
+Player 
+board
+
+===== PAGE 6 =====
+6
+P/l.sc/a.sc/y.sc/i.sc/n.sc/g.sc /t.sc/h.sc/e.sc/uni00A0G/a.sc/m.sc/e.sc
+GAME PHASES
+The/uni00A0game consists of 5 phases, lettered A/uni00A0to E, starting with phase A. Each phase 
+consists of 5/uni00A0rounds.
+At the/uni00A0beginning of each phase, do the/uni00A0following:
+1. Remove all hex tiles that/uni00A0are still on the/uni00A0game board and put them back into 
+the/uni00A0game box (skip this step at the/uni00A0beginning of phase A).
+Important: Don’t remove any goods from the/uni00A0depots!
+2. One by one, replenish the/uni00A0hex spaces of the/uni00A0six numbered depots from 
+the/uni00A0supply with random hex tiles of the/uni00A0corresponding color. Turn them 
+face up.
+Note: Some spaces on the/uni00A0board for/uni00A03-4 players are marked "4". Only replenish these 
+spaces if you are playing with 4 players. There is also one special place marked "3BD". 
+This space is replenished normally in 4-player games (with a/uni00A0castle tile), but in 3-player 
+games, during phases B and D, place a/uni00A0mine tile there instead of a/uni00A0castle.
+3. Replenish spaces of the/uni00A0central black depot using random hex tiles with 
+black backs. Turn them face up.
+4. Take the/uni00A0stack of 5 goods from the/uni00A0current phase space and place them 
+face-up on the/uni00A05 round spaces.
+THE/uni00A0FIVE GAME ROUNDS
+After setting up the/uni00A0new phase, you play 5 rounds. Each round plays the/uni00A0same:
+First, all players roll their two dice. The/uni00A0starting player (the/uni00A0one that/uni00A0is furthest in 
+front on the/uni00A0turn order track – or on the/uni00A0top if tied) also rolls the/uni00A0white die. Each 
+player places their/uni00A0dice on the/uni00A0dice spaces of their player board. All dice must be 
+visible for/uni00A0all players.
+Note: Rolling dice simultaneously allows other players to plan while waiting for/uni00A0their turn.
+The/uni00A0starting player begins the/uni00A0round. First, they take the/uni00A0ﬁrst (starting from 
+the/uni00A0bottom) face-up goods tile from the/uni00A0round spaces and place it on the/uni00A0depot 
+that/uni00A0matches the/uni00A0result of the/uni00A0white die. The/uni00A0white die’s job is done for/uni00A0this 
+round. The/uni00A0starting player may not use it for/uni00A0a/uni00A0game action during their turn 
+(and its result cannot be changed by using a/uni00A0worker).
+Then, the/uni00A0starting player plays their turn. After the/uni00A0starting player’s turn, the/uni00A0player 
+next in turn order, according to the/uni00A0turn order track, takes their turn (this will be 
+the/uni00A0player closer to the/uni00A0tower at the/uni00A0end of the/uni00A0track – top to bottom if there is a/uni00A0tie).
+When all players have ﬁnished their turns, the/uni00A0next round begins, and so on.
+Since you start each phase with 5 goods tiles on the/uni00A0turn spaces and each round, 
+one of them is placed on a/uni00A0depot, you can always see what/uni00A0round you are in and 
+how many are left during the/uni00A0current phase (and game).
+A/uni00A0PLA YER’S TURN
+During each of their turns, a/uni00A0player can take two game actions, one for/uni00A0each die. 
+Used dice are placed on the/uni00A0used dice spots on their player board.
+Worker tokens can be used at any time to change the/uni00A0result of your die. To use 
+a/uni00A0worker, return it to the/uni00A0supply next to the/uni00A0game board. Each worker you use 
+increases or decreases the/uni00A0result by 1. Y ou may use a/uni00A0worker to change the/uni00A0result 
+from 1 to 6 or vice versa. Y ou may use multiple workers to change a/uni00A0result. Using 
+workers is not an/uni00A0action.
+Example: By using 2 workers, Anna changes a/uni00A02 into a/uni00A06, and then takes a/uni00A0hex tile 
+from the/uni00A06 depot.
+PLA YING THE GAME
+At the/uni00A0beginning of each phase:
+• Remove all hex tiles 
+from the/uni00A0game board.
+• Replenish hex tiles using tiles 
+from the/uni00A0supply.
+• Replenish goods on 
+the/uni00A05 round spaces.
+GAME ROUND
+All players roll simultaneously.
+The/uni00A0starting player places 
+the/uni00A0goods tile indicated by 
+the/uni00A0white die.
+PLA YER’S TURN
+Each player in turn order takes 
+two actions with their dice.
+Use workers to increase or 
+decrease a/uni00A0die's result by 1 
+for/uni00A0each worker (may change 
+a/uni00A01 to 6 or vice versa).
+
+===== PAGE 7 =====
+1
+7
+ACTIONS
+Y ou have one action per die. Each of your 2 die actions per turn may be taken 
+in/uni00A0any combination and order (you may also take the/uni00A0same action twice).
+There are 4 types of actions you can take with your die:
+• Take a/uni00A0hex tile from the/uni00A0game board.
+• Place a/uni00A0hex tile in your duchy.
+• Sell goods (see page 10).
+• Take 2 workers (see page 10).
+ACTION "TAKE A HEX TILE FROM THE GAME BOARD "
+Choose a hex tile from the numbered depot matching your die result. 
+The/uni00A0chosen hex tile is placed on an/uni00A0empty storage space ("key spaces") in the/uni00A0bot-
+tom right of your player board (they never go directly in your duchy).
+Note: If you don’t have an/uni00A0empty space, you must ﬁrst create space by discarding 
+a/uni00A0hex tile from your board (put it back into the/uni00A0game box). 
+Hint: This is usually a/uni00A0bad idea and should be avoided.
+ACTION "PLACE A HEX TILE IN YOUR DUCHY "
+Choose one of your hex tiles in your player board storage (bottom right) 
+and place it on an/uni00A0empty hex space in your duchy that/uni00A0matches the/uni00A0die result 
+and the/uni00A0tile color. Y ou must place the/uni00A0tile on a/uni00A0space directly adjacent to at least 
+one previously placed tile. The/uni00A0hex tile’s color must always match the/uni00A0color of 
+the/uni00A0hex space.
+Note: The/uni00A0very ﬁrst time you take this action, you must place the/uni00A0tile on one of 
+the/uni00A0spaces next to your starting castle.
+Depending on the/uni00A0hex tile you placed, one of the/uni00A0following will happen immediately:
+Monastery (yellow)
+The/uni00A0game features 26 diﬀerent monastery tiles. Many of them have continuous ef-
+fects that/uni00A0change the/uni00A0rules of the/uni00A0game after placing them in a/uni00A0duchy. Others have no 
+eﬀect until ﬁnal scoring. Their advantages are explained in detail on pages 11 and 12.
+Ship (blue)
+Whenever you place a/uni00A0ship in your duchy, two things happen immediately:
+1. Choose any depot on the/uni00A0game board and take all the/uni00A0goods tiles from 
+that/uni00A0depot, then place those tiles on your goods storage spaces 
+in the/uni00A0bottom left of your player board.
+Important: Y ou may choose any depot! Y ou don’t have to choose the/uni00A0one that/uni00A0matches 
+the/uni00A0result of the/uni00A0die you used to place the/uni00A0ship.
+Players may store up to three diﬀerent types (colors) of goods on their player 
+board. Tiles of the/uni00A0same color are placed in stacks. Tiles of diﬀerent colors 
+must be placed on diﬀerent storage spaces. If, due to this restriction, a/uni00A0player 
+is unable to place a/uni00A0goods tile on one of their storage spaces, that/uni00A0tile remains 
+in the/uni00A0depot.
+Example: Carla placed a/uni00A0ship. She now takes goods tiles from the/uni00A0depot: the/uni00A0turquoise 
+one (stacking it on top of her other turquoise goods tile) as well as one more 
+(either the/uni00A0pink or the/uni00A0brown one), which she places on her only empty storage space.
+2. Then, advance your marker on the/uni00A0turn order track by one space. 
+If/uni00A0that/uni00A0space is already occupied, place your marker on top of the/uni00A0others. 
+If you are now the/uni00A0starting player, take the/uni00A0white die.
+Castle (burgundy)
+Whenever you place a/uni00A0castle tile in your duchy, you immediately take an/uni00A0additional 
+action, just as if you had another die with your choice of result at your disposal.
+For/uni00A0example, you could immediately place another hex tile in your duchy, or take 
+2/uni00A0worker tokens, etc.
+PLACE A/uni00A0HEX TILE 
+IN YOUR DUCHY
+The/uni00A0die result indicates 
+which unused hex space to ﬁll. 
+Place a/uni00A0hex tile on a/uni00A0matching 
+color adjacent to a/uni00A0previously 
+placed tile.
+Ships (blue):
+1. Take all goods tiles 
+from a/uni00A0depot of your 
+choice and place them 
+in your goods/uni00A0storage.
+2. Advance your 
+marker on the/uni00A0turn 
+order track by one 
+space.
+Monastery (yellow):
+See pages 11 and 12.
+Castles (burgundy):
+Take an/uni00A0immediate 
+additional action as 
+if you have a/uni00A0die with 
+your choice of result.
+TAKE A HEX TILE FROM 
+THE GAME BOARD
+The/uni00A0die result indicates 
+which depot to take from. Place 
+the/uni00A0tile on an/uni00A0empty key space 
+in the/uni00A0bottom right of your 
+player board.
+
+===== PAGE 8 =====
+A-E
+A-E
+8
+Mine (gray)
+Mines are tiles with no immediate eﬀect when they are placed. At the/uni00A0end of each 
+phase you gain one silver coin from the/uni00A0supply for/uni00A0each mine in your duchy.
+Livestock (green)
+Whenever you place a/uni00A0livestock tile in your duchy, you immediately score victory 
+points. Each tile shows 2-4 livestock, which is the/uni00A0amount of victory points you score.
+Additionally, if you already have at least one other tile with the/uni00A0same livestock in 
+the/uni00A0same pasture (a/uni00A0contiguous area of green hex spaces), you also score victory 
+points for/uni00A0those other tiles (see example below).
+Note: Y our previously placed livestock tiles are not required to be adjacent to 
+the/uni00A0newly placed tile – they must only be on the/uni00A0same pasture. Y ou do not score addi-
+tional victory points for/uni00A0livestock on diﬀerent pastures.
+Example: Ben places the/uni00A04 cow tile at the/uni00A0top of his pasture in which he already 
+has a/uni00A03 cow and a 3 sheep. He scores 7 victory points for/uni00A0the/uni00A04 cow and the/uni00A03/uni00A0cow 
+already in that/uni00A0pasture. Later in the/uni00A0game, if he places another 4 cow tile on 
+the/uni00A0same pasture he would score 11 victory points (4+4+3). If he places a/uni00A02 sheep 
+tile on the/uni00A0pasture, he would score 5 victory points (2 for/uni00A0the/uni00A0sheep tile he places and 
+3/uni00A0for/uni00A0the/uni00A0sheep tile already on the/uni00A0pasture).
+Buildings (beige)
+Whenever you place a/uni00A0building in your duchy, you may immediately – and only once 
+– use that/uni00A0building’s eﬀect (as indicated by the/uni00A0symbols on the/uni00A0overview board).
+Important: Each of the/uni00A0eight building types may be built only once per town
+(a/uni00A0contiguous area of beige spaces). Depending on the/uni00A0duchy, there might be 
+2-6/uni00A0towns of various sizes (1-8 spaces).
+Note: If you look closely you can see representations of the/uni00A0tile's abilities. For/uni00A0exam-
+ple, the/uni00A0church shows the/uni00A0colors of the/uni00A0mine, monastery, and castle tiles; the/uni00A0bank 
+features two towers with silver roofs; and the/uni00A0castle shows a/uni00A0die.
+THE BUILDINGS :
+Market
+When you place a/uni00A0market in your duchy, you may immediately take a ship (blue) 
+or livestock (green) tile from any of the/uni00A0six depots (except the/uni00A0central black depot) 
+and place it on an/uni00A0empty key space in the/uni00A0bottom right of your player board.
+Carpenter’s Workshop
+When you place a/uni00A0carpenter’s workshop in your duchy, you may immediately 
+take a/uni00A0beige building tile from any of the/uni00A0six depots on the/uni00A0game board (except 
+the central black depot) and place it on an/uni00A0empty key space in the/uni00A0bottom right of 
+your player board.
+Church
+When you place a/uni00A0church in your duchy, you may immediately take a mine 
+(gray), monastery (yellow), or castle (burgundy) tile from any of the/uni00A0six depots 
+on the/uni00A0game board (except the/uni00A0central black depot) and place it on an/uni00A0empty key 
+space in the/uni00A0bottom right of your player board.
+Market
+Take a/uni00A0livestock 
+or a/uni00A0ship tile from 
+the/uni00A0game board.
+Y ou may never have more 
+than one building of each 
+type per town!
+Church
+Take a/uni00A0mine, 
+monastery or castle 
+tile from the/uni00A0game 
+board.
+Carpenter’s 
+Workshop
+Take a/uni00A0building 
+of/uni00A0your choice from 
+the/uni00A0game/uni00A0board. 
+...+...+...
+Mine (gray):
+Gain 1 silver coin per 
+mine at the/uni00A0end of 
+each phase.
+Livestock 
+(green):
+Score victory points 
+according to the/uni00A0number 
+of livestock on the/uni00A0tile.
+When expanding a/uni00A0herd: 
+add victory points 
+for/uni00A0previously 
+placed livestocks 
+of the/uni00A0same type in 
+the/uni00A0same/uni00A0pasture.
+
+===== PAGE 9 =====
+9
+Watchtower
+Score 
+4/uni00A0victory 
+points.
+Town hall
+Place 
+an/uni00A0additional 
+hex tile.
+Boarding 
+house
+Gain 
+4 worker 
+tokens.
+4
+Warehouse
+Sell a/uni00A0goods type 
+of/uni00A0your choice.
+Bank
+Gain 
+2/uni00A0silver 
+coins.
+Warehouse
+When you place a/uni00A0warehouse in your duchy, you may immediately (without having 
+to use a/uni00A0die) choose a/uni00A0type of goods tile you own and sell that/uni00A0stack, just as if you 
+had taken the/uni00A0“Sell goods” action (see page 10).
+Boarding house
+When you place a/uni00A0boarding house in your duchy, immediately gain 4 worker 
+tokens from the/uni00A0supply.
+Bank
+When you place a/uni00A0bank in your duchy, immediately gain 2 silver coins from 
+the/uni00A0supply.
+Town hall
+When you place a/uni00A0town hall in your duchy, you may immediately choose a second 
+hex tile from your storage and place it in your duchy. Placing the/uni00A0tile triggers its 
+eﬀect, as usual.
+Watchtower
+When you place a/uni00A0watchtower in your duchy, you immediately score 4 victory points.
+The/uni00A0following applies to every building you place:
+• A/uni00A0building’s additional beneﬁt is triggered by placing it. Y ou don’t need an/uni00A0ad-
+ditional die result or action!
+• If you are unable to use a/uni00A0building’s eﬀect immediately (for/uni00A0example, when you 
+place a/uni00A0market but there are no green or blue tiles in any of the/uni00A0six depots), you may 
+still place that/uni00A0building, without resolving its ability.
+ADDITIONAL RULES FOR TAKING AND PLACING HEX TILES :
+• Whenever you take a/uni00A0hex tile from the/uni00A0game board, you must always place it 
+on one of your key spaces in the/uni00A0bottom right of your player board. This also 
+applies if you use your second action to place that/uni00A0tile in your duchy.
+• Any tiles that/uni00A0have been placed in a/uni00A0duchy are permanent. They may not be 
+moved, removed, or replaced.
+HEX TILE SCORING :
+• As soon as a/uni00A0colored area – regardless of its size – is completely covered with 
+hex tiles, the/uni00A0area is considered complete and you score victory points in two 
+diﬀerent ways:
+– Depending on its size (1 to 8 spaces), the/uni00A0completed area gains 1-36/uni00A0victory 
+points, and you immediately advance that/uni00A0many spaces on the/uni00A0victory 
+point track.
+– Additionally, a/uni00A0completed area gains between 10 and 2 additional victory 
+points, depending on the/uni00A0current phase: the/uni00A0empty phase space in the/uni00A0top 
+left of the/uni00A0game board indicating the/uni00A0current phase shows how many 
+additional victory points each completed area (regardless of size) scores 
+from 10 in phase A/uni00A0to 2 in phase E.
+Note: Starting castles do not score, even if they were placed on the/uni00A01 space area.
+Bonus tiles: The/uni00A0ﬁrst player who/uni00A0manages to completely cover all spaces of one col-
+or in their duchy (for/uni00A0example, by placing their third mine or sixth monastery) gets 
+to take and immediately score the/uni00A0corresponding bonus tile from the/uni00A0game board 
+(5 victory points in a/uni00A02-player game, 6 in a/uni00A03-player game, or 7 in a/uni00A04-player game).
+The/uni00A0second player who/uni00A0completes that/uni00A0same color in their duchy receives 
+the/uni00A0small bonus tile and scores between 2 and 4 victory points.
+Note: Once a/uni00A0player passes the/uni00A0"100" space on the/uni00A0victory point track, they place 
+their victory point token with 100 side face-up on that/uni00A0space. If a/uni00A0player reaches 
+a/uni00A0score of 200, they ﬂip their token.
+Never place hex tiles from 
+the/uni00A0game board directly in 
+your/uni00A0duchy.
+Tiles that/uni00A0have been placed 
+in/uni00A0a/uni00A0duchy cannot be removed.
+Additional eﬀects of buildings 
+don’t need a/uni00A0die.
+Hex tile scoring:
+1. Depending on its size 
+(1-8/uni00A0spaces): 1-36 victory points
+2. Depending on current phase 
+(A-E): 10-2 victory points
+The ﬁrst player to cover every 
+space of a particular color in their 
+duchy gets the/uni00A0ﬁrst bonus tile and 
+scores +5/6/7 VP .
+The/uni00A0player who/uni00A0covers all 
+the/uni00A0spaces of a/uni00A0color in their 
+duchy second gets the/uni00A0second 
+bonus tile and scores +2/3/4 VP .
+?
+4
+
+===== PAGE 10 =====
+10
+? ACTION "SELL GOODS"
+Another possible use for/uni00A0your die is to sell a/uni00A0stack of the/uni00A0same type of goods 
+from your goods storage. The/uni00A0die result indicates which type (color) may be sold. 
+To sell goods, place all the/uni00A0goods tiles of a/uni00A0chosen color face down below your 
+player board. Y ou gain:
+• Exactly 1 silver coin from the/uni00A0supply, regardless of how many tiles you sold.
+• 2/3/4 victory points for/uni00A0each sold goods tile (depending on the/uni00A0number of 
+players (2/3/4)).
+Note: When taking the/uni00A0"Sell Goods" action, you must always sell the/uni00A0entire stack of 
+goods tiles of the/uni00A0type that/uni00A0you chose to sell.
+ACTION "TAKE 2 WORKER TOKENS"
+Y ou may choose to use any die result to gain two workers from the/uni00A0supply. 
+THE CENTRAL  "BLACK DEPOT"
+During your turn, in addition to your two die actions, you may buy one tile of 
+your choice from the/uni00A0black depot in the/uni00A0center of the/uni00A0game board. This can be done at 
+any time during your turn (i.e. before, during, between, or after the/uni00A0two die actions).
+To buy a/uni00A0hex tile, pay 2 silver coins and move that/uni00A0tile from the/uni00A0black depot to 
+an/uni00A0empty key space on the/uni00A0bottom right of your player board.
+END OF A/uni00A0PHASE
+Each phase ends after ﬁve rounds. Players now gain 1 silver coin for/uni00A0every mine 
+they currently have in their duchy. There may also be yellow monastery tile 
+eﬀects that/uni00A0resolve at the/uni00A0end of a/uni00A0phase. Then the/uni00A0next phase begins (see page 6).
+END OF THE GAME
+The/uni00A0game ends when the/uni00A0ﬁfth phase (phase E) has been completed. Final scoring 
+commences and each player receives a/uni00A0number of additional victory points 
+for/uni00A0their leftover game components:
+• Each unsold goods tile: 1 victory point
+• For/uni00A0each silver coin: 1 victory point
+• For/uni00A0every two worker tokens: 1 victory point
+• For/uni00A0each placed yellow monastery tile that/uni00A0score victory points 
+(see pages 11 and 12)
+Important: Only check the/uni00A0hex tiles placed in your duchy – hex tiles in your storage 
+do not count.
+The/uni00A0player who/uni00A0scored the/uni00A0most victory points is the/uni00A0winner. If there is a/uni00A0tie, 
+the/uni00A0player among the/uni00A0tied ones with the/uni00A0fewest unused hex spaces in their duchy 
+wins the/uni00A0game. If/uni00A0there is still a/uni00A0tie, the/uni00A0tied player who/uni00A0is farthest behind on 
+the/uni00A0turn order track is the/uni00A0winner.
+FOR THE 2 – AND 3-PLA YER GAMES
+In a/uni00A03-player game, don't use the/uni00A0spaces marked "4". The/uni00A0burgundy space 
+of the/uni00A0#6 depot is special: in phases A, C, and E, this space is replenished 
+by a/uni00A0castle tile (burgundy). In phases B and D, however, it is replenished by 
+a/uni00A0mine/uni00A0tile/uni00A0(gray).
+For/uni00A0a/uni00A02-player game just ﬂip the/uni00A0game board.
+END OF THE GAME
+The/uni00A0game ends after phase E 
+(25 rounds / 50 dice actions).
+Final scoring:
+• unsold goods: 1 VP each
+• each silver coin: 1 VP
+• every 2 worker tokens: 1 VP
+• yellow tiles: see pages 11 and 12
+The/uni00A0player with the/uni00A0most victory 
+points wins!
+Each phase ends after 5 rounds: 
+all players with mines receive 
+silver coins.
+Once per turn, a/uni00A0player may 
+spend 2 silver coins to buy one 
+hex tile of their choice from 
+the/uni00A0central black depot.
+TAKE 2 WORKER TOKENS
+Regardless of die result, 
+gain 2/uni00A0worker tokens from 
+the/uni00A0supply.
+SELL GOODS
+Die result determines goods 
+type: all goods of this type must 
+be sold (turned face-down):
+• + 1 silver coin (in total)
+• + 2/3/4 VP per tile 
+(2/3/4 players)
+
+===== PAGE 11 =====
+1
+2
+?
+3
+?
+4
+1x
+6
+2
+8
+1
+9
+1
+10
+1
+12
+(   )
+14
+1
+11
+(   )
+13
+5
++1
+7
+11
+MONASTERY (YELLOW)
+The/uni00A0game features 26 diﬀerent yellow tiles. Many of them have continuous eﬀects 
+that/uni00A0change the/uni00A0rules of the/uni00A0game after placing them in a/uni00A0duchy. Others have no 
+eﬀect until ﬁnal scoring.
+1. Y ou are no longer limited to one building (beige) tile per type in each of your 
+towns. In other words, you may build more than one building of the/uni00A0same 
+type within a/uni00A0single town.
+2. For/uni00A0each mine you have placed, you gain a/uni00A0worker in addition to the/uni00A0silver 
+coin at the/uni00A0end of each phase.
+3. Y ou gain 2 silver coins instead of 1 whenever you sell goods (either when 
+taking the/uni00A0die action or when placing a/uni00A0warehouse).
+4. Whenever you sell a/uni00A0type of goods (either when taking the/uni00A0die action or 
+when placing a/uni00A0warehouse), you gain a/uni00A0worker in addition to the/uni00A0silver coin 
+you normally receive.
+5. Whenever you place a/uni00A0ship tile, in addition to taking all goods tiles from a/uni00A0de-
+pot of your choice, you may also take all goods tiles from an/uni00A0adjacent depot.
+6. Once per turn, you may spend 2 worker tokens to immediately take a/uni00A0build-
+ing (beige) tile from any of the/uni00A0six depots on the/uni00A0game board (except the/uni00A0cen-
+tral black depot) and place it on an/uni00A0empty key space in the/uni00A0bottom right of 
+your player board.
+7. Whenever you place a/uni00A0livestock tile, in addition to the/uni00A0usual bonus for/uni00A0exist-
+ing livestock of the/uni00A0same type in the/uni00A0same pasture, you also score 1 victory 
+point for/uni00A0each livestock tile that/uni00A0scores at that/uni00A0time.
+Example: Ben places a/uni00A03 sheep tile on the/uni00A0pasture that/uni00A0already contains a/uni00A04/uni00A0sheep tile: 
+He gains (3+1) + (4+1) = 9 victory points. If he places a/uni00A02 pig tile, he gets 3 victory points.
+8. Whenever you use a/uni00A0worker to change the/uni00A0result of a/uni00A0die, you may add or 
+subtract 2 instead of 1.
+Example: To change a/uni00A03 to a/uni00A06, Carla only needs to use 2 workers instead of 3.
+9. Whenever you want to place a/uni00A0building 
+(beige) tile in your duchy, you may change the/uni00A0die result by 1 (just as if you 
+were using a/uni00A0worker).
+10. Whenever you want to place a/uni00A0ship or a/uni00A0livestock tile (blue and green tiles) 
+in your duchy, you may change the/uni00A0die result by 1 (just as if you were using 
+a/uni00A0worker).
+11. Whenever you want to place a/uni00A0castle, mine, or/uni00A0monastery tile (burgundy, 
+gray, and yellow tiles) in your duchy, you may change the/uni00A0die result by 1 
+(just as if you were using a/uni00A0worker).
+12. Whenever you want to take a/uni00A0hex tile from the/uni00A0game board, you may change 
+the/uni00A0die result by 1 (just as if you were using a/uni00A0worker).
+13. Whenever you use the/uni00A0"Take 2 worker tokens" action, you gain 1 silver coin 
+in addition to the/uni00A02 worker tokens from the/uni00A0supply.
+Note: This and the/uni00A0next tile have no eﬀect when placing a/uni00A0Boarding house.
+14. Whenever you use the/uni00A0"Take 2 worker tokens" action, you gain 4 worker 
+tokens instead of the/uni00A0usual 2.
+
+===== PAGE 12 =====
+2
+15
+4
+16
+4
+17
+4
+18
+4
+20
+4
+22
+4
+23
+4
+24
+26
+1
+25
+4
+29
+4
+19
+4
+21
+12
+15. At the/uni00A0end of the/uni00A0game, you score 2 victory points for/uni00A0each diﬀerent type of 
+goods tile in your sold goods pile. 
+Unsold goods are ignored.
+Note: Y ou may look at your sold goods pile at any time during the/uni00A0game.
+Example: Dario has sold the/uni00A0following goods tiles: 4x red, 3x purple, 3x pink and 
+1x orange. He scores 4 types x 2 = 8 victory points.
+16–23 + 29. At the/uni00A0end of the/uni00A0game, you score 4/uni00A0victory points for/uni00A0each building of 
+the indicated type that/uni00A0you placed in your/uni00A0duchy.
+Example: Ben has placed the/uni00A0yellow #17 (watchtower) and #22 (bank) tiles in his duchy, 
+and also 2 watchtowers and 4 banks: Ben scores (2x4) + (4x4) = 24 victory points.
+24. At the/uni00A0end of the/uni00A0game, you score 4 victory points for/uni00A0each diﬀerent live-
+stock type that/uni00A0you placed in your duchy.
+Example: Anna has placed 3 sheep, 1 cow, and 1 pig tile in her duchy. At the/uni00A0end of 
+the/uni00A0game she scores 3 types x 4 = 12 victory points.
+25. At the/uni00A0end of the/uni00A0game, you score 1 victory point for/uni00A0each goods tile you 
+sold. Unsold goods are ignored.
+Example: If Dario had placed this tile as well, he would score 11 additional victory 
+points (see example for/uni00A0tile 15).
+26. At the/uni00A0end of the/uni00A0game, you score 3 victory points for/uni00A0each bonus tile 
+(large and small) you own.
+
+===== PAGE 13 =====
+28
+27
+13
+Crane
+Trigger the/uni00A0eﬀect of 
+any building.
+Geese
+Treat geese as any 
+type of livestock.
+E/x.sc/p.sc/a.sc/n.sc/s.sc/i.sc/o.sc/n.sc/s.sc
+4 DUCHY BOARDS (11-18) (1ST EXP ANSION)
+If you want to play with this expansion each player receives one random duchy 
+board with number 11-18.
+Optional rules: In the/uni00A0original game, you must place all tiles in the/uni00A0duchy next to 
+at least one previously placed tile. Now, not only do you have to place them as 
+just described, but in addition, if you place a/uni00A0new hex tile, it must lie either directly 
+next to a/uni00A0castle – or be connected by tiles of the/uni00A0same color with a/uni00A0castle (a/uni00A0diﬀer-
+ent color in between is not allowed).
+This rule does not apply to new castles – they may be added as before.
+At any time, for/uni00A0the/uni00A0cost of both die actions and 5 victory points, a/uni00A0player may 
+retrieve a/uni00A0previously set-aside (that/uni00A0was unclaimed/purchased from the/uni00A0board 
+in the/uni00A0previous turns) castle tile (burgundy or black-backed) and place it in 
+their storage.
+Note: These optional rules do not work with duchy boards other than 11-18.
+4 ADDITIONAL HEX TILES  (2ND EXP ANSION)
+These are shuﬀled into the/uni00A0supply with the/uni00A0matching hex tiles (black and yellow).
+27. Turn order track (monastery/yellow)
+If your turn order marker is in a/uni00A0stack with other markers, it is always placed on 
+top. This applies both actively and passively 
+(i.e. whenever another marker is moved onto the/uni00A0same space, yours is 
+placed/uni00A0on top).
+28. Workers (monastery/yellow)
+If this tile is in your duchy, you can buy workers from the/uni00A0supply at any time. 
+2/uni00A0workers cost 1 silver coin.
+Crane (building/black)
+When you place a/uni00A0crane in your duchy, you may immediately trigger the/uni00A0eﬀect of 
+any building (beige) tile you want, even if that/uni00A0building is not in your duchy.
+For/uni00A0example, you could sell goods (warehouse), or gain 2 silver coins (bank), or/uni00A0take 
+a/uni00A0castle tile from the/uni00A0game board (church), etc.
+Additionally, during ﬁnal scoring at the/uni00A0end of the/uni00A0game, the/uni00A0crane counts as 
+a/uni00A0building of your choice for/uni00A0the/uni00A0corresponding monastery tiles (16-23 + 29).
+This may be a/uni00A0diﬀerent building from the/uni00A0one you triggered when placing 
+the/uni00A0crane.
+Geese (livestock/black)
+When you place the/uni00A0two geese in your duchy, you score 2 victory points as normal, 
+plus victory points for/uni00A0one other type of livestock that/uni00A0is in the/uni00A0same pasture. Later, 
+whenever you place another livestock tile in the/uni00A0same pasture, you score 2/uni00A0victory 
+points for/uni00A0the/uni00A0geese tile. In addition, geese count as additional type of livestock 
+for/uni00A0monastery tiles #7 and #24.
+Example: Carla places the/uni00A0geese tile on a/uni00A0pasture that/uni00A0already has a/uni00A02 and a/uni00A03 cow 
+tile. Carla scores 2+2+3 = 7 victory points. During a/uni00A0later turn, she places a/uni00A04 pig tile 
+in the/uni00A0same pasture and scores 4+2 = 6 victory points.
+
+===== PAGE 14 =====
+4
+29
+14
+BORDER POST DUCHY BOARDS  (23-30) 
+(4TH EXP ANSION)
+To play with this expansion, place the/uni00A0border post bonus tile on 
+the/uni00A0corresponding space on the/uni00A0board. Then each player receives one random 
+duchy board numbered 23-30. These duchies oﬀer the/uni00A0following special features:
+When a/uni00A0player manages to connect two border posts in their duchy with hex tiles, they 
+score victory points according to the/uni00A0current phase (i.e. 10, 8, 6, 4, or 2).
+The ﬁrst and second players to connect all three border posts get to take and 
+immediately score the/uni00A0corresponding border post bonus tile from the/uni00A0game board 
+(the ﬁrst player scores 5/6/7 victory points in a/uni00A02/3/4-player game, the/uni00A0second 
+player scores 2/3/4 victory points).
+Note: Since border posts are on the/uni00A0player board and not on the/uni00A0duchy you may also 
+use all other duchies to play with this expansion.
+THE WHITE CASTLES (5TH EXP ANSION)
+At the/uni00A0beginning of the/uni00A0game, all these tiles are mixed into their respective sup-
+plies (buildings, monasteries, or black depot).
+When you place a/uni00A0white castle in your duchy, immediately take an/uni00A0action using 
+the/uni00A0current result of the/uni00A0white die. Y ou are allowed to use workers to change 
+the/uni00A0rolled number (don't change the/uni00A0actual white die/uni00A0result).
+THE INNS (6TH EXP ANSION)
+At the/uni00A0beginning of each phase, place one inn on the/uni00A0indicated space next to 
+the/uni00A0central black depot. Unlike other hex tiles, inns are not removed from the 
+board at the end of each phase. If there is already an inn next to the/uni00A0central black 
+depot, stack the/uni00A0new one on/uni00A0top.
+Like every other hex tile from the/uni00A0black depot, inns may be bought by paying 
+2/uni00A0silver coins, and placed on a/uni00A0key space on the/uni00A0player’s board.
+An/uni00A0inn may be placed on any empty hex space on your duchy (according to 
+the/uni00A0regular rules). However, you may only place up to one inn per color area!
+The/uni00A0inn itself has no eﬀect, its only function is to complete an/uni00A0area.
+Important: By placing an/uni00A0inn, you increase the/uni00A0size of that/uni00A0area by 1. A/uni00A09-space area 
+scores 45 victory points.
+THE TRADE ROUTES (8TH EXP ANSION)
+Each player receives a/uni00A0number of randomly selected trade route tiles (4/uni00A0players:
+3 trade route tiles each; 3/uni00A0players: 4 tiles each; 2/uni00A0players: 5 tiles each). Each 
+trade route tile has 3 spaces. Place your tiles in a/uni00A0random order below your play-
+er board to form a/uni00A0trade route.
+Optional rules: If you want more diverse gameplay, you may place your trade route 
+tiles in a/uni00A0chosen order.
+Whenever you sell a/uni00A0stack of goods, instead of placing them in your stack of sold 
+goods, place them one by one from left to right on the/uni00A0spaces of your trade route. 
+If the/uni00A0number of a/uni00A0tile matches the/uni00A0number of the/uni00A0trade route space, you immedi-
+ately gain the/uni00A0indicated bonus.
+(Once your trade route is full, place any sold tiles in your stack of sold goods.)
+White Castle
+Take an/uni00A0action using 
+the/uni00A0white die result.
+Inn
+Place on any area. 
+Increase the/uni00A0size 
+of this area by 1.
+Example: When you place an/uni00A0inn 
+in a/uni00A0size 4 area, it is increased 
+to a/uni00A0size 5 area and will score 15 
+instead of 10 victory points when 
+completed.
+
+===== PAGE 15 =====
+15
+THE TEAM GAME (9TH EXP ANSION)
+Form teams of 2 players (Team A/uni00A0& Team B) – seated next to each other (if possible). All rules of the/uni00A0base game apply, 
+except for/uni00A0the/uni00A0following changes:
+GAME SETUP
+The/uni00A0section that/uni00A0starts with "each player receives" in the/uni00A0base 
+game rules is changed to "each team receives":
+• A/uni00A0team board consists of 2 board halves (31a & 32a). After 
+you've gained more experience, feel free to try the/uni00A0advanced 
+team board on the/uni00A0other side (31b & 32b).
+• Castles are placed on the/uni00A0central burgundy hex space. When 
+using the/uni00A0advanced side, each team chooses either the/uni00A01 or 
+the/uni00A06 burgundy hex space.
+• Three random goods tiles are placed on the/uni00A0corresponding 
+team good tiles storage spaces. As usual, stack the/uni00A0tiles of 
+the/uni00A0same color together.
+• 3 worker tokens (for/uni00A0the/uni00A0ﬁrst team), 5 worker tokens (for/uni00A0the/uni00A0second team), and 2 silver coins per team are placed 
+next to the/uni00A0team board, visible to all players. Additionally, make sure each player receives 2 dice, a/uni00A0turn order 
+marker, victory point marker, and victory point tile in their color. These are used as usual by the/uni00A0individual players. 
+For/uni00A0round 1, place the/uni00A0turn order markers according to the/uni00A0following turn order: A1, B1, A2, B2. All subsequent 
+rounds are played according to the/uni00A0order of the/uni00A0turn order track. 
+PLA YING THE GAME
+Use the/uni00A0base game rules, except that/uni00A0each team has 2 shared hex tile storage spaces (down the/uni00A0center of the/uni00A0team board), 
+and each player has 2 private hex tile storage spaces.
+All resources, other than private hex tiles are shared (workers, silver coins, goods, shared hex tiles, etc.) and may be 
+used by either team member.
+Y ou cannot use your team member’s dice or private hex tiles. Hex tiles may not be moved from one storage to another.
+Note: Other than private storage spaces, team members may interact with either half of the/uni00A0team board, not just theirs.
+Because it is possible for/uni00A0an/uni00A0individual player to place more than 6 ships, if your turn order marker is already on the/uni00A0ﬁnal 
+space of the/uni00A0turn order track and you place a/uni00A0ship, move your marker to the top of the stack if it isn't already.
+FINAL SCORING
+Add up the/uni00A0victory points of both team members. The/uni00A0team with more victory points wins the/uni00A0game. If there is a/uni00A0tie, 
+the/uni00A0team with more empty spaces in their duchy wins the/uni00A0game.
+(Special thanks to Matthias Nagy of “Frosted Games” for/uni00A0the/uni00A0design and development of this idea.)
+THE SOLO GAME (10TH EXP ANSION)
+GAME SETUP
+Y ou start the/uni00A0game with 1 silver coin, 2 workers, and 3 random 
+goods tiles (place them next to your player board).
+Take a/uni00A0castle tile and place it on any burgundy castle space in your 
+duchy (side 33 is for/uni00A0beginning players, side 34 is for/uni00A0advanced play-
+ers). There is no restriction for/uni00A0the/uni00A0number of diﬀerent types (colors) 
+of goods that/uni00A0you may collect in the/uni00A0solo game.
+In addition to the/uni00A0dice and playing pieces of your color, you get 
+the/uni00A0white die. Place your victory point marker on the/uni00A0start space of 
+the/uni00A0victory point track and your turn order marker as the/uni00A0"target 
+victory point marker" on space 50 of the/uni00A0victory point track. For 
+the remaining setup, follow the instructions for a 2-player game, 
+being sure to use the side of the board with the .
+
+===== PAGE 16 =====
+16
+PLA YING THE GAME
+Y ou play 25 rounds. At the/uni00A0beginning of each round, roll all 3 dice.
+First, take the/uni00A0topmost goods tile and place it on the/uni00A0depot indicated by the/uni00A0white die.
+Then remove a/uni00A0hex tile from that/uni00A0depot from the/uni00A0game, starting from top to bottom. If a/uni00A0depot is empty, remove a/uni00A0hex 
+tile from the/uni00A0next depot in clockwise order, etc. Next, perform your 2 die actions as usual. Scoring works as it does 
+in/uni00A0the/uni00A0base game, except for/uni00A0the/uni00A0following restrictions and changes:
+• Y ou may only expand to other regions via the/uni00A0rivers.
+• Whenever you place a/uni00A0ship, take all the/uni00A0goods from a/uni00A0depot of your choice, then immediately remove all other 
+goods from all other depots from the/uni00A0game. Additionally, you now (and only now) have the/uni00A0option to exchange 
+any 5 of your goods tiles for/uni00A0a/uni00A0single hex tile from the/uni00A0central black depot (the/uni00A05 goods tiles are removed from 
+the/uni00A0game). Place that/uni00A0hex tile face down (black side up) on one of your three key spaces. A/uni00A0black hex tile may be 
+placed on any color space in your duchy, as long as you follow the/uni00A0base game placement rules. Placing a/uni00A0black hex 
+tile helps you to complete a/uni00A0region (to gain victory points, a/uni00A0color bonus, and eventually for/uni00A0winning the/uni00A0game) but 
+has no other eﬀect (ignore the/uni00A0text on the/uni00A0hex tile).
+Example: A/uni00A0black mine won’t generate silver at the/uni00A0end of a/uni00A0phase. Placing a/uni00A0black ship doesn’t gain you goods tiles or allow 
+you to pay 5 goods to take a/uni00A0black hex tile.
+• Victory points from a/uni00A0monastery tile are scored immediately after placing it (instead of at the/uni00A0end of the/uni00A0game).
+Example: When you place monastery tile #26, immediately advance your victory point counter by 3 points for/uni00A0each color 
+you have completed so far.
+• Y ou won’t gain a/uni00A0victory point bonus when you complete a/uni00A0color. Instead, choose a/uni00A0hex tile from the/uni00A0black de-
+pot and place it directly in your duchy, following the/uni00A0base game placement rules, and apply its eﬀects. If placing 
+that/uni00A0hex tile completes another color, you may take an/uni00A0additional hex tile from the/uni00A0black depot (if available) and 
+place it in your duchy, etc.
+• Whenever you score victory points, advance your victory point marker that/uni00A0many spaces (just like in the/uni00A0base game). 
+Whenever you do, you may buy additional victory points. Each victory point costs 1 silver coin. When you reach 
+the/uni00A0target victory point marker, place your victory point marker back on the/uni00A0start space (any remaining victory 
+points are lost), then decrease the/uni00A0target marker 5 spaces (e.g. from 50 to 45, next time to 40, etc. to a/uni00A0minimum of 
+5 victory points). Immediately after resetting the/uni00A0victory point marker, you may carry out a/uni00A0die action of your choice 
+(just as if you had added a/uni00A0castle to your duchy). If the/uni00A0target marker is already on the/uni00A05 victory point space, do not 
+move it (you still get a/uni00A0die action of your choice).
+Note: Y ou choose the/uni00A0order in which you take any (partial) game actions.
+END OF THE GAME
+Y ou win the/uni00A0game if you manage to ﬁll all 37 hex spaces of your duchy within 25 rounds.
+If you ﬁnd it too diﬀicult to win, start the/uni00A0game with the/uni00A0target victory point marker at less than 50 (the/uni00A0lower the/uni00A0number 
+the/uni00A0easier it will be). If the/uni00A0game is too easy, do the/uni00A0opposite and raise the/uni00A0target victory point marker (the/uni00A0higher the/uni00A0number 
+the/uni00A0more diﬀicult). Y ou still reduce the/uni00A0number of victory points by 5 whenever you reset the/uni00A0target victory point marker.
+
+===== PAGE 17 =====
+17
+THE SHIELDS
+All rules of the/uni00A0base game apply, except for/uni00A0the/uni00A0following exceptions and additions:
+GAME SETUP
+Shuﬀle the/uni00A018 shields face down. Randomly place them on the/uni00A0goods spaces of the/uni00A0six depots on the/uni00A0game board 
+based on the/uni00A0number of players (below). Once placed, turn them face up.
+2 players:
+1 shield per depot
+3 players:
+1 shield each in depots 1, 3, and 5;
+2 shields each in depots 2, 4, and 6
+4 players:
+2 shields per depot
+Any remaining shields are not needed. Put them back into the/uni00A0game box.
+This also means that/uni00A0any shields collected from a/uni00A0depot won’t be replaced!
+PLA YING THE GAME
+Whenever you roll doubles, instead of taking your 2 game actions, you may take a/uni00A0shield from the/uni00A0depot with the/uni00A0rolled 
+number. The/uni00A0shield must be placed on one of the/uni00A0castle tiles in your duchy. Either place it on a/uni00A0tile that/uni00A0doesn’t have 
+a/uni00A0shield yet, or replace an/uni00A0existing shield (the/uni00A0old one is removed completely from the/uni00A0game). From this moment on, 
+the/uni00A0shield is active for/uni00A0you (see below).
+Note: As usual, you may use workers to change the/uni00A0result of your dice to create a/uni00A0double. For/uni00A0example, you can pay 2 workers 
+to change a/uni00A03 into a/uni00A05 to get two 5s.
+Important: At the/uni00A0end of each phase, before receiving silver from your mines, you must pay tribute for/uni00A0your shields! Each 
+shield costs 1 silver coin. If you cannot or don't want to pay, you must remove that/uni00A0many shields from the/uni00A0game.
+
+===== PAGE 18 =====
+1
+2
+3
+4
+5
+6
+7
+8
+9
+?
+10
+?
+11
+12
+?
+13
+14
+15
+16
+17
+18
+18
+LIST OF SHIELD ABILITIES :
+1. As long as this shield is in your duchy, all pasture spaces count as connected 
+as if there was just one pasture in your duchy. Accordingly, livestock will score 
+more victory points. End of game: +12 victory points.
+2. As long as this shield is in your duchy, whenever another player gains workers, 
+you also gain a/uni00A0worker from the/uni00A0supply. End of game: +12 victory points.
+3. As long as this shield is in your duchy, you may pay tribute for/uni00A0your shields with 
+workers instead of silver at the/uni00A0end of each phase. Any combination of silver 
+and workers is allowed. End of game: +12 victory points.
+4. As long as this shield is in your duchy, you have an/uni00A0unlimited number of key 
+spaces in your duchy (instead of just three). 
+End of game: +12 victory points.
+5. As long as this shield is in your duchy, whenever you place a/uni00A0ship, you may 
+choose a/uni00A0type of goods. Take all additional goods tiles of that/uni00A0type from all 
+six depots. End of game: +12 victory points.
+6. After taking this shield, at any point in the/uni00A0game, choose one player. Any 
+monastery tiles in that/uni00A0player’s duchy count as if they were in your own (with 
+the/uni00A0exception of monastery tile #27). When that/uni00A0player places a/uni00A0new monastery 
+tile, you also gain those beneﬁts. If you have this shield at the/uni00A0end of the/uni00A0game, 
+you also score victory points for/uni00A0any monastery scoring tiles that/uni00A0the/uni00A0player has 
+(but of course for/uni00A0your according buildings). End of game: +12 victory points.
+7. As long as this shield is in your duchy, your new bonus tiles score double. 
+End of game: +8 victory points.
+8. As long as this shield is in your duchy, double the/uni00A0amount of silver coins you 
+gain for/uni00A0your mines. End of game: +8 victory points.
+9. As long as this shield is in your duchy, you gain 1 silver for/uni00A0each goods tile 
+you sell (instead of only 1 silver coin for/uni00A0each type of goods tile).
+End of game: +8 victory points.
+10. If this shield is in your duchy during ﬁnal scoring, your victory point monastery 
+tiles score double. End of game: +8 victory points.
+11. As long as this shield is in your duchy, whenever you place a/uni00A0castle, you have 
+the/uni00A0option of taking a/uni00A0shield as your additional action. 
+End of game: +8 victory points.
+12. As long as this shield is in your duchy, double the/uni00A0amount of victory points 
+you gain for/uni00A0each goods tile you sell. End of game: +8 victory points.
+13. If this shield is in your duchy during ﬁnal scoring, double the/uni00A0amount of victory 
+points you gain for/uni00A0each shield in your duchy (including this one). 
+End of game: +4 victory points.
+14. As long as this shield is in your duchy, at the/uni00A0end of each phase, after all players 
+have ﬁnished their two die actions, take a/uni00A0hex tile from any of the/uni00A0six depots 
+(if there are any left). Place it directly in your duchy and apply its eﬀect(s). 
+End of game: +4 victory points.
+15. As long as this shield is in your duchy, at the/uni00A0end of each phase, after all 
+players have ﬁnished their two die actions, take a/uni00A0hex tile from the/uni00A0black 
+depot (if there are any left). Place it directly in your duchy and apply its 
+eﬀect(s). End of game: +4 victory points.
+16. As long as this shield is in your duchy, on your turn, you may change the/uni00A0result 
+of one of your dice to any number (and use it accordingly).
+End of game: +4 victory points.
+17. As long as this shield is in your duchy, whenever you complete an/uni00A0area, 
+you score according to the/uni00A0next larger area (for/uni00A0example, a/uni00A0size 3 area
+(6 victory points) scores as a/uni00A0size 4 area (10 victory points)).
+End of game: +4 victory points. Note: a/uni00A0size 9 area scores 45 victory points.
+18. As long as this shield is in your duchy, you are allowed to place hex tiles on 
+any space in your duchy, not only adjacent to a/uni00A0previously placed tile. 
+End of game: +4 victory points.
+
+===== PAGE 19 =====
+19
+VINEY ARDS
+The/uni00A0Vineyard expansion introduces a/uni00A0new type of tile called double hex tiles. Each double 
+hex tile shows 2 vines and takes up 2 storage spaces. Connecting vines of the/uni00A0same type 
+is crucial for/uni00A0scoring a/uni00A0lot of points at the/uni00A0end of the/uni00A0game. The/uni00A0bigger the/uni00A0vine area of one 
+type, the/uni00A0more victory points you gain. Placing double hex tiles on vineyard boards will 
+also allow players to perform various bonus actions.
+GAME SETUP
+Apply the/uni00A0setup rules from the/uni00A0base game and then:
+• Create a/uni00A0vine bonus tile pool by placing all vine bonus tiles close to the/uni00A0main 
+board. Take one set of 6 diﬀerent vine bonus tiles from the/uni00A0vine bonus tile pool 
+and give each player one vine bonus tile at random. Remaining vine bonus tiles 
+go back to the/uni00A0vine bonus tile pool.
+• Give each player a/uni00A0vineyard board. They place it next to their player board.
+• Place the/uni00A0vineyard depot (plastic holder) next to the/uni00A0main board.
+• Place the/uni00A0vineyard store (cardboard tile) beneath the/uni00A0vineyard depot. If you 
+are playing with 2 or 3 players, ﬂip it to the/uni00A0side marked with 
+Place the/uni00A0vineyard store (cardboard tile) beneath the/uni00A0vineyard depot. If you 
+, 
+• Place all double hex tiles inside the/uni00A0cloth bag and place it near the/uni00A0vine-
+yard depot.
+Note: If you want to limit randomness in 2- or 3-player games apply the/uni00A0rules below:
+In the/uni00A03-player game, remove 1 chosen color of grapes from the/uni00A0game – each double hex 
+tile containing at least one grape (16 double hexes) and each vine bonus tile in that/uni00A0col-
+or. Place the/uni00A0removed components back into the/uni00A0game box. If you are instructed to do 
+something with all double hex tiles/vine bonus tiles, skip the/uni00A0ones you have removed.
+In the/uni00A02-player game, remove 2 chosen colors of grapes from the/uni00A0game as described 
+above (29 double hex tiles).
+VINEY ARD SETUP
+Each player receives:
+• 1 random vine bonus tile 
+(from a/uni00A0set of 6)
+• 1 vineyard board
+Place the/uni00A0vineyard store and 
+depot near the/uni00A0game board.
+Fill the/uni00A0bag with double hex tiles.
+Before each phase:
+• remove all double hex tiles 
+from the/uni00A0vineyard depot and 
+vineyard store.
+• replenish the/uni00A0store and depot 
+from the/uni00A0supply.
+PLA YING THE GAME
+In addition to the/uni00A0basic game rules, before each phase:
+• Remove any double hex tiles that/uni00A0are still on the/uni00A0vineyard depot and vineyard store back into the/uni00A0game box (skip this 
+step at the/uni00A0beginning of the/uni00A0game).
+• One by one, replenish all the/uni00A0spaces on the/uni00A0vineyard store and vineyard depot from the/uni00A0cloth bag with random double 
+hex tiles. In a/uni00A04-player game, place 6 double hex tiles on the/uni00A0vineyard depot and 3 tiles on the/uni00A0store. In a/uni00A02 – or 3-player 
+game, place 3 double hex tiles on the/uni00A0vineyard depot and 1 or 3 tiles on the/uni00A0store depending on the/uni00A0player count.
+Important: Spaces marked with "3" are only replenished if you are playing with 3 players.
+Important:
+ Spaces marked with "3" are only replenished if you are playing with 3 players.
+
+===== PAGE 20 =====
+20
+THE GAME ACTIONS
+The/uni00A0Vineyards expansion introduces 2 new actions. Players can use them addi-
+tionally or instead of the/uni00A0basic ones.
+ACTION "TAKING A DOUBLE HEX TILE "
+The/uni00A0result of your die indicates which double hex tile you may take. 
+During your turn, you may spend a/uni00A0die to take a/uni00A0double hex tile with a/uni00A0matching 
+number from the/uni00A0vineyard depot and place it in your storage (a/uni00A0double hex tile 
+occupies 2/uni00A0key spaces). If you don't have enough empty key spaces, you must 
+ﬁrst create space by discarding hex tile(s) / double hex tile from your board and 
+placing it back in the/uni00A0box. In a/uni00A02– or 3-player game, double hex tiles on the/uni00A0vine-
+yard depot have 2 die results beneath them. This means that/uni00A0you may spend any 
+one of them to take a/uni00A0double hex tile.
+ACTION "PLACE A DOUBLE HEX TILE IN YOUR VINEY ARD "
+Take a/uni00A0double hex tile from your player board storage and place it on 
+an/uni00A0empty double hex space on your vineyard board (never in your duchy!) 
+that/uni00A0matches the/uni00A0die result. Y ou may rotate the/uni00A0double hex tile in any way before 
+placing it.
+Y our ﬁrst double hex tile must be placed at the/uni00A0bottom layer of the/uni00A0vineyard 
+board (on the/uni00A0spaces numbered 1 or 4). The/uni00A0next double hex tiles must always 
+be placed in a/uni00A0space directly adjacent to any previously placed double hex tile 
+(connected to at least one side). Once placed, double hex tiles may not be rotated 
+or moved.
+After you place a/uni00A0double hex tile in your vineyard you may resolve both bonus 
+actions covered by that/uni00A0tile in any order. Most of the/uni00A0bonus actions were already 
+introduced by the/uni00A0buildings and castle hex tiles from the/uni00A0base game rules and 
+their eﬀects are resolved the/uni00A0same way.
+However, there are 2 new bonus actions:
+This bonus action allows a/uni00A0player to take one hex tile from the/uni00A0central black 
+depot (or vineyard store) and place it on an/uni00A0empty key space on their player 
+board. This action doesn't count as buying tiles from the/uni00A0central black depot 
+(the/uni00A0player may still spend 2 silver coins to buy a/uni00A0tile from the/uni00A0central black depot).
+This bonus action allows a/uni00A0player to take one double hex tile from the/uni00A0vine-
+yard depot (not the/uni00A0vineyard store) and place it on empty key spaces on 
+their player board.
+After you place a/uni00A0double hex tile in your vineyard and resolve both actions, check 
+if you've covered all double hex spaces in the/uni00A0same layer. If you did, take one vine 
+bonus tile of your choice from the/uni00A0pool. These allow you to score victory points 
+at/uni00A0the/uni00A0end of the/uni00A0game for/uni00A0the/uni00A0corresponding type of vine.
+VINEY ARD STORE:
+When you pay 2 silver coins to buy one hex tile from the/uni00A0central black depot you 
+may instead take one double hex tile from the/uni00A0vineyard store (you may still only 
+buy once per turn and only one tile). All eﬀects applying to the/uni00A0central black 
+depot also apply to the/uni00A0vineyard store.
+Example of placing a/uni00A0double hex 
+tile in a/uni00A0vineyard:
+Ben spends a/uni00A0die with a/uni00A04 result 
+to place his double hex tile in 
+the/uni00A0vineyard on the/uni00A0bottom space 
+(red frame). He receives 4 workers 
+and takes a/uni00A0livestock or ship tile 
+from the/uni00A0game board.
+THE GAME ACTIONS
+• take a/uni00A0double hex tile from 
+the/uni00A0vineyard depot.
+• place a/uni00A0double hex tile from 
+your storage onto your 
+vineyard board.
+After placing a/uni00A0double hex tile 
+resolve both of the/uni00A0covered 
+bonus actions in any order.
+Once per turn, a/uni00A0player may 
+spend 2 silver coins to buy one 
+double hex tile of their choice 
+from the/uni00A0vineyard store.
+
+===== PAGE 21 =====
+21
+Victory points for/uni00A0connected vines
+Size 
+of the/uni00A0
+vine area
+123456789 1 0 1 1 1 2 1 3
+Victory 
+points 1 3 6 10 15 21 28 36 45 55 66 78 91
+VINEY ARDS SCORING:
+Vineyards score at the/uni00A0end of the/uni00A0game. Each player scores victory points for/uni00A0each 
+of their vine bonus tiles depending on/uni00A0the/uni00A0amount of connected vines of the/uni00A0same 
+type. Each vine bonus tile scores only once. This also applies to each vine area, 
+meaning that/uni00A0they score only once – even if a/uni00A0player has more vine bonus tiles of 
+that/uni00A0type. 
+Vineyard scoring/uni00A0example: Olivia scores 6 victory points with her ﬁrst green vine bonus 
+tile for/uni00A03 connected green vines. She cannot score the/uni00A0same area more than once, so with 
+the/uni00A0second green vine bonus tile she must score a/uni00A0diﬀerent green vine area. In/uni00A0this case, 
+this would be an/uni00A0area with size 1, gaining her 1 victory point. Then Olivia scores 
+3/uni00A0victory points for/uni00A0the/uni00A0blue vine bonus tile since she has a/uni00A0vine area with a/uni00A0size/uni00A02 
+of that/uni00A0type. Olivia scores 10 victory points for/uni00A0the/uni00A0vineyard expansion in total.
+VINEY ARDS SCORING
+Gain VP for/uni00A0each vine bonus 
+tile matching your connected 
+vines. Each vine bonus tile and 
+connected vines score only once.
+
+===== PAGE 22 =====
+22
+T/h.sc/e.sc/uni00A0C/a.sc/s.sc/t.sc/l.sc/e.sc/s.sc /o.sc/f.sc B/u.sc/r.sc/g.sc/u.sc/n.sc/d.sc/y.sc: C/h.sc/acircumflex.sc/t.sc/e.sc/a.sc/u.sc/m.sc/a.sc 
+by John Albertson, Nick Shaw, and Dávid Turczi
+COMPONENTS
+• 1 double-sided Châteauma duchy board (#35-36)
+• 9 county cards (marked 1-9)
+• 8 alternate county cards 
+for/uni00A0the/uni00A0"Vineyards" expansion (marked 10-17)
+• 1 double-sided Châteauma player aid
+OVERVIEW
+This game mode adds a/uni00A0virtual opponent called the/uni00A0Châteauma, which simulates an/uni00A0additional player. This means you can 
+play Castles of Burgundy solo against just the/uni00A0Châteauma, or add the/uni00A0Châteauma to a/uni00A02 – or 3-player game for/uni00A0extra compe-
+tition. The/uni00A0Châteauma is considered a/uni00A0regular player for/uni00A0the/uni00A0player count for/uni00A0purposes of setup.
+The/uni00A0Châteauma simulates a/uni00A0human opponent by collecting hex tiles, selling goods, gaining bonus tiles, and purchasing 
+black depot tiles. It does this using county cards. Each county card shows which hex tiles the/uni00A0Châteauma will collect 
+and when it will sell goods. County cards score victory points in a/uni00A0similar way to completing the/uni00A0area of one color.
+In these rules “you”/”your” refers to the/uni00A0human player(s), while “Châteauma”, or “it” refers to the/uni00A0automated opponent.
+SETUP
+When setting up the/uni00A0game, apply the/uni00A0changes in the/uni00A0steps below:
+1. Choose the/uni00A0game board per the/uni00A0required player count, including the/uni00A0Châteauma as a/uni00A0player.
+5. Make sure to keep 1 of each goods tile type to one side, as you will need these to set up the/uni00A0Châteauma's board 
+in step 7.
+7. One set of player-colored components will be used by the/uni00A0Châteauma (although it will only require 1 of the/uni00A0dice). 
+The/uni00A0Châteauma will not use a/uni00A0normal player board, but instead will use its own duchy board (marked with 
+ ).
+SET UP THE CHÂTEAUMA ’S BOARD:
+A. Place the/uni00A0Châteauma's duchy board (side with the/uni00A035 number face-up) near the/uni00A0main board.
+B. Choose the/uni00A0Châteauma's scoring and diﬀiculty level (Gateway, Midweight, Heavy) and the/uni00A0corresponding number 
+of diﬀiculty modiﬁers. For/uni00A0the/uni00A0ﬁrst game it is recommended to play on the/uni00A0Midweight diﬀiculty level and without 
+any diﬀiculty modiﬁers. To learn more about diﬀiculty modiﬁers and diﬀiculty levels see page 26.
+C. Shuﬀle the/uni00A0nine county cards with numbers 1-9 (cards 10-17 are used when playing with the/uni00A0"Vineyards" expansion). 
+Reveal one card at a/uni00A0time until you draw one with a/uni00A0castle (burgundy) space on it. Place that/uni00A0card face up beneath 
+the/uni00A01-4 slot.
+D. Shuﬀle the/uni00A0eight remaining county cards, including ones drawn and not used in the/uni00A0previous step, and place 
+the/uni00A0deck face down beneath the/uni00A0leftmost card slot on its duchy board. Draw the/uni00A0top card and place it face-up 
+beneath the/uni00A05-6 slot.
+E. Place a/uni00A0castle tile on the/uni00A0castle space of the/uni00A0card beneath the/uni00A0“1-4” slot.
+F. Place one goods tile of each type on each matching-numbered goods space on its duchy board.
+G. Place 1 silver coin on the/uni00A0silver coin space on its duchy board.
+H. The/uni00A0Châteauma does not need starting workers, as it does not use them.
+Set up your player board(s) as in the/uni00A0base game rules.
+9. The/uni00A0game begins with you as the/uni00A0starting player. When playing with more than 1 human player, roll the/uni00A0dice to 
+determine the/uni00A0starting player. The/uni00A0Châteauma is always the/uni00A0last player.
+GENERAL RULES CHANGES FOR THE/uni00A0CHÂTEAUMA
+• The/uni00A0Châteauma does not gain or use workers.
+• The/uni00A0Châteauma uses a/uni00A0special area called the/uni00A0“Reserve” (see page 23).
+• The/uni00A0Châteauma ignores the/uni00A0eﬀects from monastery tiles (it will instead score 4VP points for/uni00A0each of them at 
+the/uni00A0end of the/uni00A0game).
+• The/uni00A0Châteauma may have multiple copies of the/uni00A0same building on its county cards and on its duchy board.
+• The/uni00A0Châteauma does not complete colored areas on its duchy like a/uni00A0player – it instead completes county cards.
+C/h.sc/acircumflex.sc/t.sc/e.sc/a.sc/u.sc/m.sc/a.sc H/e.sc/l.sc/p.sc S/h.sc/e.sc/e.sc/t.sc
+CHOOSING AND PLACING A
+HEX TILE (P AGE 24)
+Roll the Châteauma’s die and place it in a colorful slot above the selected county card. Then 
+take and place a tile matching an empty space’s color (top-most ﬁrst) on a selected county 
+card, from (ﬁrst possible):
+• Game board: starting from the depot matching the Châteauma’s die (then clockwise).
+• Reserve: starting with a matching hex tile then wild one.
+• Black depot: starting from the top-most row, take the left-most hex tile and place 
+it face down in the reserve as wild.
+• Otherwise, gain 2 silver coins.
+TILE PLACEMENT BONUSES (P AGE 24)
+After the Châteauma places a hex tile on the county card, resolve the placement bonus.
+Note: If the placement bonus is impossible to resolve, the Châteauma skips it.
+• Castle: take an additional choosing and placing a Hex tile action.
+• Bank: 2 silver coins.
+• Boarding House: score 2 VP .
+• Workshop: take a building tile and place it into the reserve.
+• Church: take a castle/monastery/mine tile and place it into the reserve.
+• City Hall: place a tile from the reserve. 
+• Market: take a livestock/ship tile and place it into the reserve.
+• Warehouse: sell goods.
+• Watchtower: score 4 VP .
+• Animals: score VP based on all previously taken livestock tiles of a matching type 
+(not in the reserve).
+• Ship: take goods from the depot with the most goods, then; move on the turn order track.
+Note: In relevant cases above, the white die determines depots to choose from (then clockwise).
+COUNTY CARD PLACEMENT
+ BONUS: SELL GOODS (P AGE 25)
+• Sell the type it has most of (left-most if tied) and then it gains exactly 1 silver coin, and 
+scores VP based on/uni00A0player count for each tile sold.
+• If the Châteauma has no goods to sell, it scores 2 VP instead.
+County card completion
+: if the Châteauma completed any county card, move all hex tiles 
+from this county card to its duchy board. Move county cards to the left and draw a new one.
+Claiming bonus tiles
+: if the Châteauma has covered all spaces of one type on its duchy board, 
+it takes a corresponding bonus tile.
+Black Depot Purchase: if the Châteauma has at least 2 silver coins it purchases a hex tile 
+from the black depot for 2 silver coins and places it in the reserve. First, it looks for a hex 
+tile that it has the least of in its reserve (in case of a tie, the left-most one).
+Roll the Châteauma’s die and place it in a colorful slot above the selected county card. Then 
+take and place a tile matching an empty space’s color (top-most ﬁrst) on a selected county 
+: starting from the depot matching the Châteauma’s die (then clockwise).
+: starting from the depot matching the Châteauma’s die (then clockwise).
+ and place 
+After the Châteauma places a hex tile on the county card, resolve the placement bonus.
+: starting from the depot matching the Châteauma’s die (then clockwise).
+ and place 
+After the Châteauma places a hex tile on the county card, resolve the placement bonus.
+Workshop
+: take a building tile and place it into the reserve.
+: take a castle/monastery/mine tile and place it into the reserve.
+: place a tile from the reserve. 
+Workshop
+Church
+City Hall
+Market
+Warehouse
+Watchtower
+Animals
+(not in the reserve).
+Ship
+Note:
+OUN
+County card completion
+from this county card to its duchy board. Move county cards to the left and draw a new one.
+Claiming bonus tiles
+it takes a corresponding bonus tile.
+Black Depot Purchase
+from the black depot for 2 silver coins and places it in the reserve. First, it looks for a hex 
+Workshop
+Church
+: take a castle/monastery/mine tile and place it into the reserve.
+City Hall
+: place a tile from the reserve. 
+Market
+: take a livestock/ship tile and place it into the reserve.
+Warehouse
+: sell goods.
+Watchtower
+: score 4 VP .
+Animals
+: score VP based on 
+all previously
+ taken livestock tiles of a matching type 
+(not in the reserve).
+Ship
+: take goods from the depot with the most goods, then; move on the turn order track.
+Note:
+ In relevant cases above, the white die determines depots to choose from (then clockwise).
+OUN
+T
+Y
+ C
+Y
+ C
+Y
+ ARD
+ PLA
+C
+PLA
+C
+PLA
+ EMEN
+T
+ B
+ONUS
+: 
+S
+ELL
+ G
+OODS
+ (
+Sell the type it has most of (left-most if tied) and then it gains exactly 1 silver coin, and 
+scores VP based on/uni00A0player count for each tile sold.
+If the Châteauma has no goods to sell, it scores 2 VP instead.
+County card completion
+: if the Châteauma completed any county card, move all hex tiles 
+from this county card to its duchy board. Move county cards to the left and draw a new one.
+Claiming bonus tiles
+: if the Châteauma has covered all spaces of one type on its duchy board, 
+it takes a corresponding bonus tile.
+Black Depot Purchase
+: if the Châteauma has at least 2 silver coins it purchases a hex tile 
+from the black depot for 2 silver coins and places it in the reserve. First, it looks for a hex 
+tile that it has the least of in its reserve (in case of a tie, the left-most one).
+ taken livestock tiles of a matching type 
+: take goods from the depot with the most goods, then; move on the turn order track.
+ In relevant cases above, the white die determines depots to choose from (then clockwise).
+ (
+P AGE
+Sell the type it has most of (left-most if tied) and then it gains exactly 1 silver coin, and 
+: if the Châteauma completed any county card, move all hex tiles 
+from this county card to its duchy board. Move county cards to the left and draw a new one.
+: if the Châteauma has covered all spaces of one type on its duchy board, 
+: if the Châteauma has at least 2 silver coins it purchases a hex tile 
+from the black depot for 2 silver coins and places it in the reserve. First, it looks for a hex 
+ taken livestock tiles of a matching type 
+: take goods from the depot with the most goods, then; move on the turn order track.
+ In relevant cases above, the white die determines depots to choose from (then clockwise).
+P AGE
+ 25)
+Sell the type it has most of (left-most if tied) and then it gains exactly 1 silver coin, and 
+: if the Châteauma completed any county card, move all hex tiles 
+from this county card to its duchy board. Move county cards to the left and draw a new one.
+: if the Châteauma has covered all spaces of one type on its duchy board, 
+: if the Châteauma has at least 2 silver coins it purchases a hex tile 
+from the black depot for 2 silver coins and places it in the reserve. First, it looks for a hex
+
+===== PAGE 23 =====
+23
+CHÂTEAUMA COMPONENTS OVERVIEW
+THE CHÂTEAUMA ’S BOARD
+THE RESERVE
+The/uni00A0reserve is a/uni00A0special area on the/uni00A0Châteauma's board. It is used to store tiles claimed as bonuses and bought from 
+the/uni00A0black depot. Such tiles are the/uni00A0source of hex tiles for/uni00A0the/uni00A0Châteauma when it cannot ﬁnd a/uni00A0needed tile on the/uni00A0game 
+board. The/uni00A0reserve may have multiple tiles of the/uni00A0same type (buildings, mines, castles, etc.). If this occurs, stack tiles 
+of the/uni00A0same type on top of each other. Subsequently, when taking a/uni00A0tile from the/uni00A0reserve that/uni00A0contains several tiles, 
+take the/uni00A0top tile.
+COUNTY CARDS
+Expansion 
+symbols 
+(not used 
+in the base 
+Châteauma game)
+Châteauma 
+symbol
+Completion scoring 
+(Gateway, Midweight, 
+Heavy)
+Hex tile 
+spaces
+Card number
+GAME PLA Y
+The/uni00A0setup phase is resolved as usual.
+At the/uni00A0start of each round:
+• Roll your dice and the/uni00A0white die (do not roll the/uni00A0Châteauma's die yet).
+• Place your dice on your player board, as usual.
+• Place the/uni00A0white die on the/uni00A0left space above the/uni00A0county card, based on the/uni00A0rolled value (1-4 = left-hand card, 
+5-6 = right-hand card). This is now referred to as the/uni00A0Châteauma's selected county card.
+• Place a/uni00A0goods tile on the/uni00A0appropriate depot on the/uni00A0main board as usual, based on the/uni00A0result of the/uni00A0rolled white die.
+Play in turn order as per the/uni00A0turn order track.
+Play your turn as normal.
+On the/uni00A0Châteauma's turn, it takes a/uni00A0single action, which is to choose and place a/uni00A0hex tile (as one action). This may 
+trigger one or more of the/uni00A0following bonuses. Fully resolve each step, in the/uni00A0listed order, before moving onto the/uni00A0next:
+1. Choosing and placing a/uni00A0hex tile.
+2. Hex tile placement bonus.
+3. County card placement bonus ("Sell goods").
+4. County card completion.
+5. Claiming bonus tiles.
+6. Black depot purchase (if possible).
+At the/uni00A0end of each phase, the/uni00A0Châteauma gains a/uni00A0silver coin for/uni00A0each face-up mine it has on its duchy and on county 
+cards (not in the/uni00A0reserve), just as a/uni00A0player would for/uni00A0mines in their duchy.
+
+===== PAGE 24 =====
+24
+CHÂTEAUMA ACTIONS
+CHOOSING AND PLACING A/uni00A0HEX TILE
+The/uni00A0Châteauma will look for/uni00A0a/uni00A0hex tile to take from the/uni00A0main board following the/uni00A0procedure below:
+1. Roll the/uni00A0Châteauma's die and place it in the/uni00A0Châteauma die slot (colored space to the/uni00A0right of the/uni00A0white die).
+2. Check which depot matches the/uni00A0Châteauma die.
+3. Starting with the/uni00A0leftmost, topmost open space on the/uni00A0county card, check to see if there is a/uni00A0match between 
+the/uni00A0tiles available in the/uni00A0depot and the/uni00A0hex type. If there is a/uni00A0match, go to step 4 of this procedure. If there is 
+no match, check the/uni00A0next open hex space going from left to right, top to bottom of the/uni00A0county card until it ﬁnds 
+a/uni00A0match. If it can’t ﬁnd any matches in the/uni00A0chosen depot, it looks in the/uni00A0next clockwise depot for/uni00A0a/uni00A0match, and so on, 
+until it either ﬁnds a/uni00A0matching tile or can’t ﬁnd any matches.
+4. If it ﬁnds a/uni00A0match, it takes the/uni00A0tile and places it on its selected county card. If there is more than one matching tile 
+in the/uni00A0selected depot it chooses the/uni00A0topmost one. This may trigger a/uni00A0bonus (see "Beneﬁts and Bonuses" below).
+5. If it can’t ﬁnd ANY match, resolve the/uni00A0ﬁrst possible:
+– If it has a/uni00A0tile matching any empty space on the/uni00A0selected county card (starting from the/uni00A0topmost left one) 
+in the/uni00A0reserve area of its board, it places that/uni00A0tile and triggers the/uni00A0usual bonuses.
+– If it has any wild hex tiles (see below) it places one such tile from the/uni00A0reserve onto the/uni00A0leftmost and topmost 
+open/uni00A0space. 
+Note: This does not trigger the/uni00A0tile placement bonus (but may trigger a/uni00A0"sell goods" or "extra turn" action).
+– If there are no wild hex tiles in the/uni00A0reserve, it picks the/uni00A0ﬁrst available tile from the/uni00A0black depot (the/uni00A0leftmost one, 
+starting from the/uni00A0topmost row) and places it face down (as a/uni00A0wild type) on a/uni00A0wild space in the/uni00A0reserve 
+(not on the/uni00A0selected county card). This does not trigger the/uni00A0tile placement bonus.
+– If there are no tiles remaining in the/uni00A0black depot, the/uni00A0Châteauma gains 2 silver.
+BENEFITS AND BONUSES
+1. Tile Placement
+If the/uni00A0Châteauma places a/uni00A0tile on the/uni00A0county card, it gains the/uni00A0beneﬁt depending on the type of the tile as described below:
+• Castle: The/uni00A0Châteauma takes a/uni00A0bonus “Choosing a/uni00A0hex tile” action, except using the/uni00A0white die to select a/uni00A0starting 
+depot. If the/uni00A0Châteauma completed the/uni00A0chosen county card just before triggering this bonus, it will try placing this 
+bonus hex on its other county card if it can. If it can’t place there either, it takes a/uni00A0"Sell goods" action instead of 
+taking the/uni00A0bonus hex.
+• Buildings: The/uni00A0Châteauma may have multiple copies of the/uni00A0same building on a/uni00A0single county card. Depending on 
+the/uni00A0placed building type the/uni00A0Châteauma uses the/uni00A0following eﬀect:
+– Bank: It gains 2 silver coins.
+– Boarding house: It scores 2 victory points.
+– Carpenter’s workshop: It takes a/uni00A0building tile from a/uni00A0depot that/uni00A0matches the/uni00A0value on the/uni00A0white die (then clock-
+wise), and places it in the/uni00A0Reserve area on the/uni00A0building tile space. If there are more than one matching tiles in 
+the/uni00A0selected depot it chooses the/uni00A0topmost one. If there are no building tiles on the/uni00A0board, it skips this bonus.
+– Church: It takes a/uni00A0castle tile from a/uni00A0depot that/uni00A0matches the/uni00A0value on the/uni00A0white die (then clockwise), and places 
+it in the/uni00A0reserve area on the/uni00A0corresponding tile space. If there are no castle tiles on the/uni00A0board, resolve this ef-
+fect for/uni00A0a/uni00A0mine tile. If there are no castle and mine tiles on the/uni00A0board, resolve this eﬀect for/uni00A0the/uni00A0monastery tile. 
+If there are no castles, mines, or monastery tiles on the/uni00A0board, it skips this bonus.
+– Market: It takes a/uni00A0ship tile from a/uni00A0depot that/uni00A0matches the/uni00A0value on the/uni00A0white die (then clockwise), and places 
+it in the/uni00A0reserve area on the/uni00A0corresponding tile space. If there are no ship tiles on the/uni00A0board, resolve this eﬀect 
+for/uni00A0a/uni00A0livestock tile. If there are no ship or livestock tiles, it skips this bonus.
+– Town hall: If it has any tiles in its reserve area that/uni00A0matches any of the/uni00A0empty spaces on either of its county 
+cards (prioritizing the/uni00A0currently selected one), it immediately moves one to a/uni00A0county card (triggering any tile 
+placement bonuses as usual), choosing whichever type it has most of in reserve (leftmost if tied). If a/uni00A0tile is not 
+available, it skips this bonus.
+– Warehouse: It sells goods – see Selling goods on page 25.
+– Watchtower: It immediately scores 4 victory points.
+
+===== PAGE 25 =====
+25
+• Livestock: Score the/uni00A0tile in the/uni00A0normal way, but based on any matching livestock tile type that/uni00A0the/uni00A0Châteauma has 
+on its county cards and duchy, but not in its reserve.
+Example: If the/uni00A0Châteauma already has 2 livestock tiles with sheep (on county cards or duchy) and places a/uni00A0new livestock tile 
+with sheep onto a/uni00A0county card, it scores the/uni00A0victory points for/uni00A0total sheep across all 3 of the/uni00A0sheep tiles it has.
+• Ship: The/uni00A0Châteauma takes goods from the/uni00A0depot which has the/uni00A0most goods in it, placing them in the/uni00A0respective 
+goods storage spaces on its duchy. If there is a/uni00A0tie, it takes goods from the/uni00A0ﬁrst tied depot clockwise from the/uni00A0white 
+die’s value. Then, whether it takes goods or not, it moves its turn order marker forward on the/uni00A0turn order track.
+2. County Card Placement Bonuses
+The/uni00A0basic Châteauma rules have only one type of placement bonus – “Selling goods”. An/uni00A0additional placement bonus 
+symbol is added when playing with the/uni00A0Vineyards expansion (for/uni00A0playing with the/uni00A0vineyards expansion see page 27).
+Check if hex tiles that/uni00A0the/uni00A0Châteauma placed on its county card during this turn covered one or more sell goods sym-
+bols (
+?
+). The/uni00A0Châteauma will try to perform the/uni00A0“Selling goods” bonus action, as described below.
+3. County Card Completion
+If the/uni00A0Châteauma has now completed one (or possibly both) of its county cards, it scores victory points based on the/uni00A0card’s 
+printed value and your chosen diﬀiculty level. Three tiers of scoring are shown on the/uni00A0county cards for/uni00A0diﬀiculty: Gateway 
+(left-hand value), Midweight (middle value), and Heavy (right-hand value).
+Then, move all the/uni00A0hexes from the/uni00A0completed county card (or cards) onto the/uni00A0matching colored spaces on the/uni00A0Châteauma's 
+duchy. Place the/uni00A0hex tiles in the/uni00A0topmost, lefmost space available. If the/uni00A0Châteauma's duchy already has all the/uni00A0matching 
+colored spaces ﬁlled, just place the/uni00A0extra tiles on top of another tile of that/uni00A0same color. Any wild tiles on the/uni00A0county card are 
+ﬂipped over and moved to the/uni00A0matching colored space on the/uni00A0Châteauma's duchy. Do not resolve any placement bonuses 
+during this step.
+Discard the/uni00A0completed county card, slide the/uni00A0remaining card to the/uni00A0left if the/uni00A0completed card was the/uni00A0left-hand card, 
+then reﬁll the/uni00A0empty space with a/uni00A0new card from the/uni00A0top of the/uni00A0Châteauma's county card draw deck.
+4. Claiming Bonus Tiles 
+After moving tiles from a/uni00A0completed county card onto its duchy board, if the/uni00A0Châteauma has now covered all of its spaces 
+of one type, it will claim the/uni00A0bonus tile for/uni00A0that/uni00A0type (if still available). It takes it from the/uni00A0main board and places it near its 
+duchy and then immediately scores the bonus tile victory points (based on your player count).
+PURCHASING BLACK DEPOT TILES
+At the/uni00A0end of the/uni00A0Châteauma's turn, if it has at least 2 silver coins, it will purchase a/uni00A0hex tile from the/uni00A0black depot 
+for/uni00A02 silver coins and place the/uni00A0purchased tile in its reserve. The/uni00A0Châteauma will attempt to purchase a/uni00A0tile of a/uni00A0type it 
+doesn’t have in its reserve, prioritizing the/uni00A0topmost, then leftmost if tied. If multiple tiles of the/uni00A0same type are available 
+in the/uni00A0black depot, it picks the/uni00A0leftmost one, starting from the/uni00A0topmost row.
+Note: The/uni00A0Châteauma may only purchase one black depot tile per turn.
+? SELLING GOODS
+If any eﬀect during the/uni00A0game tells the/uni00A0Châteauma to “Sell goods” (for/uni00A0example, the/uni00A0county cards placement bonus) 
+it will sell goods tiles of the/uni00A0type that/uni00A0it has the/uni00A0most of (the/uni00A0ones with the/uni00A0lowest number if tied). It gains 1 silver coin 
+(in total) and scores victory points per goods tile sold as in the/uni00A0multiplayer rules (2/3/4 VP per tile, based on your 
+player count).
+If it has no goods tiles left to sell, it skips this bonus.
+FINAL SCORING
+Y ou perform ﬁnal scoring normally.
+The/uni00A0Châteauma then scores:
+• 4/uni00A0VP for/uni00A0each face-up monastery (yellow) tile in its duchy or on incomplete county cards 
+(but not including those in its Reserve).
+• 1/uni00A0VP for/uni00A0each unsold goods tile on its duchy board.
+• 1/uni00A0VP for/uni00A0each silver coin on its duchy board.
+• 1/uni00A0VP for/uni00A0each hex tile left in its reserve.
+• 2/uni00A0VP for/uni00A0each hex tile on incomplete county cards.
+To win, your score must be higher than the/uni00A0Châteauma's. In the case of a/uni00A0tie, the/uni00A0Châteauma wins.
+
+===== PAGE 26 =====
+26
+DIFFICUL TYMODIFIERS
+Diﬀiculty can be adjusted by choosing modiﬁers equal to the/uni00A0diﬀiculty level.
+• Gateway: no modiﬁers
+• Midweight: one modiﬁer
+• Heavy: two or more modiﬁers
+The/uni00A0modiﬁers are:
+A. The/uni00A0Châteauma uses duchy board number 36 (on the/uni00A0back of duchy board 35). When setting up the/uni00A0Châteauma's 
+board, place a/uni00A0random unused face-down black depot tile in each of the/uni00A0following colored areas (from left to right, 
+starting with the/uni00A0topmost row): 2 on buildings, 1 on livestock, 1 on ship, and 1 on monastery (the/uni00A0spaces marked/uni00A0A). 
+This reduces the/uni00A0number of tiles the/uni00A0Châteauma needs to claim bonus tiles.
+B. The/uni00A0Châteauma uses duchy board number 36 (on the/uni00A0back of duchy board 35). When setting up the/uni00A0Châteauma's 
+board, place a random unused face-up tile matching a/uni00A0colored area in each of the/uni00A0following colored areas: 1 build-
+ing, 1 mine, and 1 castle (the/uni00A0spaces marked B). This reduces the/uni00A0number of bonus tiles the/uni00A0Châteauma needs to 
+claim and the/uni00A0mine will generate 1 silver coin at the/uni00A0end of each phase.
+C. The/uni00A0Châteauma is the/uni00A0starting player.
+D. The/uni00A0Châteauma uses duchy board number 36 (on the/uni00A0back of duchy board 35) which contains hex tile spaces 
+with an/uni00A0extra turn placement bonus. First, the/uni00A0Châteauma places all its hex tiles from the/uni00A0completed county card 
+into its duchy. If it places a/uni00A0tile on a/uni00A0space with a/uni00A0  symbol, the/uni00A0Châteauma takes a/uni00A0bonus “Choosing a/uni00A0hex tile” 
+action immediately, except using the/uni00A0white die to select a/uni00A0depot. The/uni00A0Châteauma will try placing this bonus hex 
+on the/uni00A0remaining county card. If both county cards are completed, it takes a/uni00A0"Sell/uni00A0goods" action instead. 
+Complete all extra turn bonus actions before reﬁlling the/uni00A0county card.
+Note: Multiple extra turn symbols may be covered during the/uni00A0same turn. Resolve each separately before moving onto 
+the/uni00A0next one.
+It is perfectly ﬁne to have scoring levels of county cards diﬀerent from the/uni00A0number of diﬀiculty modiﬁer cards used. 
+If/uni00A0you want to play with scoring at Gateway and modiﬁers at Midweight, do it and have fun. Please tailor the/uni00A0experi-
+ence to ﬁt your level. Note, the/uni00A0recommended standard game is played with county cards scoring at the/uni00A0Midweight 
+tier and without any modiﬁers.
+SUPPORT FOR EXP ANSIONS
+• Expansion hex tiles:
+– Additional monastery tiles (#27 – #29): When placing such monastery tiles the/uni00A0Châteauma ignores their eﬀects.
+– Crane: When placing the/uni00A0crane tile, the/uni00A0Châteauma gains a/uni00A0bonus castle action (see Tile placement bonuses 
+on page 24).
+– Geese: When placing the/uni00A0geese tile, the/uni00A0Châteauma scores it as if it matches whichever livestock the/uni00A0Château-
+ma has most of on its duchy and on county cards. During future placement of other livestock tiles, the/uni00A0Châ-
+teauma treats the/uni00A0geese tile as if it matches all livestock tiles.
+– White Castles: When placing a/uni00A0white castle tile, the/uni00A0Châteauma takes a/uni00A0tile from the/uni00A0board and places it in its 
+reserve. The/uni00A0Châteauma uses the/uni00A0value on the/uni00A0white die to determine the/uni00A0starting depot. It looks for/uni00A0the/uni00A0tile of 
+a/uni00A0type it doesn’t have in its reserve, prioritizing the/uni00A0leftmost type if tied. If there is more than one matching tile in 
+the/uni00A0selected depot, it chooses the/uni00A0topmost one. If no tiles are available, then it goes clockwise around the/uni00A0board 
+until a/uni00A0tile is found. If there are no tiles remaining, it gains 1 silver.
+– Inns: These hex tiles are not supported in this mode. Do not use them in games with Châteauma.
+• Border Posts
+– Some of the/uni00A0Châteauma's county cards have a/uni00A0border post symbol on them.
+– Once it has completed the/uni00A0second such county card, it gains the/uni00A0bonus of the/uni00A0current phase (10/8/6/4/2).
+– Once it has completed the/uni00A0third such county card, it takes the/uni00A0bonus tile for/uni00A0completing 3 border post connections 
+(with 5/6/7 victory points, if still available, otherwise, one with 2/3/4 victory points if still available).
+• Trade Routes: Y ou can use the/uni00A0trade routes as in multiplayer rules, however, the/uni00A0Châteauma does not use 
+the/uni00A0trade routes. Instead, it scores one additional victory point every time it sells goods. This bonus is per action, 
+not per goods tile.
+
+===== PAGE 27 =====
+27
+• Shields:
+– Shield #2: Remove it from the/uni00A0shields before setup – it is not supported in this mode.
+– Shield #6: Y ou may copy any face-up monastery tile in the Châteuma’s duchy (not including its reserve) 
+or on county cards. Y ou copy the/uni00A0ability of the/uni00A0monastery tiles, not the/uni00A0victory points that/uni00A0the/uni00A0Châteauma 
+would score from them at the/uni00A0end of the/uni00A0game.
+– Whenever the/uni00A0Châteauma completes a/uni00A0county card, and that/uni00A0card has a/uni00A0shield symbol on it, Châteauma will take 
+a/uni00A0shield from the/uni00A0main board starting with the/uni00A0depot matching the/uni00A0value on the/uni00A0white die (then clockwise). 
+If there is more than 1 shield in the/uni00A0depot, choose the/uni00A0one with the/uni00A0lowest number. Then:
+• It takes such a/uni00A0shield and places it to the/uni00A0side of its board, face-down.
+• It does not use the/uni00A0ability of the/uni00A0shield, nor does it have to pay tribute for/uni00A0any such shields at the/uni00A0end of 
+each round.
+– At the/uni00A0end of the/uni00A0game, the/uni00A0Châteauma scores victory points for/uni00A0the/uni00A0number of shields it has:
+• 1 = 8 VP
+• 2 = 15 VP
+• 3 = 25 VP
+• 4+ = 40 VP
+• Team Game boards – the/uni00A0Châteauma does not support these boards / this play mode. Do not use them in games 
+with Châteauma.
+• Solo Game boards – the/uni00A0Châteauma does not support these boards / this play mode. Do not use them in games 
+with Châteauma.
+SUPPORT FOR VINEY ARDS EXP ANSION
+SETUP
+• General setup is the same as a/uni00A0normal Châteauma game, with the/uni00A0following changes:
+– Set your own area up with a/uni00A0vineyard board and with a/uni00A0random starting vine token as per the/uni00A0expansion rules.
+– The/uni00A0Châteauma does not need a/uni00A0vineyard board, but instead places vine tiles next to its duchy.
+– The/uni00A0Châteauma county card deck uses cards 1 & 10-17 (with double hex symbols showing on some spaces). 
+Shuﬀle these cards together to create the/uni00A0Châteauma county card deck.
+– Use one set of 6 vine bonus tiles. Randomly choose one for/uni00A0yourself before creating the/uni00A0vine bonus tile pool. 
+The/uni00A0Châteauma does not use vine bonus tiles.
+2. County Card Placement Bonuses
+This expansion introduces new county card placement bonuses marked with double hex icons on some county cards.
+Whenever the/uni00A0Châteauma places a/uni00A0hex tile onto a/uni00A0county card space marked with a/uni00A0double hex ( ) symbol, it will 
+try to perform the/uni00A0indicated bonus action as described below:
+ Taking a/uni00A0double hex tile
+If the/uni00A0Châteauma's tile placement covers a/uni00A0space with a/uni00A0  symbol shown on it, the/uni00A0Châteauma will try to take a/uni00A0double 
+hex tile from the/uni00A0vineyard depot. If there are no double hex tiles in the/uni00A0vineyard depot, the/uni00A0Châteauma skips this place-
+ment bonus. Otherwise, it takes the/uni00A0double hex tile from the/uni00A0slot that/uni00A0matches the/uni00A0value on the/uni00A0white die. If there is no 
+double hex tile in such a/uni00A0slot it will look at the/uni00A0next slot to the/uni00A0right (wrapping around to the/uni00A0far-left if needed), until it 
+ﬁnds a/uni00A0double hex tile. The/uni00A0Châteauma places double hex tiles in a/uni00A0pile near its duchy board.
+PURCHASING BLACK DEPOT TILES
+At the/uni00A0end of the/uni00A0Châteauma's turn, if it has at least 2 silver coins, instead of buying a/uni00A0tile from the/uni00A0black depot, 
+the/uni00A0Châteauma will buy a/uni00A0double hex tile from the/uni00A0vineyard store (paying 2 silver coins):
+• If multiple options are available (when using the/uni00A03+ player setup), it uses the/uni00A0white die’s value to choose the/uni00A0space to 
+pick from (1-2 = left, 3-4 = middle, 5-6 = right), moving to the/uni00A0right and looping around to the/uni00A0far-left, if needed.
+• If it does buy a/uni00A0double hex tile, it places it on the/uni00A0pile near its duchy board.
+• If there are no tiles available in the/uni00A0vineyard store, the/uni00A0Châteauma will attempt to purchase a/uni00A0single hex tile from 
+the/uni00A0black depot, as in the/uni00A0regular Châteauma rules.
+
+===== PAGE 28 =====
+FINAL SCORING
+The/uni00A0Châteauma scores additional victory points based on the/uni00A0number of double hex tiles in its pile. 
+Victory points for/uni00A0Châteauma's double hex tiles
+Double 
+hex tiles 123456789 1 0 1 1 1 2 1 3 +
+Victory 
+points 1 3 6 10 15 21 28 36 45 55 66 78 91
+CREDITS – THE CASTLES OF BURGUNDY: SPECIAL EDITION
+Game Design: Stefan Feld
+Game Development Lead: Ernest Kiedrowicz
+alea Team Consultants: Shane Hartley, André Maack 
+Tests and Development: Krzysztof Belczyk, Wojciech Frelich, Adrian Krawczyk, Michał Lach, 
+Paweł Samborski, Jan Truchanowicz
+Additional testing: Andrzej Betkiewicz, Cathy Bock, David Bock, Ezra Bock, Anna Butler, Jakub Dzikowski, 
+Katarzyna Litka, Natalia Makówka, Filip Tomaszewski, Katarzyna Toporowska and all who/uni00A0took part 
+in/uni00A0the/uni00A0organized external testing
+Rulebook: Wojciech Frelich, Ernest Kiedrowicz
+Art direction: Patryk Jędraszek
+Illustrations: Jakub Dzikowski, Ewa Labak, Piotr Orleański, Pamela Łuniewska, Piotr Foksowicz, 
+Patryk Jędraszek
+Graphic Design: Michał Lechowski, Adrian Radziun, Karolina Łaski-Getka, Klaudia Wójcik
+DTP: Rafał Janiszewski, Patrycja Marzec, Jędrzej Cieślak
+3D Graphics: Michał Lisek, Mateusz Modzelewski, Marek Kondratowicz, Jędrzej Chomicki
+Editing and proofreading: Tyler Brown
+Production: Adrianna Kocięcka, Anna Czajka, Witold Chudy, Zoﬁa Jerzyńska, Michał Matłosz, 
+Jacek Szczypiński, Olga Baraniak
+Châteauma automated opponent designed by: John Albertson and Nick Shaw, based on solo concepts 
+by Dávid Turczi
+Additional solo development and playtesting: Krzysztof Belczyk, Chuck Case, Shelley Danielle, David Digby, 
+Wojciech Frelich, Ernest Kiedrowicz, Jan Truchanowicz and all who/uni00A0took part in the/uni00A0organized external testing
+Testers of the/uni00A0“The/uni00A0Castles of Burgundy” basic game: Frieder Benzing, Willi Brodt, Susanne Feld, 
+Jonathan Feld, Benjamin Fleck, Thomas Koslowski, Amos Krämer, Denis Leonhard, Roland Lurk, Michael 
+Schmitt, Aiko Schuhmann, Marius Stein, Christoph Toussaint, Roland Wilke, Andreas Zimmermann as well as 
+the/uni00A0play groups from Bacharach, Bödefeld, Gengenbach, Grassau, München, Oﬀenburg, Reutte and Siegsdorf.
+28
+2022 Realms Distribution, all rights reserved.
+Realms Distribution Sp. z o.o.
+ul. Świętego Mikołaja 58, 50-127 Wrocław

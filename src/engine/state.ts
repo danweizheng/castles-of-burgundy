@@ -84,6 +84,8 @@ export interface GameState {
   readonly pendingExtraActions: number
   /** 当前玩家本回合是否已买过板块（每回合限一次）。 */
   readonly purchasedThisTurn: boolean
+  /** 6 号知识板块的"花 2 个工人取一枚建筑"本回合是否已用过（每回合限一次）。 */
+  readonly usedWorkerTakeThisTurn: boolean
 
   readonly dice: Readonly<Record<string, readonly DieState[]>>
 

@@ -191,6 +191,7 @@ export function createGame(config: RulesetConfig, options: CreateGameOptions): G
     actionsTakenThisTurn: 0,
     pendingExtraActions: 0,
     purchasedThisTurn: false,
+    usedWorkerTakeThisTurn: false,
     dice: {},
     phaseGoodsPiles,
     depotSlots: {},
@@ -220,8 +221,11 @@ export function setupPhase(state: GameState, config: RulesetConfig): GameState {
   const rng = { s: state.rng.s }
   const supply = cloneSupply(state.supply)
 
+  // 官方：把棋盘上剩余的六边形板块**收回盒中**（即移出本局），不是放回供应堆。
+  // 这条很容易写错 —— 放回供应堆会让板块池永远取之不尽，与实物手感完全不同。
+  const removed = [...state.removedFromGame]
   for (const tile of Object.values(state.depotSlots)) {
-    if (tile !== null) pushToSupply(supply, tile)
+    if (tile !== null) removed.push(tile)
   }
 
   const blackSupply = shuffle(rng, [...state.blackSupply, ...state.blackDepot])
@@ -236,6 +240,7 @@ export function setupPhase(state: GameState, config: RulesetConfig): GameState {
     ...state,
     rng,
     supply,
+    removedFromGame: removed,
     depotSlots,
     blackDepot: blackSupply.slice(0, blackDraw),
     blackSupply: blackSupply.slice(blackDraw),
@@ -275,6 +280,7 @@ export function setupRound(state: GameState, _config: RulesetConfig): GameState 
     actionsTakenThisTurn: 0,
     pendingExtraActions: 0,
     purchasedThisTurn: false,
+    usedWorkerTakeThisTurn: false,
     pending: [],
   }
 }
@@ -297,6 +303,7 @@ export function advanceTurn(state: GameState, config: RulesetConfig): GameState 
       actionsTakenThisTurn: 0,
       pendingExtraActions: 0,
       purchasedThisTurn: false,
+    usedWorkerTakeThisTurn: false,
       pending: [],
     }
   }

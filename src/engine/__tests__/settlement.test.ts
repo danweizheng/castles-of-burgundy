@@ -291,12 +291,12 @@ describe('终局计分', () => {
     })
 
     const score = finalScoreOf(DEFAULT_RULESET, playerById(state, 'p1'))
-    // 15 号：2 种已卖出的货物类型 × 3 = 6
+    // 15 号：2 种已卖出的货物类型 × 2 = 4（Special Edition 是 2 分/类型）
     // 24 号：2 种动物类型 × 4 = 8
     // 25 号：4 枚已卖出货物 × 1 = 4
-    // 26 号：1 枚奖励板块 × 2 = 2
+    // 26 号：1 枚奖励板块 × 3 = 3（Special Edition 是 3 分/枚）
     // 17 号：2 座瞭望塔 × 4 = 8
-    expect(score.knowledgeVp).toBe(6 + 8 + 4 + 2 + 8)
+    expect(score.knowledgeVp).toBe(4 + 8 + 4 + 3 + 8)
     expect(score.knowledgeDetail.length).toBeGreaterThanOrEqual(5)
   })
 
