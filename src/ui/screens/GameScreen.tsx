@@ -98,6 +98,14 @@ export function GameScreen() {
   const [showOpponent, setShowOpponent] = useState(false)
   const offlineState = useOfflineState()
   const [hint, setHint] = useState<string | null>(null)
+  /**
+   * 终局面板被"先看棋盘"收起来了吗。
+   *
+   * 需要它是因为：终局面板是个模态浮层，原先只有「再来一局」一个出口 ——
+   * 玩家想先看看对手最后建成了什么样，只能开新局把棋盘丢掉、或者刷新页面，
+   * 而刷新之后面板照样挡着。所以给它一个"先看棋盘"的出口，并留一个"查看结果"的入口。
+   */
+  const [finalDismissed, setFinalDismissed] = useState(false)
   // 启动时尝试恢复上一局
   useEffect(() => {
     void hydrate()
@@ -129,6 +137,8 @@ export function GameScreen() {
     setSelectedDie(null)
     setChooser(null)
     setHint(null)
+    // 只要不是终局，就把"收起终局面板"的状态复位（新局、导入存档、撤销都会走到这里）
+    if (!state.finished) setFinalDismissed(false)
   }, [state])
 
   // Automa 对手行动（选出生点阶段不能开跑，否则会抢在玩家之前行动）
@@ -433,9 +443,20 @@ export function GameScreen() {
             {hint === null ? null : <p className="banner banner--hint">{hint}</p>}
             <div className="dice">
               {availableDice.length === 0 ? (
-                <span className="muted">
-                  {state.finished ? '对局结束' : isHumanTurn ? '本回合行动已用完' : '对手行动中…'}
-                </span>
+                <>
+                  <span className="muted">
+                    {state.finished ? '对局结束' : isHumanTurn ? '本回合行动已用完' : '对手行动中…'}
+                  </span>
+                  {!state.finished || !finalDismissed ? null : (
+                    <button
+                      type="button"
+                      className="btn btn--ghost btn--sm"
+                      onClick={() => setFinalDismissed(false)}
+                    >
+                      查看结果
+                    </button>
+                  )}
+                </>
               ) : (
                 availableDice.map((die) =>
                   die.kind === 'virtual' ? (
@@ -610,7 +631,7 @@ export function GameScreen() {
         />
       )}
 
-      {result === null ? null : (
+      {result === null || finalDismissed ? null : (
         <div className="sheet" role="dialog" aria-modal="true">
           <div className="sheet__panel">
             <h2 className="sheet__title">
@@ -640,6 +661,13 @@ export function GameScreen() {
               </div>
             ))}
             <p className="muted">{result.tiebreakNote}</p>
+            <button
+              type="button"
+              className="btn btn--block"
+              onClick={() => setFinalDismissed(true)}
+            >
+              先看棋盘（可再打开结果）
+            </button>
             <button type="button" className="btn btn--primary btn--block" onClick={() => newGame()}>
               再来一局
             </button>

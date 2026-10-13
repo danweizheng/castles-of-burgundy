@@ -12,6 +12,7 @@
 import { act, cleanup, fireEvent, render, waitFor } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { App } from '../App'
+import { opponentMove } from '../../ai/opponentMove'
 import { ErrorBoundary } from '../components/ErrorBoundary'
 import { useGameStore } from '../../store/gameStore'
 import { axialKey } from '../../engine/hex'
@@ -393,6 +394,113 @@ describe('真实点击能推动对局', () => {
     await new Promise((resolve) => setTimeout(resolve, 800))
     expect(useGameStore.getState().state.activePlayerId).toBe(human)
     expect(useGameStore.getState().state.actionsTakenThisTurn).toBe(0)
+  })
+
+  describe('交互矩阵：四种局面下到底"哪些东西可以点"', () => {
+    /** 只统计**可点**的游戏元素；界面级的按钮（规则/存档/新局）另有归属，不计入。 */
+    function counts(container: HTMLElement) {
+      const enabled = (selector: string): number =>
+        Array.from(container.querySelectorAll(selector)).filter(
+          (element) => !(element as HTMLButtonElement).disabled,
+        ).length
+      return {
+        dice: enabled('.die'),
+        actionButtons: enabled('.actionbar__buttons button'),
+        litSlots: container.querySelectorAll('.slot--target').length,
+        litHexes: container.querySelectorAll('.hex--target').length,
+        storage: enabled('.tileface--button'),
+        goods: enabled('.goodschip--button'),
+      }
+    }
+
+    const ALL_ZERO = { dice: 0, actionButtons: 0, litSlots: 0, litHexes: 0, storage: 0, goods: 0 }
+
+    it('① 选出生点：只有深红格可点，没有骰子也没有行动按钮', () => {
+      // beforeEach 里 resetStore() 已经开了一局新游戏，此时正处于选出生点阶段
+      const { container } = render(<App />)
+      const actual = counts(container)
+      // 合成版图上有 4 个深红格（这条数字来自布局量测，不是猜的）
+      expect(actual.litHexes).toBe(4)
+      expect(actual.dice).toBe(0)
+      expect(actual.actionButtons).toBe(0)
+      expect(actual.litSlots).toBe(0)
+      expect(actual.storage).toBe(0)
+      expect(actual.goods).toBe(0)
+    })
+
+    it('② 轮到我：骰子可点；选中骰子后才点亮可操作区域', async () => {
+      prepareDeterministicGame()
+      const { container } = render(<App />)
+      await waitFor(() => {
+        expect(container.querySelectorAll('.die').length).toBe(2)
+      })
+
+      // 还没选骰子：没有任何点亮区域（正对照见下一段）
+      const beforeSelect = counts(container)
+      expect(beforeSelect.dice).toBe(2)
+      expect(beforeSelect.litSlots).toBe(0)
+      expect(beforeSelect.litHexes).toBe(0)
+
+      fireEvent.click(container.querySelector('.die') as Element)
+      const afterSelect = counts(container)
+      expect(afterSelect.litSlots + afterSelect.litHexes).toBeGreaterThan(0)
+      expect(afterSelect.actionButtons).toBeGreaterThan(0)
+    })
+
+    it('③ 对手回合：一个可点的游戏元素都没有', () => {
+      prepareDeterministicGame()
+      act(() => {
+        useGameStore.setState((current) => ({
+          autoOpponent: false,
+          state: { ...current.state, activePlayerId: 'p2', startPlayerId: 'p2' },
+        }))
+      })
+      const { container } = render(<App />)
+      expect(counts(container)).toEqual(ALL_ZERO)
+    })
+
+    /** 把一整局走完（在挂载组件之前走，避免每次 set 都触发渲染）。 */
+    function playToEnd(): void {
+      for (let step = 0; step < 500; step += 1) {
+        const store = useGameStore.getState()
+        if (store.state.finished) break
+        const move = opponentMove(store.config, store.state, 'normal')
+        if (move === undefined) break
+        store.play(move)
+      }
+      expect(useGameStore.getState().state.finished, '这局没走完，后面的断言不成立').toBe(true)
+    }
+
+    it('④ 终局：一个可点的游戏元素都没有，且显示最终得分', () => {
+      prepareDeterministicGame()
+      playToEnd()
+
+      const { container, getByText } = render(<App />)
+      expect(counts(container)).toEqual(ALL_ZERO)
+      // 终局必须能看到结果，否则"玩这一局"就白玩了
+      expect(container.querySelectorAll('.scorecard').length).toBeGreaterThan(0)
+      expect(getByText(/赢了|平局/)).toBeDefined()
+    })
+
+    it('⑤ 终局面板能收起来看一眼棋盘，也能再打开（原先只有"再来一局"一个出口）', () => {
+      prepareDeterministicGame()
+      playToEnd()
+
+      const { container, getByText, queryByText } = render(<App />)
+      expect(getByText('先看棋盘（可再打开结果）')).toBeDefined()
+
+      fireEvent.click(getByText('先看棋盘（可再打开结果）'))
+
+      // 面板收起，棋盘露出来（此前除了开新局，玩家没有任何办法看终局棋盘）
+      expect(queryByText('先看棋盘（可再打开结果）')).toBeNull()
+      expect(container.querySelectorAll('.hexboard').length).toBeGreaterThan(0)
+      // 游戏元素仍然一个都不可点
+      expect(counts(container)).toEqual(ALL_ZERO)
+
+      // 还能把结果打开
+      fireEvent.click(getByText('查看结果'))
+      expect(getByText('先看棋盘（可再打开结果）')).toBeDefined()
+    })
   })
 
   it('撤销能把局面退回上一步', async () => {
