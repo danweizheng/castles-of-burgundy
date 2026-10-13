@@ -402,7 +402,14 @@ export function GameScreen() {
       </section>
 
       <section className="middle">
-        {pending === undefined ? null : <p className="banner banner--pending">{pendingBanner(pending)}</p>}
+        {pending === undefined ? null : (
+          <p className="banner banner--pending">
+            {/* 待处理选择属于**当前行动方**。轮到对手时不能把这句祈使句摆给玩家看 ——
+                界面上又点不动任何东西（可点区域已按 isHumanTurn 闸住），
+                玩家只会觉得"让我选，可我怎么点都没反应"。 */}
+            {isHumanTurn ? pendingBanner(pending) : '对手正在结算它自己的效果…'}
+          </p>
+        )}
         <DepotPanel
           config={config}
           state={state}
@@ -513,7 +520,7 @@ export function GameScreen() {
             </div>
           </>
         ) : (
-          <p className="hint">请先解决上面的选择</p>
+          <p className="hint">{isHumanTurn ? '请先解决上面的选择' : '对手行动中…'}</p>
         )}
       </div>
 

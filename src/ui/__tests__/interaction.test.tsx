@@ -318,6 +318,83 @@ describe('真实点击能推动对局', () => {
     expect((getByText('撤销') as HTMLButtonElement).disabled).toBe(false)
   })
 
+  it('对手有待处理选择时，不会对人类下指令（否则玩家按不下去还会以为是卡了）', async () => {
+    prepareDeterministicGame()
+
+    // 把控制权交给对手，并让它身上挂一个待处理选择（模拟"船只效果要选货物格"）
+    act(() => {
+      useGameStore.setState((current) => ({
+        autoOpponent: false,
+        state: {
+          ...current.state,
+          activePlayerId: 'p2',
+          startPlayerId: 'p2',
+          pending: [{ kind: 'shipGoodsSpace', exclude: [] }],
+        },
+      }))
+    })
+
+    const { getByText, queryByText } = render(<App />)
+    // 不能出现对着玩家的祈使句
+    expect(queryByText(/选择从哪个货物格/)).toBeNull()
+    expect(queryByText('请先解决上面的选择')).toBeNull()
+    // 要说明这是对手在结算
+    expect(getByText('对手正在结算它自己的效果…')).toBeDefined()
+    expect(getByText('对手行动中…')).toBeDefined()
+  })
+
+  it('轮到自己时，同样的待处理选择仍然给出明确指令（正对照）', async () => {
+    prepareDeterministicGame()
+    act(() => {
+      useGameStore.setState((current) => ({
+        autoOpponent: false,
+        state: {
+          ...current.state,
+          pending: [{ kind: 'shipGoodsSpace', exclude: [] }],
+        },
+      }))
+    })
+
+    const { getByText } = render(<App />)
+    expect(getByText(/选择从哪个货物格/)).toBeDefined()
+    expect(getByText('请先解决上面的选择')).toBeDefined()
+  })
+
+  it('对手思考期间按下撤销：这一步会被取消，对手不会在撤销之后又走回来', async () => {
+    prepareDeterministicGame()
+    const { container, getByText } = render(<App />)
+    await waitFor(() => {
+      expect(container.querySelectorAll('.die').length).toBe(2)
+    })
+
+    // 人类先做一个决定（这样撤销栈里才有一份"轮到人类"的快照）
+    fireEvent.click(container.querySelector('.die') as Element)
+    fireEvent.click(getByText('取 2 个工人'))
+    await waitFor(() => {
+      expect(useGameStore.getState().state.actionsTakenThisTurn).toBe(1)
+    })
+
+    // 把控制权交给对手并打开自动对手 —— 界面会排一个延迟动作
+    act(() => {
+      useGameStore.setState((current) => ({
+        autoOpponent: true,
+        state: { ...current.state, activePlayerId: 'p2', startPlayerId: 'p2' },
+      }))
+    })
+    // 在延迟窗口内撤销
+    act(() => {
+      useGameStore.getState().undo()
+    })
+
+    const human = useGameStore.getState().humanPlayerId
+    expect(useGameStore.getState().state.activePlayerId).toBe(human)
+
+    // 等到远超对手的思考延迟，确认它没有偷偷走掉
+    await new Promise((resolve) => setTimeout(resolve, 800))
+    expect(useGameStore.getState().state.activePlayerId).toBe(human)
+    expect(useGameStore.getState().state.actionsTakenThisTurn).toBe(0)
+  })
+
   it('撤销能把局面退回上一步', async () => {
     prepareDeterministicGame()
     const { container, getByText } = render(<App />)

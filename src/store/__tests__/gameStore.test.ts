@@ -209,6 +209,63 @@ describe('撤销要跳过对手的回合', () => {
   })
 })
 
+describe('终局之后的交互', () => {
+  beforeEach(() => {
+    startDeterministicGame()
+  })
+
+  /** 用对手决策把一局打完（两边都由同一个策略驱动，直到结束）。 */
+  function playToEnd(maxMoves = 400): void {
+    for (let step = 0; step < maxMoves; step += 1) {
+      const store = useGameStore.getState()
+      if (store.state.finished) return
+      const move = opponentMove(store.config, store.state, 'normal')
+      if (move === undefined) return
+      store.play(move)
+    }
+  }
+
+  it('打完一局之后：没有合法动作、分数固定、任何动作都被忽略', () => {
+    playToEnd()
+    const finished = useGameStore.getState()
+    expect(finished.state.finished, '这局没打完，后面的断言就不成立').toBe(true)
+    expect(finished.moves).toEqual([])
+
+    const vpBefore = finished.state.players.map((player) => player.vp)
+    const stateBefore = finished.state
+
+    // 终局后无论提交什么（含结束回合），都必须被忽略
+    for (const move of [{ kind: 'endTurn' } as const, { kind: 'takeWorkers', die: { kind: 'die', index: 0 } } as const]) {
+      expect(() => useGameStore.getState().play(move)).not.toThrow()
+    }
+    expect(useGameStore.getState().state).toBe(stateBefore)
+    expect(useGameStore.getState().state.players.map((player) => player.vp)).toEqual(vpBefore)
+  })
+
+  it('引擎在终局时会拒绝执行动作（三层防护里最深的一层）', () => {
+    playToEnd()
+    const store = useGameStore.getState()
+    expect(() =>
+      applyMove(store.config, store.state, { kind: 'endTurn' }),
+    ).toThrow(/已经结束/)
+  })
+
+  it('终局之后仍然可以撤销，把最后一手收回来', () => {
+    playToEnd()
+    const before = useGameStore.getState().state
+    expect(before.finished).toBe(true)
+
+    useGameStore.getState().undo()
+
+    const after = useGameStore.getState().state
+    // 撤销会跳过对手的快照，所以收回的是人类自己最后那一手
+    expect(after.finished).toBe(false)
+    expect(after.activePlayerId).toBe(useGameStore.getState().humanPlayerId)
+    // 撤销之后又能继续走：合法动作列表不为空
+    expect(useGameStore.getState().moves.length).toBeGreaterThan(0)
+  })
+})
+
 describe('守卫的前提：陈旧动作直接交给引擎会怎样', () => {
   beforeEach(() => {
     startDeterministicGame()
