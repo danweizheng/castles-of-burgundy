@@ -11,6 +11,7 @@ import {
   Buildings,
   Knowledge,
   RulesPanel,
+  Fidelity,
   Scoring,
   Setup,
 } from '../components/RulesPanel'
@@ -162,14 +163,37 @@ describe('整屏渲染', () => {
     expect(html).toContain('下载 JSON')
   })
 
-  it('规则速查：六个分页都在，默认停在「行动」页', () => {
+  it('规则速查：七个分页都在，默认停在「行动」页', () => {
     const html = renderToStaticMarkup(<RulesPanel onClose={() => {}} />)
-    for (const label of ['行动', '流程', '计分', '知识', '建筑', '设置']) {
+    for (const label of ['行动', '流程', '计分', '知识', '建筑', '设置', '差异']) {
       expect(html, label).toContain(label)
     }
     expect(html).toContain('从版图取板块')
     expect(html).toContain('取 2 个工人')
     expect(html).toContain('规则速查')
+  })
+
+  it('规则速查 · 差异页：把推断数据与占位数据分开列清楚', () => {
+    const html = renderToStaticMarkup(<Fidelity />)
+
+    // 两条"推断"必须点明规则书里没有，并给出怎么确认
+    expect(html).toContain('三角数')
+    expect(html).toContain('印在版图上')
+    expect(html).toContain('阶段奖励的中间值')
+
+    // 占位数据里最要紧的一条：合成版图，且说明它影响什么
+    expect(html).toContain('合成')
+    expect(html).toContain('1 号版图')
+    expect(html).toContain('AI 的区域规划')
+
+    // 版本差异与规则书本身没说清的那条
+    expect(html).toContain('6 号知识板块')
+    expect(html).toContain('经典 alea 版')
+    expect(html).toContain('市政厅')
+
+    // 明确说明本作不走官方单人模式，避免误解
+    expect(html).toContain('Châteauma')
+    expect(html).toContain('都不是它们')
   })
 
   it('规则速查 · 计分页：区域分数表与阶段奖励表都能渲染', () => {

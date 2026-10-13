@@ -20,7 +20,7 @@ import { PHASE_LETTERS } from '../tiles'
  * 文中数值以官方规则书（Special Edition）为准，核实过程见 rules/规则规格.md §14。
  */
 
-type Tab = 'actions' | 'flow' | 'scoring' | 'knowledge' | 'buildings' | 'setup'
+type Tab = 'actions' | 'flow' | 'scoring' | 'knowledge' | 'buildings' | 'setup' | 'fidelity'
 
 const TABS: ReadonlyArray<readonly [Tab, string]> = [
   ['actions', '行动'],
@@ -29,6 +29,7 @@ const TABS: ReadonlyArray<readonly [Tab, string]> = [
   ['knowledge', '知识'],
   ['buildings', '建筑'],
   ['setup', '设置'],
+  ['fidelity', '差异'],
 ]
 
 function Block({ title, children }: { readonly title?: string; readonly children: ReactNode }) {
@@ -336,6 +337,96 @@ export interface RulesPanelProps {
   readonly onClose: () => void
 }
 
+/**
+ * 与实物的差异说明。
+ *
+ * 为什么值得单列一页：引擎里大部分数据是从官方规则书逐条核实的，
+ * 但有一小部分是**推断**的，还有一部分**仍是占位数据**。
+ * 不写清楚的话，你对着实物玩时发现对不上，会不知道该怀疑游戏还是怀疑自己的理解。
+ */
+export function Fidelity() {
+  return (
+    <>
+      <Block title="这一页在说什么">
+        <p>
+          把"哪些数字是从规则书逐条核实的、哪些是推断的、哪些还是占位数据"分开列清楚。
+          对着实物玩时如果发现不一致，多半就在下面第二、三节里。
+        </p>
+      </Block>
+
+      <Block title="① 逐条核实过（可以信任）">
+        <ul>
+          <li>164 枚板块的逐色数量（规则书组件清单）</li>
+          <li>26 张知识板块的效果（规则书第 11–12 页）</li>
+          <li>8 种建筑的效果与可取颜色（规则书第 8–9 页）</li>
+          <li>起始城堡由玩家自选、开局时不计分</li>
+          <li>船只取货不看点数、并可前移顺位</li>
+          <li>每座城市每种建筑限一座</li>
+        </ul>
+      </Block>
+
+      <Block title="② 推断的（规则书文本里没有）">
+        <ul>
+          <li>
+            <b>区域大小 → 分数</b>：1/3/6/10/15/21/28/36（三角数）。规则书只说"1–8 格给 1–36 分"，
+            而<b>分数表本身印在版图上</b>，规则书正文里没有。
+          </li>
+          <li>
+            <b>阶段奖励的中间值</b> 8 / 6 / 4：规则书说"从第一阶段 10 分到最后一阶段 2 分"，
+            中间三个是按等差推的。
+          </li>
+        </ul>
+        <p className="warn">你手上有版图，看一眼就能确认这两处。</p>
+      </Block>
+
+      <Block title="③ 仍是占位数据的">
+        <ul>
+          <li>
+            <b>玩家版图布局</b>：现在用的是一张合成的 37 格六边形版图顶替 1 号版图。
+            区域形状、AI 的区域规划、"差几格完成"的提示<b>全部基于它</b>。
+          </li>
+          <li>
+            <b>中央版图的仓库色位</b>：占位版图每阶段 12 个格位、每种颜色各占 2 个仓库。
+            它决定了"哪个点数能拿到什么颜色"。
+          </li>
+          <li><b>动物板块的只数分布</b>：每种 5 枚绿背板块上分别画 2/3/4 只，具体分布是占位的。</li>
+          <li><b>哪 6 张知识板块是黑背面</b>（黑洞里能买到什么）。</li>
+          <li><b>2 人局黑洞开局抽几枚</b>：当前 2 枚。规则书只说"按人数抽 2–8 枚"。</li>
+        </ul>
+        <p className="muted">
+          替换方法见仓库里的 docs/工程说明.md 第 5 节；点进设置页的「版图录入器」也可以自己录。
+        </p>
+      </Block>
+
+      <Block title="④ 版本差异（看你手上是哪一版）">
+        <ul>
+          <li>
+            <b>6 号知识板块</b>：本作按 <b>Special Edition</b> 实现 ——
+            "每回合限一次，花 2 个工人，从任意 6 个仓库取一枚米色建筑"。
+            <b>经典 alea 版</b>是"可以从全部 7 个仓库购买（含黑洞）"。
+          </li>
+          <li>其余 25 张两版一致。</li>
+        </ul>
+      </Block>
+
+      <Block title="⑤ 规则书本身没说清的">
+        <p>
+          <b>市政厅的额外放置是否也取消点数限制</b>。规则书正文只说"再放一枚"，
+          <b>完全没有提颜色或点数</b>（已核对原文）。本作默认保留点数限制 —— 更保守的读法。
+        </p>
+      </Block>
+
+      <Block title="⑥ 与官方「单人模式」的关系">
+        <p>
+          官方另有两套单人玩法：<b>Châteauma</b>（需要 35 号版图与地区卡）与
+          <b>官方 Solo Game</b>（需要 33–34 号版图）。<b>本作都不是它们</b>，
+          而是自研 AI 对手的 2 人局规则，因此不需要那几张版图的数据。
+        </p>
+      </Block>
+    </>
+  )
+}
+
 export function RulesPanel({ onClose }: RulesPanelProps) {
   const [tab, setTab] = useState<Tab>('actions')
 
@@ -363,8 +454,11 @@ export function RulesPanel({ onClose }: RulesPanelProps) {
         {tab === 'knowledge' ? <Knowledge /> : null}
         {tab === 'buildings' ? <Buildings /> : null}
         {tab === 'setup' ? <Setup /> : null}
+        {tab === 'fidelity' ? <Fidelity /> : null}
 
-        <p className="muted">数值以官方规则书（Special Edition）为准。</p>
+        <p className="muted">
+          数值以官方规则书（Special Edition）为准；推断与占位数据见「差异」页。
+        </p>
 
         <button type="button" className="btn btn--ghost btn--block" onClick={onClose}>
           关闭
