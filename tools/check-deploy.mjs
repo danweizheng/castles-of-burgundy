@@ -9,8 +9,16 @@
  *
  * 用法：
  *   node tools/check-deploy.mjs
- *   node tools/check-deploy.mjs --expect assets/index-XXXX.js   # 等线上换成这个构建再自检
+ *   node tools/check-deploy.mjs --expect-same index.html --expect-same sw.js
+ *     ↑ 等线上这两个文件与本地 dist 逐字节一致，再开始自检。
+ *       （早先只有一个 --expect <JS 资源名>，它只是在首页里找一个子串 ——
+ *        如果这次只改了 index.html 或 public/ 里的东西，JS 哈希不变，
+ *        旧首页同样含那个子串，于是自检会**对着旧部署通过**。sw.js 的预缓存清单
+ *        在任何被缓存资源变化时都会变，所以它是"新构建真的上线了"的完整信号。）
  */
+
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
 
 const BASE = (process.env.DEPLOY_URL ?? 'https://danweizheng.github.io/castles-of-burgundy/').replace(
   /\/?$/,
@@ -19,11 +27,33 @@ const BASE = (process.env.DEPLOY_URL ?? 'https://danweizheng.github.io/castles-o
 
 const EXPECT_INDEX = process.argv.indexOf('--expect')
 const EXPECT = EXPECT_INDEX >= 0 ? process.argv[EXPECT_INDEX + 1] : undefined
-const WAIT_ATTEMPTS = 18
-const WAIT_MS = 10_000
+
+/** 需要"与本地构建逐字节一致"才算新构建上线的文件 */
+const EXPECT_SAME = process.argv.reduce((paths, value, index, all) => {
+  if (value === '--expect-same' && all[index + 1] !== undefined) paths.push(all[index + 1])
+  return paths
+}, [])
+
+const DIST_DIR = process.env.DIST_DIR ?? 'dist'
+// 等待参数可配置：验证"线上仍是旧构建"这条路径时不必真等三分钟
+const WAIT_ATTEMPTS = Number(process.env.DEPLOY_WAIT_ATTEMPTS ?? 18)
+const WAIT_MS = Number(process.env.DEPLOY_WAIT_MS ?? 10_000)
 
 const failures = []
 const checked = []
+
+/** 行尾差异会带来无意义的比较失败，比较前先归一化。 */
+function normalize(text) {
+  return text.replace(/\r\n/g, '\n')
+}
+
+function localCopy(path) {
+  try {
+    return normalize(readFileSync(join(DIST_DIR, path), 'utf8'))
+  } catch {
+    return undefined
+  }
+}
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms))
@@ -61,9 +91,11 @@ async function main() {
 
   console.log(`自检目标：${BASE}`)
   if (EXPECT !== undefined) console.log(`等待线上换成：${EXPECT}`)
+  for (const path of EXPECT_SAME) console.log(`等待线上与本地一致：${path}`)
 
   // ---- 1. 首页 ----
   let html = ''
+  let settled = EXPECT_SAME.length === 0 && EXPECT === undefined
   for (let attempt = 1; attempt <= WAIT_ATTEMPTS; attempt += 1) {
     const response = await get(BASE)
     if (response.status !== 200) {
@@ -72,14 +104,46 @@ async function main() {
       continue
     }
     html = await response.text()
-    if (EXPECT === undefined || html.includes(EXPECT)) break
-    console.log(`  第 ${attempt} 次：线上仍是旧构建，等待…`)
-    await sleep(WAIT_MS)
+
+    // 逐字节比对：这是"新构建真的上线了"的完整信号
+    let allSame = true
+    for (const path of EXPECT_SAME) {
+      const expected = localCopy(path)
+      if (expected === undefined) {
+        failures.push(`本地没有 ${join(DIST_DIR, path)}，无法比对（先 pnpm build）`)
+        allSame = false
+        break
+      }
+      const remote = await get(BASE + path)
+      if (remote.status !== 200 || normalize(await remote.text()) !== expected) {
+        allSame = false
+        break
+      }
+    }
+
+    if (!allSame) {
+      console.log(`  第 ${attempt} 次：线上仍是旧构建，等待…`)
+      await sleep(WAIT_MS)
+      continue
+    }
+    if (EXPECT !== undefined && !html.includes(EXPECT)) {
+      console.log(`  第 ${attempt} 次：首页还没引用 ${EXPECT}，等待…`)
+      await sleep(WAIT_MS)
+      continue
+    }
+    settled = true
+    break
   }
 
   if (html === '') {
     failures.push('首页始终取不到 200')
     return
+  }
+  if (!settled) {
+    failures.push(`等了 ${WAIT_ATTEMPTS} 次仍未等到新构建上线 —— 下面的检查是对着旧部署做的，结论不可信`)
+  }
+  for (const path of EXPECT_SAME) {
+    record(localCopy(path) !== undefined, `本地存在 ${path}（比对基准）`)
   }
   record(html.includes('id="root"'), '首页含 #root 挂载点')
   record(html.includes('lang="zh-CN"'), '首页声明 lang="zh-CN"')

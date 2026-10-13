@@ -10,7 +10,7 @@
  */
 
 import { execFileSync } from 'node:child_process'
-import { cpSync, existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { cpSync, existsSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 
@@ -49,14 +49,23 @@ try {
   run('git', ['push', '--force', remoteUrl, `HEAD:${branch}`], work)
 
   // 发布后立刻自检：把线上产物的资源图整条走一遍。
-  // 传入本次构建的 JS 资源名，好让自检先等 Pages 换成新构建再检查。
-  const indexHtml = readFileSync(join(distDir, 'index.html'), 'utf8')
-  const asset = /src="\.\/(assets\/[^"]+\.js)"/.exec(indexHtml)?.[1]
+  //
+  // 等"新构建上线"的信号必须是**逐字节比对**，不能只是一个资源名子串：
+  // 如果这次只改了 index.html 或 public/ 里的东西，JS 哈希不变，
+  // 旧首页同样含那个资源名，自检就会**对着旧部署通过**（这是真实发生过的）。
+  // sw.js 的预缓存清单在任何被缓存资源变化时都会变，所以拿它与 index.html
+  // 一起作为"新构建真的上线了"的判据。
   console.log('')
   // 用 process.execPath 而不是字面量 'node'：这个脚本可能在 PATH 里没有 node 的环境下运行
   run(
     process.execPath,
-    [join(process.cwd(), 'tools', 'check-deploy.mjs'), ...(asset ? ['--expect', asset] : [])],
+    [
+      join(process.cwd(), 'tools', 'check-deploy.mjs'),
+      '--expect-same',
+      'index.html',
+      '--expect-same',
+      'sw.js',
+    ],
     process.cwd(),
   )
 
