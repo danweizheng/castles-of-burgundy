@@ -487,6 +487,36 @@ button {
   color: #f3c9c1;
 }
 
+/* ---------------- 威胁清单（对手快到什么程度） ---------------- */
+
+.threatlist {
+  margin: 0 0 10px;
+  padding-left: 1.1em;
+  font-size: 13px;
+}
+
+.threat {
+  margin-bottom: 3px;
+  color: var(--text);
+}
+
+.threat--urgent {
+  color: var(--gold-bright);
+  font-weight: 600;
+}
+
+.badge--warn {
+  background: #3a1c14;
+  border-color: var(--bad);
+  color: #f3c9c1;
+}
+
+.opponent__actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .footer__row {
   display: flex;
   gap: 6px;

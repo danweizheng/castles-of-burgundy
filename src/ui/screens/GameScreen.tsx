@@ -13,6 +13,7 @@ import { ChooserSheet, type ChooserOption } from '../components/ChooserSheet'
 import { DepotPanel } from '../components/DepotPanel'
 import { HexBoard } from '../components/HexBoard'
 import { LogPanel } from '../components/LogPanel'
+import { OpponentSheet } from '../components/OpponentSheet'
 import { PlayerPanel } from '../components/PlayerPanel'
 import { RulesPanel } from '../components/RulesPanel'
 import { SaveMenu } from '../components/SaveMenu'
@@ -26,6 +27,7 @@ import {
   type PendingAffordances,
 } from '../selection'
 import { PHASE_LETTERS, playerLabel, tileGlyph } from '../tiles'
+import { threatsFor } from '../threats'
 
 const HUMAN = 'p1' as const
 const PHASE_COUNT = 5
@@ -92,6 +94,7 @@ export function GameScreen() {
   const [showLog, setShowLog] = useState(false)
   const [showSave, setShowSave] = useState(false)
   const [showRules, setShowRules] = useState(false)
+  const [showOpponent, setShowOpponent] = useState(false)
   const [hint, setHint] = useState<string | null>(null)
   /** 对手决策用的随机源；每次决策前推进一下，避免相同局面永远得到同一套噪声 */
   const opponentRng = useRef(createRng(Math.floor(Math.random() * 1_000_000_000)))
@@ -115,6 +118,12 @@ export function GameScreen() {
    * 不需要在 store 的每个 set() 里手工清空。
    */
   const floats = lastVp !== null && lastVp.logLength === log.length ? lastVp.deltas : {}
+
+  /** 对手快到什么程度：只用于顶部的警示徽标，详细清单在放大视图里 */
+  const opponentThreats = useMemo(
+    () => threatsFor(config, state, opponent.id),
+    [config, state, opponent.id],
+  )
 
   // 每次状态变化都清空选择与弹层：一步走完，界面回到"等下一次点选"的干净状态
   useEffect(() => {
@@ -335,14 +344,28 @@ export function GameScreen() {
       <section className="opponent">
         <div className="opponent__head">
           <span>对手</span>
-          <span className="muted">
-            {opponent.vp} 分 · {opponent.silverlings} 银币 · {opponent.workers} 工人 · 仓储{' '}
-            {opponent.storage.length}/3
-            {floats[opponent.id] === undefined ? null : (
-              <span key={`float-opp-${log.length}`} className="scorefloat">
-                +{floats[opponent.id]}
+          <span className="opponent__actions">
+            <span className="muted">
+              {opponent.vp} 分 · {opponent.silverlings} 银币 · {opponent.workers} 工人 · 仓储{' '}
+              {opponent.storage.length}/3
+              {floats[opponent.id] === undefined ? null : (
+                <span key={`float-opp-${log.length}`} className="scorefloat">
+                  +{floats[opponent.id]}
+                </span>
+              )}
+            </span>
+            {opponentThreats.filter((threat) => threat.remaining === 1).length === 0 ? null : (
+              <span className="badge badge--warn">
+                {opponentThreats.filter((threat) => threat.remaining === 1).length} 处只差 1 格
               </span>
             )}
+            <button
+              type="button"
+              className="btn btn--ghost btn--sm"
+              onClick={() => setShowOpponent(true)}
+            >
+              查看
+            </button>
           </span>
         </div>
         {opponentBoard === undefined ? null : (
@@ -528,6 +551,15 @@ export function GameScreen() {
             </button>
           </div>
         </div>
+      ) : null}
+
+      {showOpponent ? (
+        <OpponentSheet
+          config={config}
+          state={state}
+          opponentId={opponent.id}
+          onClose={() => setShowOpponent(false)}
+        />
       ) : null}
 
       {showRules ? <RulesPanel onClose={() => setShowRules(false)} /> : null}

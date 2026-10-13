@@ -5,6 +5,7 @@ import type { PlayerBoardDef } from '../../engine/types'
 import { App } from '../App'
 import { DepotPanel } from '../components/DepotPanel'
 import { HexBoard } from '../components/HexBoard'
+import { OpponentSheet } from '../components/OpponentSheet'
 import { PlayerPanel } from '../components/PlayerPanel'
 import {
   Buildings,
@@ -133,6 +134,17 @@ describe('整屏渲染', () => {
     expect(html).toContain('导入存档')
     expect(html).toContain('清除本机存档')
     expect(html).toContain('ios'.replace('ios', 'iOS'))
+  })
+
+  it('对手放大视图能渲染（含威胁提示与对手资源）', () => {
+    const html = renderToStaticMarkup(
+      <OpponentSheet config={CONFIG} state={BASE_STATE} opponentId="p2" onClose={() => {}} />,
+    )
+    expect(html).toContain('对手的领地')
+    expect(html).toContain('对手的资源')
+    // 开局没有接近完成的区域，所以走"无威胁"这一支
+    expect(html).toContain('没有接近完成')
+    expect(html).toContain('关闭')
   })
 
   it('规则速查：六个分页都在，默认停在「行动」页', () => {
