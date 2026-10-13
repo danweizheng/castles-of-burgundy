@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { BUILDINGS } from '../../engine/data/buildings'
 import { KNOWLEDGE_TILES } from '../../engine/data/knowledge'
 import { TILE_COLORS } from '../../engine/types'
+import { playerLabel } from '../tiles'
 import { tileInfo } from '../tileInfo'
 import { animalTile, buildingTile, castleTile, knowledgeTile, mineTile, shipTile } from '../../engine/__tests__/testUtils'
 
@@ -52,5 +53,19 @@ describe('板块效果说明', () => {
   it('船与城堡的说明点出它们真正的价值（取货并抢顺位 / 额外行动）', () => {
     expect(tileInfo(shipTile('s')).text).toContain('顺位')
     expect(tileInfo(castleTile('c')).text).toContain('无视点数')
+  })
+})
+
+describe('玩家显示名（3/4 人局不能把内部编号显示出来）', () => {
+  it('四个玩家都有中文名，且互不相同', () => {
+    const labels = ['p1', 'p2', 'p3', 'p4'].map((id) => playerLabel(id))
+    expect(labels).toEqual(['你', '对手', '对手二', '对手三'])
+    expect(new Set(labels).size).toBe(4)
+  })
+
+  it('不会出现原始编号 p3 / p4（那是内部标识，不该给玩家看到）', () => {
+    for (const id of ['p2', 'p3', 'p4']) {
+      expect(playerLabel(id)).not.toBe(id)
+    }
   })
 })

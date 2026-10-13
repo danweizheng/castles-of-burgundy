@@ -13,6 +13,7 @@
 
 import { del, get, set } from 'idb-keyval'
 import type { Difficulty } from '../ai/heuristic'
+import { rulesetForPlayerCount } from '../engine/config'
 import { listLegalMoves } from '../engine/moves'
 import type { GameState, RulesetConfig } from '../engine/state'
 
@@ -37,7 +38,12 @@ export interface SaveFile {
 }
 
 export type DecodeResult =
-  | { readonly ok: true; readonly save: SaveFile }
+  | {
+      readonly ok: true
+      readonly save: SaveFile
+      /** 按**存档里的人数**重建的配置：调用方必须用它列合法动作 */
+      readonly config: RulesetConfig
+    }
   | { readonly ok: false; readonly error: string }
 
 const DIFFICULTIES: ReadonlyArray<Difficulty | 'random'> = ['easy', 'normal', 'hard', 'random']
@@ -110,7 +116,15 @@ export function decodeSave(config: RulesetConfig, raw: unknown): DecodeResult {
   if (!isRecord(raw.state)) return { ok: false, error: '存档里没有对局状态' }
 
   const state = raw.state as unknown as GameState
-  const problem = validateState(config, state)
+
+  /**
+   * 按**存档里的人数**重建配置再校验。
+   *
+   * 否则会出现这种情况：3 人局的存档被拿去和 2 人局配置对照，
+   * 仓库格位数（18 vs 12）与合法动作全对不上，于是报"存档损坏" —— 结论是误导性的。
+   */
+  const resolved = rulesetForPlayerCount(state.playerCount)
+  const problem = validateState(resolved, state)
   if (problem !== undefined) return { ok: false, error: problem }
 
   const difficulty = DIFFICULTIES.includes(raw.difficulty as Difficulty | 'random')
@@ -127,6 +141,8 @@ export function decodeSave(config: RulesetConfig, raw: unknown): DecodeResult {
 
   return {
     ok: true,
+    // 把按存档人数重建的配置一并返回：调用方必须用它来列合法动作，否则会算错
+    config: resolved,
     save: {
       format: SAVE_FORMAT,
       rulesetVersion: raw.rulesetVersion,

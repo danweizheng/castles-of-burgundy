@@ -6,7 +6,7 @@ import { axialKey } from '../../engine/hex'
 import { type DieRef, type Move } from '../../engine/moves'
 import { finalScore } from '../../engine/scoring'
 import { playerById, type GameState, type PendingChoice } from '../../engine/state'
-import type { BoardSpace, DieValue, GoodsKind } from '../../engine/types'
+import type { BoardSpace, DieValue, GoodsKind, PlayerId } from '../../engine/types'
 import { useGameStore } from '../../store/gameStore'
 import { ChooserSheet, type ChooserOption } from '../components/ChooserSheet'
 import { DepotPanel } from '../components/DepotPanel'
@@ -95,7 +95,7 @@ export function GameScreen() {
   const [showLog, setShowLog] = useState(false)
   const [showSave, setShowSave] = useState(false)
   const [showRules, setShowRules] = useState(false)
-  const [showOpponent, setShowOpponent] = useState(false)
+  const [sheetOpponentId, setSheetOpponentId] = useState<PlayerId | null>(null)
   const offlineState = useOfflineState()
   const [hint, setHint] = useState<string | null>(null)
   /**
@@ -112,9 +112,15 @@ export function GameScreen() {
   }, [hydrate])
 
   const human = playerById(state, HUMAN)
-  const opponent = state.players.find((player) => player.id !== HUMAN) ?? human
+  /**
+   * 所有对手（2 人局 1 位、3/4 人局 2–3 位）。
+   *
+   * 早先这里写的是 `players.find(p => p.id !== HUMAN)` —— 只取第一位对手，
+   * 于是 3/4 人局里其余的对手根本不出现在界面上。改成列表之后，
+   * 每位对手都有自己的资源行、威胁徽标与「查看」入口。
+   */
+  const opponents = state.players.filter((player) => player.id !== HUMAN)
   const board = config.playerBoards[human.boardId]
-  const opponentBoard = config.playerBoards[opponent.boardId]
 
   const pending: PendingChoice | undefined = state.pending[0]
   const isHumanTurn = state.activePlayerId === HUMAN && !state.finished
@@ -126,11 +132,17 @@ export function GameScreen() {
    */
   const floats = lastVp !== null && lastVp.logLength === log.length ? lastVp.deltas : {}
 
-  /** 对手快到什么程度：只用于顶部的警示徽标，详细清单在放大视图里 */
-  const opponentThreats = useMemo(
-    () => threatsFor(config, state, opponent.id),
-    [config, state, opponent.id],
-  )
+  /** 每位对手"差 1 格"的威胁数：只用于顶部的警示徽标，详细清单在放大视图里 */
+  const urgentThreatCounts = useMemo(() => {
+    const counts = new Map<string, number>()
+    for (const other of opponents) {
+      const urgent = threatsFor(config, state, other.id).filter(
+        (threat) => threat.remaining === 1,
+      ).length
+      counts.set(other.id, urgent)
+    }
+    return counts
+  }, [config, state, opponents])
 
   // 每次状态变化都清空选择与弹层：一步走完，界面回到"等下一次点选"的干净状态
   useEffect(() => {
@@ -355,35 +367,42 @@ export function GameScreen() {
       {saveError === null || showSave ? null : <p className="banner banner--warn">{saveError}</p>}
 
       <section className="opponent">
-        <div className="opponent__head">
-          <span>对手</span>
-          <span className="opponent__actions">
-            <span className="muted">
-              {opponent.vp} 分 · {opponent.silverlings} 银币 · {opponent.workers} 工人 · 仓储{' '}
-              {opponent.storage.length}/3
-              {floats[opponent.id] === undefined ? null : (
-                <span key={`float-opp-${log.length}`} className="scorefloat">
-                  +{floats[opponent.id]}
+        {opponents.map((other) => {
+          const otherBoard = config.playerBoards[other.boardId]
+          const urgent = urgentThreatCounts.get(other.id) ?? 0
+          return (
+            <div key={other.id} className="opponent__row">
+              <div className="opponent__head">
+                <span>{playerLabel(other.id)}</span>
+                <span className="opponent__actions">
+                  <span className="muted">
+                    {other.vp} 分 · {other.silverlings} 银币 · {other.workers} 工人 · 仓储{' '}
+                    {other.storage.length}/3
+                    {floats[other.id] === undefined ? null : (
+                      <span key={`float-${other.id}-${log.length}`} className="scorefloat">
+                        +{floats[other.id]}
+                      </span>
+                    )}
+                  </span>
+                  {urgent === 0 ? null : (
+                    <span className="badge badge--warn">{urgent} 处只差 1 格</span>
+                  )}
+                  <button
+                    type="button"
+                    className="btn btn--ghost btn--sm"
+                    onClick={() => setSheetOpponentId(other.id)}
+                  >
+                    查看
+                  </button>
                 </span>
-              )}
-            </span>
-            {opponentThreats.filter((threat) => threat.remaining === 1).length === 0 ? null : (
-              <span className="badge badge--warn">
-                {opponentThreats.filter((threat) => threat.remaining === 1).length} 处只差 1 格
-              </span>
-            )}
-            <button
-              type="button"
-              className="btn btn--ghost btn--sm"
-              onClick={() => setShowOpponent(true)}
-            >
-              查看
-            </button>
-          </span>
-        </div>
-        {opponentBoard === undefined ? null : (
-          <HexBoard board={opponentBoard} estate={opponent.estate} size={8} compact />
-        )}
+              </div>
+              {/* 缩略棋盘只在 2 人局显示：3/4 人局会把版面挤爆，那时用「查看」看全图 */}
+              {state.playerCount === 2 && otherBoard !== undefined ? (
+                <HexBoard board={otherBoard} estate={other.estate} size={8} compact />
+              ) : null}
+            </div>
+          )
+        })}
       </section>
 
       {showLog ? <LogPanel entries={log} humanPlayerId={HUMAN} /> : null}
@@ -580,6 +599,23 @@ export function GameScreen() {
         <div className="sheet" role="dialog" aria-modal="true">
           <div className="sheet__panel">
             <h2 className="sheet__title">选择出生点</h2>
+            <div className="sheet__row">
+              <span className="muted">对局人数</span>
+              {([2, 3, 4] as const).map((count) => (
+                <button
+                  key={count}
+                  type="button"
+                  className={state.playerCount === count ? 'btn btn--sm btn--primary' : 'btn btn--sm'}
+                  onClick={() => newGame(state.seed, count)}
+                >
+                  {count} 人
+                </button>
+              ))}
+            </div>
+            <p className="muted">
+              改变人数会按同一颗种子重新开局。3/4 人局里每位对手各有一套领地与骰子；
+              界面为节省空间只在 2 人局显示对手缩略图，其余用「查看」看全图。
+            </p>
             <p className="muted">
               官方规则：起始城堡放在你选定的深红格上。点亮的就是可选格；第一次玩推荐中央的 6 号格。
             </p>
@@ -605,14 +641,14 @@ export function GameScreen() {
         </div>
       ) : null}
 
-      {showOpponent ? (
+      {sheetOpponentId === null ? null : (
         <OpponentSheet
           config={config}
           state={state}
-          opponentId={opponent.id}
-          onClose={() => setShowOpponent(false)}
+          opponentId={sheetOpponentId}
+          onClose={() => setSheetOpponentId(null)}
         />
-      ) : null}
+      )}
 
       {showRules ? <RulesPanel onClose={() => setShowRules(false)} /> : null}
 

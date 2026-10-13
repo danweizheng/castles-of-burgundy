@@ -266,6 +266,59 @@ describe('终局之后的交互', () => {
   })
 })
 
+describe('3 / 4 人局与存档', () => {
+  it('新局可以指定人数，人数会写进局面与配置', () => {
+    useGameStore.getState().newGame(2468, 3)
+    const store = useGameStore.getState()
+    expect(store.state.playerCount).toBe(3)
+    expect(store.config.playerCount).toBe(3)
+    expect(store.state.players).toHaveLength(3)
+    // 3 人局启用 18 个仓库格位
+    expect(Object.keys(store.state.depotSlots)).toHaveLength(18)
+  })
+
+  it('3 人局的存档导回后仍是 3 人局（配置必须按存档人数重建）', async () => {
+    // 起因：decodeSave 早先用"当前配置"校验存档。3 人局的存档拿 2 人局配置去校验，
+    // 格位数（18 vs 12）与合法动作全对不上，会得出"存档损坏"这种误导性的结论。
+    useGameStore.getState().newGame(13579, 3)
+    const before = useGameStore.getState()
+    before.chooseStartingCastle(before.config.playerBoards[before.state.players[0]!.boardId]!.startingSpace)
+    await useGameStore.getState().saveNow()
+    const text = useGameStore.getState().exportSaveText()
+
+    // 先切到 2 人局，模拟"当前会话是 2 人局"
+    useGameStore.getState().newGame(97531, 2)
+    expect(useGameStore.getState().state.playerCount).toBe(2)
+
+    const result = useGameStore.getState().importSaveText(text)
+    expect(result.ok, result.error ?? '').toBe(true)
+
+    const after = useGameStore.getState()
+    expect(after.state.playerCount).toBe(3)
+    expect(after.config.playerCount, '配置也必须跟着回到 3 人局').toBe(3)
+    expect(after.state.players).toHaveLength(3)
+    expect(Object.keys(after.state.depotSlots)).toHaveLength(18)
+    // 合法动作按 3 人局算得出来（用错配置会直接抛或算出空列表）
+    expect(after.moves.length).toBeGreaterThan(0)
+  })
+
+  it('2 人局的存档不会被 3 人局会话污染', async () => {
+    useGameStore.getState().newGame(111, 2)
+    const before = useGameStore.getState()
+    before.chooseStartingCastle(before.config.playerBoards[before.state.players[0]!.boardId]!.startingSpace)
+    await useGameStore.getState().saveNow()
+    const text = useGameStore.getState().exportSaveText()
+
+    useGameStore.getState().newGame(222, 4)
+    expect(useGameStore.getState().state.playerCount).toBe(4)
+
+    expect(useGameStore.getState().importSaveText(text).ok).toBe(true)
+    expect(useGameStore.getState().state.playerCount).toBe(2)
+    expect(useGameStore.getState().state.players).toHaveLength(2)
+    expect(Object.keys(useGameStore.getState().state.depotSlots)).toHaveLength(12)
+  })
+})
+
 describe('守卫的前提：陈旧动作直接交给引擎会怎样', () => {
   beforeEach(() => {
     startDeterministicGame()

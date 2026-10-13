@@ -23,8 +23,11 @@ import type { GameState } from '../../engine/state'
 
 /** 固定种子，并保证轮到人类玩家行动（否则界面上没有骰子可点）。 */
 function prepareDeterministicGame(seed = 20240101): string {
+  // 显式指定 2 人局：newGame 不带人数时会**继承当前配置**（对界面是对的 ——
+  // 玩完 3 人局点「新局」应当还是 3 人局），但测试必须自己说清楚要几人的局面，
+  // 否则前一条测试留下的人数会污染后面的用例（卖货分值、终局条件都会跟着变）。
   act(() => {
-    useGameStore.getState().newGame(seed)
+    useGameStore.getState().newGame(seed, 2)
   })
   // 先选出生点（用推荐格），这一步会按同一颗种子重开一局
   const store = useGameStore.getState()
@@ -56,7 +59,7 @@ function prepareDeterministicGame(seed = 20240101): string {
 function resetStore(): void {
   act(() => {
     useGameStore.setState({ autoOpponent: false, needsSetup: true, past: [], saveError: null })
-    useGameStore.getState().newGame(1)
+    useGameStore.getState().newGame(1, 2)
   })
 }
 
@@ -234,6 +237,39 @@ describe('真实点击能推动对局', () => {
     expect(container.querySelectorAll('.slot--target').length + container.querySelectorAll('.hex--target').length)
       .toBeGreaterThan(0)
     expect(container.querySelectorAll('.actionbar__buttons button').length).toBeGreaterThan(0)
+  })
+
+  it('3 人局：出生点弹层能切人数，切完界面上有两位对手', async () => {
+    // beforeEach 里 resetStore() 已经开了一局新游戏，此时正在选出生点
+    const { container, getByText } = render(<App />)
+    expect(getByText('对局人数')).toBeDefined()
+
+    fireEvent.click(getByText('3 人'))
+    await waitFor(() => {
+      expect(useGameStore.getState().state.playerCount).toBe(3)
+    })
+    // 同一颗种子重开，仍停在选出生点
+    expect(useGameStore.getState().needsSetup).toBe(true)
+    fireEvent.click(getByText('用推荐的中央格'))
+    await waitFor(() => {
+      expect(useGameStore.getState().needsSetup).toBe(false)
+    })
+
+    // 两位对手各一行，各有一个「查看」入口
+    expect(container.querySelectorAll('.opponent__row')).toHaveLength(2)
+    expect(container.querySelectorAll('.opponent__row button')).toHaveLength(2)
+    // 3 人局不渲染对手缩略棋盘（省版面，改用「查看」看全图）
+    expect(container.querySelectorAll('.opponent__row .hexboard')).toHaveLength(0)
+  })
+
+  it('2 人局仍然只显示一位对手，并带缩略棋盘（改动没有砸掉原有形态）', async () => {
+    prepareDeterministicGame()
+    const { container } = render(<App />)
+    await waitFor(() => {
+      expect(container.querySelectorAll('.die').length).toBe(2)
+    })
+    expect(container.querySelectorAll('.opponent__row')).toHaveLength(1)
+    expect(container.querySelectorAll('.opponent__row .hexboard')).toHaveLength(1)
   })
 
   it('对手回合里界面不提供任何可点的行动（不能替对手走棋）', async () => {

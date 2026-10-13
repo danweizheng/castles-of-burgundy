@@ -103,6 +103,17 @@ export function goodsCss(kind: GoodsKind): string {
 /** 中文数字，用于"第 N 阶段 / 第 N 轮"。 */
 export const PHASE_LETTERS = ['A', 'B', 'C', 'D', 'E'] as const
 
+/**
+ * 玩家显示名。
+ *
+ * 早先只处理了 p1/p2，3/4 人局会把原始编号（`p3`）直接显示给玩家 ——
+ * 这是把内部标识泄漏到界面上。现在 3/4 人局用「对手二 / 对手三」，
+ * 而 2 人局保持「对手」（读起来更自然，日志里也是「对手 放置了…」）。
+ */
 export function playerLabel(id: string): string {
-  return id === 'p1' ? '你' : id === 'p2' ? '对手' : id
+  if (id === 'p1') return '你'
+  if (id === 'p2') return '对手'
+  if (id === 'p3') return '对手二'
+  if (id === 'p4') return '对手三'
+  return id
 }

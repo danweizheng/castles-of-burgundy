@@ -31,3 +31,16 @@ export function createDefaultRuleset(): RulesetConfig {
 }
 
 export const DEFAULT_RULESET: RulesetConfig = createDefaultRuleset()
+
+/**
+ * 同一套数据、换一个玩家人数。
+ *
+ * 人数会影响不少东西：玩家数量、启用的仓库格位数（12/18/24）、起始工人数、
+ * 卖货每枚分值（2/3/4）、奖励板块分值（大块 5/6/7）。
+ * **存档恢复时必须用存档里的人数重建配置**，否则 3/4 人局的存档会被 2 人局配置校验 ——
+ * 合法动作与格位数全对不上，会得到"存档损坏"这种误导性的结论。
+ */
+export function rulesetForPlayerCount(playerCount: 2 | 3 | 4): RulesetConfig {
+  return { ...DEFAULT_RULESET, playerCount }
+}
+

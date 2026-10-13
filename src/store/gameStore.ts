@@ -12,7 +12,7 @@
 import { create } from 'zustand'
 import { pickStartingCastle, type Difficulty } from '../ai/heuristic'
 import { applyMove } from '../engine/apply'
-import { DEFAULT_RULESET } from '../engine/config'
+import { DEFAULT_RULESET, rulesetForPlayerCount } from '../engine/config'
 import type { Axial } from '../engine/hex'
 import { listLegalMoves, moveKey, type Move } from '../engine/moves'
 import { createGame } from '../engine/setup'
@@ -68,7 +68,7 @@ interface GameStore {
    */
   readonly lastVp: { readonly logLength: number; readonly deltas: VpDeltas } | null
 
-  newGame: (seed?: number) => void
+  newGame: (seed?: number, playerCount?: 2 | 3 | 4) => void
   play: (move: Move) => void
   undo: () => void
   toggleAutoOpponent: () => void
@@ -140,8 +140,9 @@ export const useGameStore = create<GameStore>()((set, get) => {
     return Math.floor(Math.random() * 1_000_000_000)
   }
 
-  function newGameLog(seed: number): LogEntry[] {
-    return [nextEntry(undefined, `新对局开始（种子 ${seed}）`)]
+  function newGameLog(seed: number, playerCount: 2 | 3 | 4): LogEntry[] {
+    const label = playerCount === 2 ? '2 人局' : `${playerCount} 人局`
+    return [nextEntry(undefined, `新对局开始（${label}，种子 ${seed}）`)]
   }
 
   const seed = freshSeed()
@@ -153,7 +154,7 @@ export const useGameStore = create<GameStore>()((set, get) => {
     seed,
     state,
     past: [],
-    log: newGameLog(seed),
+    log: newGameLog(seed, DEFAULT_RULESET.playerCount),
     moves: listLegalMoves(DEFAULT_RULESET, state),
     autoOpponent: true,
     // 单人模式的对手就是自研 AI，所以默认给最强档（实测单次回合搜索约 30ms，不卡）
@@ -188,7 +189,7 @@ export const useGameStore = create<GameStore>()((set, get) => {
       set({
         state: fresh,
         past: [],
-        log: newGameLog(current.seed),
+        log: newGameLog(current.seed, current.config.playerCount),
         moves: listLegalMoves(current.config, fresh),
         needsSetup: false,
         saveError: null,
@@ -196,15 +197,18 @@ export const useGameStore = create<GameStore>()((set, get) => {
       scheduleSave()
     },
 
-    newGame: (requestedSeed) => {
+    newGame: (requestedSeed, requestedPlayerCount) => {
       const nextSeed = requestedSeed ?? freshSeed()
-      const fresh = createGame(DEFAULT_RULESET, { seed: nextSeed })
+      const playerCount = requestedPlayerCount ?? get().config.playerCount
+      const config = rulesetForPlayerCount(playerCount)
+      const fresh = createGame(config, { seed: nextSeed })
       set({
+        config,
         seed: nextSeed,
         state: fresh,
         past: [],
-        log: newGameLog(nextSeed),
-        moves: listLegalMoves(DEFAULT_RULESET, fresh),
+        log: newGameLog(nextSeed, playerCount),
+        moves: listLegalMoves(config, fresh),
         saveError: null,
         needsSetup: true,
       })
@@ -279,12 +283,15 @@ export const useGameStore = create<GameStore>()((set, get) => {
 
       if (outcome.found && outcome.result !== undefined && outcome.result.ok) {
         const save = outcome.result.save
+        // 用**存档里的人数**重建的配置：3/4 人局的存档不能拿 2 人局配置去算合法动作
+        const restored = outcome.result.config
         set({
+          config: restored,
           seed: save.seed,
           state: save.state,
           past: [],
           log: save.log.map((entry) => ({ ...entry })),
-          moves: listLegalMoves(DEFAULT_RULESET, save.state),
+          moves: listLegalMoves(restored, save.state),
           difficulty: save.difficulty,
           needsSetup: false,
           hydrated: true,
@@ -311,12 +318,14 @@ export const useGameStore = create<GameStore>()((set, get) => {
       if (!decoded.ok) return { ok: false, error: decoded.error }
 
       const save = decoded.save
+      const imported = decoded.config
       set({
+        config: imported,
         seed: save.seed,
         state: save.state,
         past: [],
         log: save.log.map((entry) => ({ ...entry })),
-        moves: listLegalMoves(DEFAULT_RULESET, save.state),
+        moves: listLegalMoves(imported, save.state),
         difficulty: save.difficulty,
         needsSetup: false,
         lastSavedAt: save.savedAt,
