@@ -6,7 +6,16 @@ import { App } from '../App'
 import { DepotPanel } from '../components/DepotPanel'
 import { HexBoard } from '../components/HexBoard'
 import { PlayerPanel } from '../components/PlayerPanel'
+import {
+  Buildings,
+  Knowledge,
+  RulesPanel,
+  Scoring,
+  Setup,
+} from '../components/RulesPanel'
 import { SaveMenu } from '../components/SaveMenu'
+import { BUILDINGS } from '../../engine/data/buildings'
+import { KNOWLEDGE_TILES } from '../../engine/data/knowledge'
 import { BASE_STATE, CONFIG } from '../../engine/__tests__/testUtils'
 
 /**
@@ -124,5 +133,50 @@ describe('整屏渲染', () => {
     expect(html).toContain('导入存档')
     expect(html).toContain('清除本机存档')
     expect(html).toContain('ios'.replace('ios', 'iOS'))
+  })
+
+  it('规则速查：六个分页都在，默认停在「行动」页', () => {
+    const html = renderToStaticMarkup(<RulesPanel onClose={() => {}} />)
+    for (const label of ['行动', '流程', '计分', '知识', '建筑', '设置']) {
+      expect(html, label).toContain(label)
+    }
+    expect(html).toContain('从版图取板块')
+    expect(html).toContain('取 2 个工人')
+    expect(html).toContain('规则速查')
+  })
+
+  it('规则速查 · 计分页：区域分数表与阶段奖励表都能渲染', () => {
+    const html = renderToStaticMarkup(<Scoring />)
+    // 5 格区域 = 15 分（这条也正是用来核对计分表的官方锚点）
+    expect(html).toContain('>15<')
+    expect(html).toContain('>36<')
+    // 阶段 A 奖励 10 分
+    expect(html).toContain('>10<')
+    expect(html).toContain('起始城堡不计分')
+    expect(html).toContain('平手判定')
+  })
+
+  it('规则速查 · 知识页：26 张知识板块一条不落', () => {
+    const html = renderToStaticMarkup(<Knowledge />)
+    for (const tile of KNOWLEDGE_TILES) {
+      expect(html, `${tile.id} ${tile.name}`).toContain(tile.name)
+    }
+    // 26 行 + 1 行表头所在的行结构（tbody 里只有数据行，所以正好 26 个 <tr）
+    expect((html.match(/<tr/g) ?? []).length).toBe(KNOWLEDGE_TILES.length)
+  })
+
+  it('规则速查 · 建筑页：8 种建筑一条不落', () => {
+    const html = renderToStaticMarkup(<Buildings />)
+    for (const building of BUILDINGS) {
+      expect(html, building.name).toContain(building.name)
+    }
+    expect((html.match(/<tr/g) ?? []).length).toBe(BUILDINGS.length)
+  })
+
+  it('规则速查 · 设置页：列出官方组件清单的总数 164', () => {
+    const html = renderToStaticMarkup(<Setup />)
+    expect(html).toContain('164')
+    expect(html).toContain('56')
+    expect(html).toContain('28')
   })
 })

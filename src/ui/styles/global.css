@@ -492,6 +492,104 @@ button {
   margin-top: 6px;
 }
 
+/* ---------------- 规则速查 ---------------- */
+
+.tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.tab {
+  min-height: 36px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--bg-elev-2);
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.tab--active {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: #241a08;
+  font-weight: 700;
+}
+
+.ruleblock {
+  margin-bottom: 12px;
+}
+
+.ruleblock__title {
+  margin: 0 0 4px;
+  font-size: 13px;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+}
+
+.ruleblock p {
+  margin: 0 0 4px;
+  font-size: 13px;
+}
+
+.ruleblock ul,
+.ruleblock ol {
+  margin: 0 0 4px;
+  padding-left: 1.2em;
+  font-size: 13px;
+}
+
+.ruleblock li {
+  margin-bottom: 2px;
+}
+
+.ruleblock .warn {
+  color: var(--gold-bright);
+}
+
+.rulestable {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 4px 0 8px;
+  font-size: 12px;
+}
+
+.rulestable th,
+.rulestable td {
+  border: 1px solid var(--line);
+  padding: 3px 4px;
+  text-align: center;
+}
+
+.rulestable th {
+  background: var(--bg-elev-2);
+  color: var(--text-dim);
+  font-weight: 600;
+}
+
+.rulestable--list th {
+  width: 62px;
+  text-align: left;
+}
+
+.rulestable--list td {
+  text-align: left;
+  line-height: 1.45;
+}
+
+.tag {
+  display: inline-block;
+  margin-top: 2px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--bg-elev-2);
+  border: 1px solid var(--line);
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
 /* ---------------- 底部操作条 ---------------- */
 
 .actionbar {

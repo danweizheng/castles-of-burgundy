@@ -14,6 +14,7 @@ import { DepotPanel } from '../components/DepotPanel'
 import { HexBoard } from '../components/HexBoard'
 import { LogPanel } from '../components/LogPanel'
 import { PlayerPanel } from '../components/PlayerPanel'
+import { RulesPanel } from '../components/RulesPanel'
 import { SaveMenu } from '../components/SaveMenu'
 import {
   affordancesForDie,
@@ -89,6 +90,7 @@ export function GameScreen() {
   const [chooser, setChooser] = useState<{ title: string; options: ChooserOption[] } | null>(null)
   const [showLog, setShowLog] = useState(false)
   const [showSave, setShowSave] = useState(false)
+  const [showRules, setShowRules] = useState(false)
   const [hint, setHint] = useState<string | null>(null)
   /** 对手决策用的随机源；每次决策前推进一下，避免相同局面永远得到同一套噪声 */
   const opponentRng = useRef(createRng(Math.floor(Math.random() * 1_000_000_000)))
@@ -299,6 +301,9 @@ export function GameScreen() {
           <button type="button" className="btn btn--ghost btn--sm" onClick={() => setShowLog((v) => !v)}>
             {showLog ? '收起日志' : '日志'}
           </button>
+          <button type="button" className="btn btn--ghost btn--sm" onClick={() => setShowRules(true)}>
+            规则
+          </button>
           <button type="button" className="btn btn--ghost btn--sm" onClick={() => setShowSave(true)}>
             存档
           </button>
@@ -503,6 +508,8 @@ export function GameScreen() {
           </div>
         </div>
       ) : null}
+
+      {showRules ? <RulesPanel onClose={() => setShowRules(false)} /> : null}
 
       {showSave ? <SaveMenu onClose={() => setShowSave(false)} /> : null}
 
