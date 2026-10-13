@@ -1,0 +1,63 @@
+name: Deploy PWA to GitHub Pages
+
+# 为什么用 Actions 而不是把 dist 推到 gh-pages 分支：
+# 这样每次部署都会先跑类型检查与测试，线上产物一定是"从源码可复现"的，
+# 而且不需要在本地保留一份构建产物分支。
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          # 必须与本地一致：pnpm-workspace.yaml 里的 allowBuilds 是 pnpm 10+ 的语法
+          version: 11
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: 安装依赖
+        run: pnpm install --frozen-lockfile
+
+      - name: 类型检查
+        run: pnpm typecheck
+
+      - name: 测试
+        run: pnpm test
+
+      - name: 构建
+        run: pnpm build
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
