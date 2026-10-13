@@ -242,13 +242,25 @@ export const useGameStore = create<GameStore>()((set, get) => {
 
     undo: () => {
       const current = get()
-      const previous = current.past[current.past.length - 1]
-      if (previous === undefined) return
+      const human = current.humanPlayerId
+
+      /**
+       * 从最近一份快照往回找，**跳过所有"轮到对手"的快照**。
+       *
+       * 为什么必须跳：自动对手在轮到它时会立刻行动。只回退一步的话，回退到的局面仍然
+       * 轮到对手，于是对手把刚才那步又走了一遍 —— 玩家看到的是"按了撤销但什么都没变"，
+       * 会以为按钮坏了。跳过对手的快照之后，撤销的含义才是"收回我自己上一次决定"。
+       */
+      let index = current.past.length - 1
+      while (index >= 0 && current.past[index]!.state.activePlayerId !== human) index -= 1
+      if (index < 0) return
+
+      const target = current.past[index]!
       set({
-        state: previous.state,
-        past: current.past.slice(0, -1),
-        log: current.log.slice(0, previous.logLength),
-        moves: listLegalMoves(current.config, previous.state),
+        state: target.state,
+        past: current.past.slice(0, index),
+        log: current.log.slice(0, target.logLength),
+        moves: listLegalMoves(current.config, target.state),
       })
       scheduleSave()
     },

@@ -329,7 +329,9 @@ export function GameScreen() {
             type="button"
             className="btn btn--ghost btn--sm"
             onClick={undo}
-            disabled={past.length === 0}
+            // 不能只看 past 是否为空：撤销会跳过对手的快照，所以"有东西可撤销"
+            // 的准确含义是"栈里还有人类自己的决定"。否则 AI 先手时按钮看着可点却毫无反应。
+            disabled={!past.some((snapshot) => snapshot.state.activePlayerId === HUMAN)}
           >
             撤销
           </button>

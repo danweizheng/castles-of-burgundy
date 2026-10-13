@@ -298,6 +298,26 @@ describe('真实点击能推动对局', () => {
     expect(useGameStore.getState().lastSavedAt).toBeNull()
   })
 
+  it('撤销按钮的可用状态跟着"栈里还有没有我自己的决定"走', async () => {
+    prepareDeterministicGame()
+    const { container, getByText } = render(<App />)
+    await waitFor(() => {
+      expect(container.querySelectorAll('.die').length).toBe(2)
+    })
+
+    const undoButton = getByText('撤销') as HTMLButtonElement
+    // 开局还没做过任何决定，撤销应当不可用
+    expect(undoButton.disabled).toBe(true)
+
+    fireEvent.click(container.querySelector('.die') as Element)
+    fireEvent.click(getByText('取 2 个工人'))
+    await waitFor(() => {
+      expect(useGameStore.getState().state.actionsTakenThisTurn).toBe(1)
+    })
+    // 做过一次决定之后应当可用
+    expect((getByText('撤销') as HTMLButtonElement).disabled).toBe(false)
+  })
+
   it('撤销能把局面退回上一步', async () => {
     prepareDeterministicGame()
     const { container, getByText } = render(<App />)

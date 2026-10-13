@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest'
+import { opponentMove } from '../../ai/opponentMove'
 import { applyMove } from '../../engine/apply'
 import { moveKey, type Move } from '../../engine/moves'
 import { useGameStore } from '../gameStore'
@@ -111,6 +112,100 @@ describe('立刻落盘（页面被隐藏时必须写到盘上）', () => {
     await useGameStore.getState().saveNow()
     expect(useGameStore.getState().lastSavedAt).not.toBeNull()
     expect(first).not.toBeNull()
+  })
+})
+
+describe('撤销要跳过对手的回合', () => {
+  beforeEach(() => {
+    startDeterministicGame()
+  })
+
+  /** 让人类用完两颗骰子并结束回合，把控制权交给对手。 */
+  function handOverToOpponent(): void {
+    const store = useGameStore.getState()
+    const human = store.humanPlayerId
+    for (const die of [0, 1]) {
+      const move = useGameStore
+        .getState()
+        .moves.find(
+          (candidate) =>
+            candidate.kind === 'takeWorkers' &&
+            candidate.die.kind === 'die' &&
+            candidate.die.index === die,
+        )
+      expect(move, `找不第 ${die} 颗骰子的取工人动作`).toBeDefined()
+      useGameStore.getState().play(move!)
+    }
+    const endTurn = useGameStore.getState().moves.find((move) => move.kind === 'endTurn')
+    expect(endTurn, '用完两颗骰子后应当能结束回合').toBeDefined()
+    useGameStore.getState().play(endTurn!)
+    expect(useGameStore.getState().state.activePlayerId).not.toBe(human)
+  }
+
+  it('前提：对手走过一步之后，只回退一步会落在"轮到对手"的局面上', () => {
+    // 这正是缺陷的成因：自动对手会在轮到它时立刻重走，玩家看到的是"撤销没反应"。
+    handOverToOpponent()
+    const store = useGameStore.getState()
+    const aiMove = opponentMove(store.config, store.state, 'normal')
+    expect(aiMove).toBeDefined()
+    store.play(aiMove!)
+
+    const beforeUndo = useGameStore.getState().past
+    // 「只回退一步会落到哪」看的是**最后一份**快照：撤销就是把它恢复成当前局面
+    const lastSnapshot = beforeUndo[beforeUndo.length - 1]
+    expect(lastSnapshot).toBeDefined()
+    expect(lastSnapshot!.state.activePlayerId).not.toBe(useGameStore.getState().humanPlayerId)
+  })
+
+  it('撤销会跳过对手的动作，直接回到人类自己上一次决定的时刻', () => {
+    handOverToOpponent()
+    const store = useGameStore.getState()
+    const human = store.humanPlayerId
+    store.play(opponentMove(store.config, store.state, 'normal')!)
+
+    // 对手已经动过，局面不该轮到人类
+    expect(useGameStore.getState().state.activePlayerId).not.toBe(human)
+
+    useGameStore.getState().undo()
+
+    const after = useGameStore.getState().state
+    // 关键：撤销之后必须轮到人类，否则自动对手会立刻重走、玩家会觉得撤销没反应
+    expect(after.activePlayerId).toBe(human)
+    // 而且回到的是"用完两颗骰子"的那个点（人类自己的上一次决定）
+    expect(after.actionsTakenThisTurn).toBe(2)
+    expect(useGameStore.getState().past.every((snapshot) => snapshot.state.activePlayerId === human)).toBe(
+      true,
+    )
+  })
+
+  it('连续撤销可以一步步收回自己的每个决定，且始终停在人类的回合', () => {
+    handOverToOpponent()
+    const store = useGameStore.getState()
+    const human = store.humanPlayerId
+    store.play(opponentMove(store.config, store.state, 'normal')!)
+
+    const actionCounts: number[] = []
+    for (let step = 0; step < 6; step += 1) {
+      if (useGameStore.getState().past.length === 0) break
+      useGameStore.getState().undo()
+      const state = useGameStore.getState().state
+      expect(state.activePlayerId).toBe(human)
+      actionCounts.push(state.actionsTakenThisTurn)
+    }
+
+    // 应当能一路退回开局（已用行动数递减到 0）
+    expect(actionCounts.length).toBeGreaterThanOrEqual(2)
+    expect(actionCounts[actionCounts.length - 1]).toBe(0)
+  })
+
+  it('没有任何对手动作时，撤销仍然只退一步（原有行为不变）', () => {
+    const store = useGameStore.getState()
+    const move = store.moves.find((candidate) => candidate.kind === 'takeWorkers')!
+    store.play(move)
+    expect(usedDiceCount()).toBe(1)
+
+    useGameStore.getState().undo()
+    expect(usedDiceCount()).toBe(0)
   })
 })
 
