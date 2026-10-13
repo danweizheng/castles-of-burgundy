@@ -6,6 +6,7 @@ import { App } from '../App'
 import { DepotPanel } from '../components/DepotPanel'
 import { HexBoard } from '../components/HexBoard'
 import { PlayerPanel } from '../components/PlayerPanel'
+import { SaveMenu } from '../components/SaveMenu'
 import { BASE_STATE, CONFIG } from '../../engine/__tests__/testUtils'
 
 /**
@@ -111,8 +112,17 @@ describe('整屏渲染', () => {
     expect(html).toContain('白骰')
     expect(html).toContain('点一颗骰子')
     expect(html).toContain('对手')
-    // 顶栏三个按钮
+    // 顶栏按钮
     expect(html).toContain('撤销')
     expect(html).toContain('新局')
+    expect(html).toContain('存档')
+  })
+
+  it('存档面板能渲染（这是唯一只在真机上才会打开的面板）', () => {
+    const html = renderToStaticMarkup(<SaveMenu onClose={() => {}} />)
+    expect(html).toContain('导出存档')
+    expect(html).toContain('导入存档')
+    expect(html).toContain('清除本机存档')
+    expect(html).toContain('ios'.replace('ios', 'iOS'))
   })
 })

@@ -13,6 +13,7 @@ import { DepotPanel } from '../components/DepotPanel'
 import { HexBoard } from '../components/HexBoard'
 import { LogPanel } from '../components/LogPanel'
 import { PlayerPanel } from '../components/PlayerPanel'
+import { SaveMenu } from '../components/SaveMenu'
 import {
   affordancesForDie,
   affordancesForPending,
@@ -77,13 +78,22 @@ export function GameScreen() {
   const undo = useGameStore((store) => store.undo)
   const newGame = useGameStore((store) => store.newGame)
   const toggleAutoOpponent = useGameStore((store) => store.toggleAutoOpponent)
+  const hydrate = useGameStore((store) => store.hydrate)
+  const hydrated = useGameStore((store) => store.hydrated)
+  const saveError = useGameStore((store) => store.saveError)
 
   const [selectedDie, setSelectedDie] = useState<DieRef | null>(null)
   const [chooser, setChooser] = useState<{ title: string; options: ChooserOption[] } | null>(null)
   const [showLog, setShowLog] = useState(false)
+  const [showSave, setShowSave] = useState(false)
   const [hint, setHint] = useState<string | null>(null)
   /** 对手决策用的随机源；每次决策前推进一下，避免相同局面永远得到同一套噪声 */
   const opponentRng = useRef(createRng(Math.floor(Math.random() * 1_000_000_000)))
+
+  // 启动时尝试恢复上一局
+  useEffect(() => {
+    void hydrate()
+  }, [hydrate])
 
   const human = playerById(state, HUMAN)
   const opponent = state.players.find((player) => player.id !== HUMAN) ?? human
@@ -278,6 +288,9 @@ export function GameScreen() {
           <button type="button" className="btn btn--ghost btn--sm" onClick={() => setShowLog((v) => !v)}>
             {showLog ? '收起日志' : '日志'}
           </button>
+          <button type="button" className="btn btn--ghost btn--sm" onClick={() => setShowSave(true)}>
+            存档
+          </button>
           <button
             type="button"
             className="btn btn--ghost btn--sm"
@@ -291,6 +304,9 @@ export function GameScreen() {
           </button>
         </div>
       </header>
+
+      {!hydrated ? <p className="muted">正在检查本机存档…</p> : null}
+      {saveError === null || showSave ? null : <p className="banner banner--warn">{saveError}</p>}
 
       <section className="opponent">
         <div className="opponent__head">
@@ -447,6 +463,8 @@ export function GameScreen() {
           <span className="muted">种子 {state.seed}</span>
         </div>
       </footer>
+
+      {showSave ? <SaveMenu onClose={() => setShowSave(false)} /> : null}
 
       {chooser === null ? null : (
         <ChooserSheet

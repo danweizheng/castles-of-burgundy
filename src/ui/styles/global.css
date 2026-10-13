@@ -475,6 +475,12 @@ button {
   color: #cfe6f5;
 }
 
+.banner--warn {
+  background: #3a1c14;
+  border: 1px solid var(--bad);
+  color: #f3c9c1;
+}
+
 .footer__row {
   display: flex;
   gap: 6px;
