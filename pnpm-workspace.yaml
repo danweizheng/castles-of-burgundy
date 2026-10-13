@@ -1,0 +1,7 @@
+# pnpm 10+ 的设置入口。
+# 注意：package.json 里的 "pnpm" 字段从 pnpm 10 起不再被读取，必须写在这里。
+#
+# esbuild 需要执行安装脚本才能就位；默认被 pnpm 拦截会让 install 以退出码 1 结束，
+# 而 pnpm 在执行任何 script 前都会先做一次依赖状态检查，于是 test/build 会连带失败。
+allowBuilds:
+  esbuild: true
