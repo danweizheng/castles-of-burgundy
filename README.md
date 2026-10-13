@@ -48,6 +48,21 @@ pwsh tools/measure-layout.ps1 -Width 844 -Height 390   # 直接开窗口，适�
 node tools/check-deploy.mjs
 ```
 
+## 版图录入器
+
+引擎里唯一的假数据是版图。录入器让你对着实物把 1 号版图点进来，产出可直接替换的数据：
+
+**https://danweizheng.github.io/castles-of-burgundy/editor.html**
+
+- 选颜色 → 点格子 ＝ 标该格颜色（同时让它存在）；选点数 → 点格子 ＝ 标点数
+- **区域不用手工划**：官方把区域定义为"同色相连的连续区域"，所以按同色连通块自动派生
+- 实时显示格数、各色格数、区域格数分布、米色城市大小
+- **复用引擎同一份校验器**：录入的版图必须通过 alidatePlayerBoard（不连通、混色、
+  区域超 8 格、起始城堡格不对都会当场报出来）
+- 导出/导入 JSON；手机上传到电脑可以用页面里的只读文本框手动复制
+
+录入完成后把 JSON 发给我，我把 src/engine/config.ts 里的合成版图换掉即可。
+
 ## AI 对手
 
 单人模式的对手是自研 AI（`src/ai/heuristic.ts`），不需要任何额外组件。

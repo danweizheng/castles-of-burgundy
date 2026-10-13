@@ -17,6 +17,7 @@ import {
 import { SaveMenu } from '../components/SaveMenu'
 import { BUILDINGS } from '../../engine/data/buildings'
 import { KNOWLEDGE_TILES } from '../../engine/data/knowledge'
+import { BoardEditor } from '../../editor/BoardEditor'
 import { BASE_STATE, CONFIG } from '../../engine/__tests__/testUtils'
 
 /**
@@ -145,6 +146,20 @@ describe('整屏渲染', () => {
     // 开局没有接近完成的区域，所以走"无威胁"这一支
     expect(html).toContain('没有接近完成')
     expect(html).toContain('关闭')
+  })
+
+  it('版图录入器能渲染（独立页面，只有对着实物录入时才会打开）', () => {
+    const html = renderToStaticMarkup(<BoardEditor />)
+    expect(html).toContain('版图录入器')
+    // 空画布时给出的是可读错误而不是崩掉
+    expect(html).toContain('还没有录入任何格子')
+    // 六个颜色工具与六个点数工具都在
+    for (const label of ['城堡', '动物', '建筑', '矿', '船', '知识']) {
+      expect(html, label).toContain(label)
+    }
+    expect(html).toContain('起始格')
+    expect(html).toContain('删除')
+    expect(html).toContain('下载 JSON')
   })
 
   it('规则速查：六个分页都在，默认停在「行动」页', () => {

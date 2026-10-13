@@ -1,0 +1,179 @@
+/*
+ * 录入器的样式。刻意与游戏界面分开：它是开发工具，
+ * 不进游戏的精简样式表，避免两边的规则互相影响。
+ */
+
+.editor {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 14px 14px calc(env(safe-area-inset-bottom, 0px) + 24px);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.editor__head h1 {
+  margin: 0 0 4px;
+  font-size: 20px;
+  color: var(--gold);
+}
+
+.editor__head p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.editor__tools {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 10px;
+}
+
+.editor__group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.editor__label {
+  width: 40px;
+  font-size: 12px;
+  color: var(--text-dim);
+  flex: none;
+}
+
+.chip {
+  min-height: 40px;
+  min-width: 46px;
+  padding: 0 10px;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--line);
+  background: var(--bg-elev-2);
+  color: #f0e6d6;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.chip--on {
+  border-color: var(--gold-bright);
+  box-shadow: 0 0 10px rgba(255, 215, 106, 0.5);
+}
+
+.editor__canvas {
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 8px;
+}
+
+.editor__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.editor__cell {
+  cursor: pointer;
+}
+
+.editor__num {
+  fill: #1c1610;
+  font-weight: 800;
+  pointer-events: none;
+}
+
+.editor__start {
+  fill: #ffe9ad;
+  font-weight: 700;
+  pointer-events: none;
+}
+
+.editor__report {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 10px;
+}
+
+.editor__row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.editor__row label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.editor__row input {
+  background: var(--bg-elev-2);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--text);
+  padding: 6px 8px;
+  font-size: 13px;
+  min-height: 38px;
+}
+
+.editor__summary {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+.editor__issues {
+  margin: 0;
+  padding-left: 1.1em;
+  font-size: 13px;
+}
+
+.editor__issues .warn {
+  color: var(--gold-bright);
+}
+
+.editor__buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.editor__import {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.editor__import textarea {
+  width: 100%;
+  background: #100c08;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 8px;
+  user-select: text;
+}
+
+.editor__foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-size: 12px;
+}

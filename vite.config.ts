@@ -7,6 +7,17 @@ import { defineConfig } from 'vitest/config'
 export default defineConfig({
   base: './',
 
+  build: {
+    rollupOptions: {
+      input: {
+        // 主应用
+        main: 'index.html',
+        // 版图录入器（开发工具，单独一个页面，不进游戏界面）
+        editor: 'editor.html',
+      },
+    },
+  },
+
   plugins: [
     react(),
     VitePWA({
