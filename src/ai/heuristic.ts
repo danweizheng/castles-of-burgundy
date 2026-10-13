@@ -204,11 +204,27 @@ export function evaluate(
   weights: Weights = DEFAULT_WEIGHTS,
 ): number {
   const me = playerById(state, playerId)
-  const opponent = state.players.find((player) => player.id !== playerId)
 
+  /**
+   * 对手项必须覆盖**所有**其他玩家。
+   *
+   * 这里原先写的是 `players.find(p => p.id !== playerId)` —— 只取第一位对手。
+   * 项目长期只支持 2 人局，所以那一行一直看不出问题；一旦 3/4 人局可玩，
+   * 它就变成真缺陷：**AI 对另外两位对手的进度完全无感**，也就不会去卡他们。
+   *
+   * 取"最强的对手"而不是平均或求和：
+   * - 输给任何一位都算输，所以该盯的是**领跑者**；
+   * - 2 人局下"最强"就是那唯一的对手，**行为与改动前逐位一致**（不会悄悄改掉 2 人局的棋）。
+   */
+  const opponents = state.players.filter((player) => player.id !== playerId)
   let total = scorePlayer(config, state, me, weights)
-  if (opponent !== undefined) {
-    total -= scorePlayer(config, state, opponent, weights) * weights.opponentWeight
+  if (opponents.length > 0) {
+    let strongest = Number.NEGATIVE_INFINITY
+    for (const other of opponents) {
+      const value = scorePlayer(config, state, other, weights)
+      if (value > strongest) strongest = value
+    }
+    total -= strongest * weights.opponentWeight
   }
 
   // 顺位越靠前，下一轮越早挑重新铺满的仓库，按名次给分
