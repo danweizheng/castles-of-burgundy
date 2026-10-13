@@ -27,6 +27,7 @@ import {
   type PendingAffordances,
 } from '../selection'
 import { PHASE_LETTERS, playerLabel, tileGlyph } from '../tiles'
+import { tileInfo } from '../tileInfo'
 import { threatsFor } from '../threats'
 import { offlineLabel, useOfflineState } from '../useOfflineReady'
 
@@ -465,6 +466,24 @@ export function GameScreen() {
                 ? '点一颗骰子，界面会点亮所有可以操作的地方'
                 : '点亮的仓库格位 / 货物 / 领地格子都可以点'}
             </p>
+
+            {/* 选中骰子后就要决定"放哪一枚"，这时把仓储每枚的效果摆出来。
+                触摸屏上 title 属性不显示，不写出来玩家只能看到一个「木」字。 */}
+            {selectedDie === null || human.storage.length === 0 ? null : (
+              <ul className="storageinfo">
+                {human.storage.map((tile, index) => {
+                  const info = tileInfo(tile)
+                  return (
+                    <li key={tile.id} className="storageinfo__item">
+                      <b>
+                        {index + 1}. {info.title}
+                      </b>
+                      <span> — {info.text}</span>
+                    </li>
+                  )
+                })}
+              </ul>
+            )}
 
             <div className="actionbar__buttons">
               {takeWorkersMove === undefined ? null : (

@@ -537,6 +537,27 @@ button {
   color: var(--ok);
 }
 
+/* ---------------- 仓储板块的效果说明（选中骰子后出现） ---------------- */
+
+.storageinfo {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.storageinfo__item {
+  color: var(--text-dim);
+}
+
+.storageinfo__item b {
+  color: var(--gold-bright);
+}
+
 /* ---------------- 规则速查 ---------------- */
 
 .tabs {
@@ -740,6 +761,16 @@ button {
 
   /* 提示文字在竖屏是引导，在横屏是奢侈：先让位给可操作区域 */
   .actionbar .hint {
+    display: none;
+  }
+
+  /* 仓储效果说明在横屏只留标题。实测竖屏时操作条 143px -> 184px（可接受），
+     但横屏视口只有 ~295px 高，整句说明会把操作条撑到占掉大半屏。 */
+  .storageinfo {
+    font-size: 11px;
+  }
+
+  .storageinfo__item span {
     display: none;
   }
 
