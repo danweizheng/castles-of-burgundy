@@ -43,5 +43,31 @@ pnpm preview     # 预览构建产物（PWA 需要在 HTTPS 或 localhost 下才
 
 ## 规则保真度
 
-二手规则资料存在错漏（已发现至少两处冲突），因此 `rules/规则规格.md` 中每条规则都标注了
-把握度，并逐条列出需要对照官方规则书确认的问题。**规则书是唯一权威。**
+引擎规则已按**官方规则书**（`rules/CoB_Rulebook_285x210mm [28 pages].pdf`，Special Edition）
+逐条核实，核实结果与发现的四处实现错误记在 [`rules/规则规格.md`](rules/规则规格.md) §14。
+规则书文本已抽出为 [`rules/rulebook-text.txt`](rules/rulebook-text.txt)，脚本见 `tools/extract-rulebook.py`。
+
+仍为占位数据（需要实物照片）：
+- 1 号领地版图的格位颜色 / 数字 / 区域边界
+- 2 人局棋盘（翻转面）的仓库格位颜色与数量
+- 每种动物的 5 枚绿背板块分别画几只动物；26 张知识板块里哪 6 张是黑背面
+
+## 部署（GitHub Pages）
+
+线上地址：**https://danweizheng.github.io/castles-of-burgundy/**
+
+- 托管在 GitHub Pages（强制 HTTPS），所以 iPhone Safari 里「共享 → 添加到主屏幕」即可装成独立 App
+- `main` 分支是源码；`gh-pages` 分支**只有构建产物**（构建产物不进主分支历史）
+- 重新发布：
+
+```bash
+pnpm build
+node tools/deploy-pages.mjs
+```
+
+为什么不用 GitHub Actions：当前 `gh` token 没有 `workflow` 作用域，推送 `.github/workflows/`
+会被 GitHub 拒绝。需要改成"推 main 自动部署"时：先 `gh auth refresh -s workflow`，
+再把 [`docs/github-actions-deploy.yml.example`](docs/github-actions-deploy.yml.example)
+复制回 `.github/workflows/deploy.yml`。
+
+⚠️ 仓库是**公开**的：GitHub Pages 在免费账户下只支持公开仓库（私有仓库会返回 422）。
