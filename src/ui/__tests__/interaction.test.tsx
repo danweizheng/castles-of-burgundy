@@ -17,6 +17,9 @@ import { ErrorBoundary } from '../components/ErrorBoundary'
 import { useGameStore } from '../../store/gameStore'
 import { axialKey } from '../../engine/hex'
 import { listLegalMoves } from '../../engine/moves'
+import { knowledgeTile } from '../../engine/__tests__/testUtils'
+import type { DieValue, PlayerState } from '../../engine/types'
+import type { GameState } from '../../engine/state'
 
 /** 固定种子，并保证轮到人类玩家行动（否则界面上没有骰子可点）。 */
 function prepareDeterministicGame(seed = 20240101): string {
@@ -500,6 +503,209 @@ describe('真实点击能推动对局', () => {
       // 还能把结果打开
       fireEvent.click(getByText('查看结果'))
       expect(getByText('先看棋盘（可再打开结果）')).toBeDefined()
+    })
+  })
+
+  describe('行为矩阵：点了之后状态到底怎么变', () => {
+    /**
+     * 直接改局面。
+     *
+     * ⚠️ 必须同时重算 moves：store 缓存着合法动作列表，第 25 轮的陈旧动作守卫
+     * 就是拿它比对的。只改 state 不重算 moves，真实动作会被当成陈旧动作挡掉，
+     * 测试就变成了"点了没反应"的空转。
+     */
+    function seed(mutate: (state: GameState, human: PlayerState) => GameState): void {
+      act(() => {
+        useGameStore.setState((current) => {
+          const human = current.state.players.find((player) => player.id === current.humanPlayerId)
+          if (human === undefined) throw new Error('测试局面里找不到人类玩家')
+          const nextState = mutate(current.state, human)
+          return { state: nextState, moves: listLegalMoves(current.config, nextState) }
+        })
+      })
+    }
+
+    function human(): PlayerState {
+      const store = useGameStore.getState()
+      const found = store.state.players.find((player) => player.id === store.humanPlayerId)
+      if (found === undefined) throw new Error('测试局面里找不到人类玩家')
+      return found
+    }
+
+    function setDiceAndHuman(
+      values: readonly DieValue[],
+      patch: Partial<PlayerState>,
+    ): (state: GameState, me: PlayerState) => GameState {
+      return (state, me) => ({
+        ...state,
+        dice: {
+          ...state.dice,
+          [me.id]: values.map((value) => ({ value, used: false })),
+        },
+        players: state.players.map((player) =>
+          player.id === me.id ? { ...player, workers: 0, ...patch } : player,
+        ),
+      })
+    }
+
+    it('「取 2 个工人」：工人 +2、恰好消耗一颗骰子、行动数 +1', async () => {
+      prepareDeterministicGame()
+      const { container, getByText } = render(<App />)
+      await waitFor(() => {
+        expect(container.querySelectorAll('.die').length).toBe(2)
+      })
+
+      const workersBefore = human().workers
+      fireEvent.click(container.querySelector('.die') as Element)
+      fireEvent.click(getByText('取 2 个工人'))
+
+      await waitFor(() => {
+        expect(human().workers).toBe(workersBefore + 2)
+      })
+      expect(human().estate !== undefined).toBe(true)
+      expect(useGameStore.getState().state.actionsTakenThisTurn).toBe(1)
+      expect(
+        (useGameStore.getState().state.dice[human().id] ?? []).filter((die) => die.used),
+      ).toHaveLength(1)
+    })
+
+    it('「结束回合」：控制权交给对手、行动数归零、本回合不再有可点元素', async () => {
+      prepareDeterministicGame()
+      const { container, getByText } = render(<App />)
+      await waitFor(() => {
+        expect(container.querySelectorAll('.die').length).toBe(2)
+      })
+
+      // 用两颗骰子各取一次工人。注意：用掉一颗之后它就不再渲染，
+      // 所以每次都点"当前第一颗"，而不是按下标去取（早先这里取下标越界了）
+      for (const [index, expectedUsed] of [1, 2].entries()) {
+        fireEvent.click(container.querySelectorAll('.die')[0] as Element)
+        fireEvent.click(getByText('取 2 个工人'))
+        await waitFor(() => {
+          expect(
+            (useGameStore.getState().state.dice[human().id] ?? []).filter((die) => die.used).length,
+          ).toBe(expectedUsed)
+        })
+        expect(index).toBeLessThan(2)
+      }
+
+      fireEvent.click(getByText('结束回合'))
+      await waitFor(() => {
+        expect(useGameStore.getState().state.activePlayerId).not.toBe(human().id)
+      })
+      expect(container.querySelectorAll('.die').length).toBe(0)
+      expect(container.querySelectorAll('.actionbar__buttons button').length).toBe(0)
+    })
+
+    it('点仓库格取板块：那一枚离开仓库、进入仓储，且只消耗一颗骰子', async () => {
+      prepareDeterministicGame()
+      const { container } = render(<App />)
+      await waitFor(() => {
+        expect(container.querySelectorAll('.die').length).toBe(2)
+      })
+
+      const depotIdsBefore = Object.values(useGameStore.getState().state.depotSlots)
+        .filter((tile) => tile != null)
+        .map((tile) => tile.id)
+
+      fireEvent.click(container.querySelector('.die') as Element)
+      const litSlots = container.querySelectorAll('.slot--target')
+      expect(litSlots.length, '选中骰子后应当点亮若干仓库格位').toBeGreaterThan(0)
+      fireEvent.click(litSlots[0] as Element)
+
+      await waitFor(() => {
+        expect(human().storage).toHaveLength(1)
+      })
+      const stored = human().storage[0]!
+      // 取到的那一枚必须真的是从仓库里拿走的（而不是凭空冒出来的）
+      expect(depotIdsBefore).toContain(stored.id)
+      const depotIdsAfter = Object.values(useGameStore.getState().state.depotSlots)
+        .filter((tile) => tile != null)
+        .map((tile) => tile.id)
+      expect(depotIdsAfter).not.toContain(stored.id)
+      expect(useGameStore.getState().state.actionsTakenThisTurn).toBe(1)
+    })
+
+    it('放置走"选骰子 → 点领地格"这条路；同一格能放多枚时会弹出选择框且序号对得上', async () => {
+      prepareDeterministicGame()
+      // 两枚都能落到同一个知识格的知识板块，用 id 区分：放错就能看出来
+      seed(
+        setDiceAndHuman([2, 1], {
+          storage: [knowledgeTile('A', 1), knowledgeTile('B', 2)],
+        }),
+      )
+      const { container, getByText } = render(<App />)
+      await waitFor(() => {
+        expect(container.querySelectorAll('.die').length).toBe(2)
+      })
+
+      fireEvent.click(container.querySelectorAll('.die')[0] as Element)
+
+      const litHexes = container.querySelectorAll('.hex--target')
+      expect(litHexes.length, '骰子点数为 2，应当只有一个知识格可放').toBe(1)
+      fireEvent.click(litHexes[0] as Element)
+
+      // 同一格能放两枚 → 应当弹出选择框，且标出仓储序号
+      const firstOption = await waitFor(() => getByText(/第 1 枚/))
+      expect(useGameStore.getState().state.players).toBeDefined()
+      fireEvent.click(firstOption)
+
+      await waitFor(() => {
+        expect(human().storage).toHaveLength(1)
+      })
+      const placedIds = Object.values(human().estate).map((tile) => tile.id)
+      // 放下的必须是第 1 枚（A），不是第 2 枚（B）
+      expect(placedIds).toContain('A')
+      expect(placedIds).not.toContain('B')
+      expect(human().storage.map((tile) => tile.id)).toEqual(['B'])
+    })
+
+    it('点货物筹码卖货：卖掉的正是点的那一种，银币 +1、每枚 2 分', async () => {
+      prepareDeterministicGame()
+      // ⚠️ 骰子点数决定能卖哪一色（规则书第 10 页："The die result indicates which type may be sold"）。
+      // 所以这里必须让骰子点数等于货物色号，否则根本没有合法卖货动作、筹码是灰的。
+      seed(
+        setDiceAndHuman([2, 4], {
+          goods: { 2: 3 },
+          silverlings: 0,
+          vp: 0,
+        }),
+      )
+      const { container, getByTitle } = render(<App />)
+      await waitFor(() => {
+        expect(container.querySelectorAll('.die').length).toBe(2)
+      })
+
+      fireEvent.click(container.querySelectorAll('.die')[0] as Element)
+      fireEvent.click(getByTitle('货物 2'))
+
+      await waitFor(() => {
+        expect(human().silverlings).toBe(1)
+      })
+      expect(human().vp).toBe(6) // 3 枚 × 2 分（2 人局）
+      expect(human().goods['2']).toBeUndefined()
+      expect(human().soldGoods['2']).toBe(3)
+      // 卖货也必须花掉一颗骰子
+      expect(useGameStore.getState().state.actionsTakenThisTurn).toBe(1)
+    })
+
+    it('骰子点数不对时，卖不掉那一色（防止把规则做松）', async () => {
+      prepareDeterministicGame()
+      seed(
+        setDiceAndHuman([1, 4], {
+          goods: { 2: 3 },
+          silverlings: 0,
+        }),
+      )
+      const { container, getByTitle } = render(<App />)
+      await waitFor(() => {
+        expect(container.querySelectorAll('.die').length).toBe(2)
+      })
+
+      fireEvent.click(container.querySelectorAll('.die')[0] as Element)
+      // 骰子是 1，手上有的是 2 号色货 → 那一色不可卖，筹码应当是灰的
+      expect((getByTitle('货物 2') as HTMLButtonElement).disabled).toBe(true)
+      expect(human().goods['2']).toBe(3)
     })
   })
 
