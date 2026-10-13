@@ -185,6 +185,10 @@ export function randomPlayout(seed: number, maxSteps = 4000): PlayoutResult {
     if (steps % 37 === 0) assertInvariants(state, `随机对局第 ${steps} 步`)
   }
 
+  // 必须真的打完。早先这里遇到步数上限只是静默退出，于是一个"5 号知识板块无限
+  // 复制待处理选择"的活锁被当成了正常对局（5000 步里 4877 步卡在同一个选择上）。
+  expect(state.finished, `随机对局（种子 ${seed}）没打完，走了 ${steps} 步——可能存在活锁`).toBe(true)
+
   assertInvariants(state, '随机对局终局')
   assertUniqueTileIds(state, '随机对局终局')
   return { state, steps }

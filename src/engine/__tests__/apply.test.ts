@@ -586,4 +586,22 @@ describe('随机合法行动打到终局（整体验证）', () => {
     const result = randomPlayout(987654321)
     expect(result.state.finished).toBe(true)
   })
+
+  it('多种子随机对局全部能打完（随机走法最容易撞到冷门规则组合）', () => {
+    // 上一轮那个"5 号知识板块无限复制待处理选择"的活锁，就是因为既有测试
+    // 恰好没走到"某张知识板块 + 某次船只放置"这条路径。多种子随机对局是
+    // 最便宜的覆盖手段：每局约 700 步、几十毫秒，能翻出很多正常玩法碰不到的交互。
+    const seeds = Array.from({ length: 20 }, (_, index) => 90000 + index * 613)
+    const stepCounts: number[] = []
+
+    for (const seed of seeds) {
+      const result = randomPlayout(seed)
+      stepCounts.push(result.steps)
+    }
+
+    console.info(
+      `[随机对局] ${seeds.length} 局全部打完，步数 ${Math.min(...stepCounts)}-${Math.max(...stepCounts)}`,
+    )
+    expect(stepCounts.length).toBe(seeds.length)
+  }, 300_000)
 })

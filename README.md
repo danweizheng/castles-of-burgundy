@@ -39,6 +39,13 @@ pnpm test        # 规则单元测试
 pnpm dev         # 本地开发
 pnpm build       # 类型检查 + 构建
 pnpm preview     # 预览构建产物（PWA 需要在 HTTPS 或 localhost 下才生效）
+
+# 布局量测（需要先 pnpm build）：在真实浏览器里量元素几何与"有多少元素超出视口"
+pwsh tools/measure-narrow.ps1 -Width 390 -Height 844   # 精确 CSS 视口（用 iframe 绕开窗口最小宽度）
+pwsh tools/measure-layout.ps1 -Width 844 -Height 390   # 直接开窗口，适合宽视口
+
+# 部署后自检：把线上产物的资源图整条走一遍（含 sw.js 的每一条预缓存）
+node tools/check-deploy.mjs
 ```
 
 ## AI 对手

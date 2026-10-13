@@ -308,6 +308,59 @@ describe('诊断：AI 到底把行动花在哪了', () => {
   }, 300_000)
 })
 
+describe('多种子批量自对弈：找"逻辑没错但玩起来不对"的异常', () => {
+  const SEEDS = Array.from({ length: 8 }, (_, index) => 51000 + index * 977)
+
+  it('每局都打完，且终局没有退化迹象', () => {
+    const placedCounts: number[] = []
+    const workersAtEnd: number[] = []
+    const scores: number[] = []
+    const storageAtEnd: number[] = []
+
+    for (const seed of SEEDS) {
+      const state = playMatch(
+        seed,
+        policyHeuristic(createRng(seed), 'hard'),
+        policyHeuristic(createRng(seed + 5), 'hard'),
+      )
+
+      for (const player of state.players) {
+        const placed = Object.keys(player.estate).length
+        placedCounts.push(placed)
+        workersAtEnd.push(player.workers)
+        storageAtEnd.push(player.storage.length)
+
+        // 退化迹象 1：有人几乎没在建设
+        expect(placed, `${player.id} 在种子 ${seed} 只放了 ${placed} 格`).toBeGreaterThanOrEqual(12)
+        // 退化迹象 2：工人在失控堆积（说明反复拿工人而不做正事）
+        expect(
+          player.workers,
+          `${player.id} 在种子 ${seed} 攒了 ${player.workers} 个工人`,
+        ).toBeLessThanOrEqual(25)
+        // 退化迹象 3：仓储爆满
+        expect(player.storage.length).toBeLessThanOrEqual(3)
+      }
+
+      const result = finalScore(CONFIG, state)
+      for (const score of result.scores) {
+        scores.push(score.totalVp)
+        // 分数落在合理区间：太低说明没在玩，太高说明计分炸了
+        expect(score.totalVp, `${score.playerId} 在种子 ${seed} 得 ${score.totalVp} 分`).toBeGreaterThan(20)
+        expect(score.totalVp).toBeLessThan(500)
+      }
+    }
+
+    const avg = (values: number[]): number =>
+      values.reduce((sum, value) => sum + value, 0) / values.length
+    console.info(
+      `[批量自对弈] ${SEEDS.length} 局（hard vs hard）：放置格数 ${Math.min(...placedCounts)}-${Math.max(...placedCounts)}（均 ${avg(placedCounts).toFixed(1)}），` +
+        `终局工人 ${Math.min(...workersAtEnd)}-${Math.max(...workersAtEnd)}（均 ${avg(workersAtEnd).toFixed(1)}），` +
+        `终局仓储 ${Math.min(...storageAtEnd)}-${Math.max(...storageAtEnd)}，` +
+        `分数 ${Math.min(...scores)}-${Math.max(...scores)}（均 ${avg(scores).toFixed(1)}）`,
+    )
+  }, 600_000)
+})
+
 describe('AI 强度（对随机对手的胜率）', () => {
   const SEEDS = Array.from({ length: 20 }, (_, i) => 101 + i * 101)
 
