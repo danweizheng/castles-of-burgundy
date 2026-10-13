@@ -68,23 +68,53 @@ export type BonusTileSize = 'large' | 'small'
  * 六边形板块。
  *
  * 用 `color` 做判别字段，所以 `tile.color` 既是颜色也是 tag，不需要额外字段。
+ * 每种颜色都导出了具名类型，方便在函数签名里精确表达"这里要的是动物板块"。
  *
  * 注意：板块**没有**点数属性。船/矿/城堡在实物上完全相同，动物/建筑/知识靠正面区分；
  * "这块板块能用哪个点数"完全由它当前所在的编号仓库（或所在的骰子点数）决定。
  */
+export interface CastleTile {
+  readonly id: string
+  readonly color: 'castle'
+}
+
+export interface MineTile {
+  readonly id: string
+  readonly color: 'mine'
+}
+
+export interface ShipTile {
+  readonly id: string
+  readonly color: 'ship'
+}
+
+export interface AnimalTile {
+  readonly id: string
+  readonly color: 'animal'
+  readonly animal: AnimalKind
+  /** 板块上画了几只动物，2–4 */
+  readonly animals: 2 | 3 | 4
+}
+
+export interface BuildingTile {
+  readonly id: string
+  readonly color: 'building'
+  readonly building: BuildingKind
+}
+
+export interface KnowledgeTile {
+  readonly id: string
+  readonly color: 'knowledge'
+  readonly knowledge: KnowledgeId
+}
+
 export type HexTile =
-  | { readonly id: string; readonly color: 'castle' }
-  | { readonly id: string; readonly color: 'mine' }
-  | { readonly id: string; readonly color: 'ship' }
-  | {
-      readonly id: string
-      readonly color: 'animal'
-      readonly animal: AnimalKind
-      /** 板块上画了几只动物，2–4 */
-      readonly animals: 2 | 3 | 4
-    }
-  | { readonly id: string; readonly color: 'building'; readonly building: BuildingKind }
-  | { readonly id: string; readonly color: 'knowledge'; readonly knowledge: KnowledgeId }
+  | CastleTile
+  | MineTile
+  | ShipTile
+  | AnimalTile
+  | BuildingTile
+  | KnowledgeTile
 
 export function tileColorOf(tile: HexTile): TileColor {
   return tile.color
@@ -153,7 +183,14 @@ export interface GameBoardDef {
   readonly tilesPerDepotByPlayerCount: Readonly<Record<2 | 3 | 4, number>>
 }
 
-export type PlayerId = 'p1' | 'p2'
+/**
+ * 玩家 id。
+ *
+ * 虽然是 2 人局优先，但类型上直接留出 3/4 人的位置 —— 官方规则里大量数值
+ * （卖货每枚分数、奖励板块分值、仓库格位数）都按人数变化，提前把人数做成一等公民，
+ * 远期做"更多对手"时不用回来改类型。
+ */
+export type PlayerId = 'p1' | 'p2' | 'p3' | 'p4'
 
 export interface DieState {
   readonly value: DieValue

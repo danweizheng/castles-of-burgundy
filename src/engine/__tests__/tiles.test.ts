@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { createRng } from '../rng'
 import {
+  PLACEHOLDER_BLACK_TILE_INVENTORY,
   PLACEHOLDER_TILE_INVENTORY,
   buildTilePool,
   tileCountsByColor,
@@ -43,10 +44,15 @@ function expectedSignatures(faces: readonly TileFaceSpec[]): string[] {
 }
 
 describe('板块池：数量与构成', () => {
-  it('⚠️ 占位库存表总数等于官方组件数 164（拆分值是臆造的，待规则书替换）', () => {
-    // 官方组件清单只给出总数 164，未给出各色拆分；这里断言总数是为了在替换数据时
-    // 一旦算错就立刻失败。knowledge 的 26 是唯一有依据的部分。
-    expect(totalTilesOf(PLACEHOLDER_TILE_INVENTORY)).toBe(164)
+  it('⚠️ 两张占位库存表之和等于官方组件数 164（拆分值是臆造的，待规则书替换）', () => {
+    // 官方组件清单只给出"164 枚六边形板块"这个总数，未给出各色拆分。
+    // 官方设置章节还要求"按背面的颜色分堆"，其中黑背面是独立的一堆（供中央黑洞抽取），
+    // 所以黑背面板块也在这 164 枚之内 —— 因此断言的是两表之和。
+    expect(totalTilesOf(PLACEHOLDER_TILE_INVENTORY)).toBe(136)
+    expect(totalTilesOf(PLACEHOLDER_BLACK_TILE_INVENTORY)).toBe(28)
+    expect(
+      totalTilesOf(PLACEHOLDER_TILE_INVENTORY) + totalTilesOf(PLACEHOLDER_BLACK_TILE_INVENTORY),
+    ).toBe(164)
   })
 
   it('知识板块恰好 26 枚，编号 1–26 各 1 枚', () => {
@@ -83,7 +89,7 @@ describe('板块池：数量与构成', () => {
 describe('板块池：构建与洗牌', () => {
   it('洗好的池长度与正面多重集合都和库存表一致（元素不增不减）', () => {
     const pool = buildTilePool(PLACEHOLDER_TILE_INVENTORY, createRng(20240101))
-    expect(pool).toHaveLength(164)
+    expect(pool).toHaveLength(totalTilesOf(PLACEHOLDER_TILE_INVENTORY))
     expect(pool.map(faceSignature).sort()).toEqual(expectedSignatures(PLACEHOLDER_TILE_INVENTORY))
   })
 
@@ -113,6 +119,23 @@ describe('板块池：构建与洗牌', () => {
 
   it('空库存表得到空池', () => {
     expect(buildTilePool([], createRng(1))).toEqual([])
+  })
+
+  it('两副牌堆用不同前缀时不会撞 id（有色背面与黑背面是两副独立牌堆）', () => {
+    const main = buildTilePool(PLACEHOLDER_TILE_INVENTORY, createRng(1))
+    const black = buildTilePool(PLACEHOLDER_BLACK_TILE_INVENTORY, createRng(2), 'black-')
+    const ids = [...main.map((t) => t.id), ...black.map((t) => t.id)]
+    expect(new Set(ids).size).toBe(ids.length)
+  })
+
+  it('若两副牌堆用同一个前缀，id 必然撞车 —— 这就是前缀必须存在的原因', () => {
+    // 这条是"特征测试"：它锁住的是"为什么需要前缀"这个原因。
+    // 已知两副牌都有 building / animal / knowledge / mine / ship / castle，
+    // 且各自的序号都从 1 开始，所以不带前缀时 id 一定会重复。
+    const main = buildTilePool(PLACEHOLDER_TILE_INVENTORY, createRng(1))
+    const black = buildTilePool(PLACEHOLDER_BLACK_TILE_INVENTORY, createRng(2))
+    const ids = [...main.map((t) => t.id), ...black.map((t) => t.id)]
+    expect(new Set(ids).size).toBeLessThan(ids.length)
   })
 })
 
