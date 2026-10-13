@@ -72,6 +72,48 @@ describe('动作标识 moveKey', () => {
   })
 })
 
+describe('立刻落盘（页面被隐藏时必须写到盘上）', () => {
+  beforeEach(() => {
+    startDeterministicGame()
+    useGameStore.setState({ lastSavedAt: null })
+  })
+
+  it('前提校验：防抖窗口内确实还没有落盘 —— 否则"立刻落盘"就没有意义', () => {
+    // 新局与选出生点都会 scheduleSave，但 400ms 内不该写完
+    expect(useGameStore.getState().lastSavedAt).toBeNull()
+  })
+
+  it('saveNow 会立刻写完并记下时间', async () => {
+    await useGameStore.getState().saveNow()
+    expect(useGameStore.getState().lastSavedAt).not.toBeNull()
+    expect(useGameStore.getState().saveError).toBeNull()
+  })
+
+  it('saveNow 之后即使再等到防抖时间过去，也不会出错或清掉结果', async () => {
+    await useGameStore.getState().saveNow()
+    const savedAt = useGameStore.getState().lastSavedAt
+    await new Promise((resolve) => setTimeout(resolve, 500))
+    // 取消掉的防抖任务不该再写一次（写一次会刷新时间戳，这里是"没有被覆盖"的弱断言，
+    // 更强的"写了几次"需要注入可计数的存储，当前存储是模块内部件，不做过度设计）
+    expect(useGameStore.getState().lastSavedAt).not.toBeNull()
+    expect(useGameStore.getState().saveError).toBeNull()
+    expect(savedAt).not.toBeNull()
+  })
+
+  it('把局面改掉之后立刻落盘，写的是新局面的时间戳（不是沿用旧的）', async () => {
+    await useGameStore.getState().saveNow()
+    const first = useGameStore.getState().lastSavedAt
+    await new Promise((resolve) => setTimeout(resolve, 5))
+    const store = useGameStore.getState()
+    const move = store.moves.find((candidate) => candidate.kind === 'takeWorkers')!
+    store.play(move)
+    useGameStore.setState({ lastSavedAt: null })
+    await useGameStore.getState().saveNow()
+    expect(useGameStore.getState().lastSavedAt).not.toBeNull()
+    expect(first).not.toBeNull()
+  })
+})
+
 describe('守卫的前提：陈旧动作直接交给引擎会怎样', () => {
   beforeEach(() => {
     startDeterministicGame()

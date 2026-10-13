@@ -76,6 +76,13 @@ interface GameStore {
   /** 官方规则：起始城堡放在玩家**选定**的深红格上（不是固定中央格） */
   chooseStartingCastle: (space: Axial) => void
   hydrate: () => Promise<void>
+  /**
+   * 立刻落盘（并取消待触发的防抖任务）。
+   *
+   * 由界面上"页面隐藏"的监听调用：防抖窗口内切走应用或锁屏会丢掉这次操作，
+   * 而 iOS 对主屏 PWA 的后台回收相当激进，所以这个时机必须显式处理。
+   */
+  saveNow: () => Promise<void>
   exportSaveText: () => string
   importSaveText: (text: string) => { readonly ok: boolean; readonly error?: string }
   clearSave: () => Promise<void>
@@ -93,20 +100,33 @@ const SAVE_DEBOUNCE_MS = 400
 export const useGameStore = create<GameStore>()((set, get) => {
   let saveTimer: ReturnType<typeof setTimeout> | undefined
 
+  /** 立刻落盘，并取消尚未触发的防抖任务。 */
+  function performSave(): Promise<void> {
+    if (saveTimer !== undefined) {
+      clearTimeout(saveTimer)
+      saveTimer = undefined
+    }
+    const store = get()
+    const save = buildSaveFile({
+      state: store.state,
+      log: store.log,
+      difficulty: store.difficulty,
+    })
+    return writeSave(storage, save)
+      .then(() => {
+        set({ lastSavedAt: save.savedAt, saveError: null })
+      })
+      .catch((error: unknown) => {
+        set({ saveError: `自动存档失败：${String(error)}` })
+      })
+  }
+
   /** 延迟写入，避免连点几下就把 IndexedDB 写爆。 */
   function scheduleSave(): void {
     if (saveTimer !== undefined) clearTimeout(saveTimer)
     saveTimer = setTimeout(() => {
       saveTimer = undefined
-      const store = get()
-      const save = buildSaveFile({
-        state: store.state,
-        log: store.log,
-        difficulty: store.difficulty,
-      })
-      void writeSave(storage, save)
-        .then(() => set({ lastSavedAt: save.savedAt, saveError: null }))
-        .catch((error: unknown) => set({ saveError: `自动存档失败：${String(error)}` }))
+      void performSave()
     }, SAVE_DEBOUNCE_MS)
   }
 
@@ -264,6 +284,8 @@ export const useGameStore = create<GameStore>()((set, get) => {
 
       set({ hydrated: true })
     },
+
+    saveNow: performSave,
 
     exportSaveText: () => {
       const current = get()

@@ -166,13 +166,22 @@ export function GameScreen() {
     return result
   }, [state, isHumanTurn, pending])
 
+  /**
+   * 可点区域一律只在**轮到人类**时派生。
+   *
+   * 为什么必须加 isHumanTurn：`moves` 是**当前行动方**的合法动作，轮到对手时它就是对手的动作。
+   * 而清空 selectedDie 的 effect 在绘制**之后**才跑，所以存在一个"新状态已渲染、
+   * 选中状态还没清"的窗口 —— 那个窗口里 affordancesForDie 会拿对手的动作点亮格子，
+   * 点下去就是替对手走棋（这类动作在 store 的合法动作表里，守卫也拦不住）。
+   * 闸门做在派生处，界面就结构上不可能越权。
+   */
   const dieAffordances: DieAffordances | null = useMemo(
-    () => (selectedDie === null ? null : affordancesForDie(moves, selectedDie)),
-    [moves, selectedDie],
+    () => (!isHumanTurn || selectedDie === null ? null : affordancesForDie(moves, selectedDie)),
+    [moves, selectedDie, isHumanTurn],
   )
   const pendingAffordances: PendingAffordances | null = useMemo(
-    () => (pending === undefined ? null : affordancesForPending(moves)),
-    [moves, pending],
+    () => (!isHumanTurn || pending === undefined ? null : affordancesForPending(moves)),
+    [moves, pending, isHumanTurn],
   )
 
   const placementTargets: ReadonlyMap<string, readonly number[]> | undefined =

@@ -219,6 +219,85 @@ describe('真实点击能推动对局', () => {
     }
   })
 
+  it('轮到人类时确实有点亮的目标与可点按钮（上一条断言的正对照，防止它空转）', async () => {
+    prepareDeterministicGame()
+    const { container } = render(<App />)
+    await waitFor(() => {
+      expect(container.querySelectorAll('.die').length).toBe(2)
+    })
+    fireEvent.click(container.querySelector('.die') as Element)
+    // 选中骰子后应当出现可点区域与行动按钮
+    expect(container.querySelectorAll('.slot--target').length + container.querySelectorAll('.hex--target').length)
+      .toBeGreaterThan(0)
+    expect(container.querySelectorAll('.actionbar__buttons button').length).toBeGreaterThan(0)
+  })
+
+  it('对手回合里界面不提供任何可点的行动（不能替对手走棋）', async () => {
+    prepareDeterministicGame()
+    // 把控制权交给对手，并关掉自动对手，让局面停住便于断言
+    act(() => {
+      useGameStore.setState((current) => ({
+        autoOpponent: false,
+        state: { ...current.state, activePlayerId: 'p2', startPlayerId: 'p2' },
+      }))
+    })
+
+    const { container, getByText } = render(<App />)
+
+    // 人类自己的骰子不该出现
+    expect(container.querySelectorAll('.die').length).toBe(0)
+    // 也不该有任何被点亮的可操作区域（派生处已按 isHumanTurn 闸住）
+    expect(container.querySelectorAll('.slot--target').length).toBe(0)
+    expect(container.querySelectorAll('.hex--target').length).toBe(0)
+    // 行动按钮一个都不该有
+    expect(container.querySelectorAll('.actionbar__buttons button').length).toBe(0)
+    // 状态栏要说明现在是谁在行动
+    expect(getByText('对手行动中…')).toBeDefined()
+  })
+
+  it('页面被隐藏时会立刻落盘（iOS 后台回收前唯一可靠的时机）', async () => {
+    prepareDeterministicGame()
+    const { container } = render(<App />)
+    await waitFor(() => {
+      expect(container.querySelectorAll('.die').length).toBe(2)
+    })
+
+    // 前提：此刻还在 400ms 防抖窗口内，没有落盘
+    await act(async () => {
+      useGameStore.setState({ lastSavedAt: null })
+    })
+    expect(useGameStore.getState().lastSavedAt).toBeNull()
+
+    // jsdom 里 visibilityState 是只读属性，只能这样覆盖
+    const original = Object.getOwnPropertyDescriptor(Document.prototype, 'visibilityState')
+    Object.defineProperty(document, 'visibilityState', { value: 'hidden', configurable: true })
+    try {
+      fireEvent(document, new Event('visibilitychange'))
+      await waitFor(() => {
+        expect(useGameStore.getState().lastSavedAt).not.toBeNull()
+      })
+    } finally {
+      if (original === undefined) delete (document as unknown as Record<string, unknown>).visibilityState
+      else Object.defineProperty(document, 'visibilityState', original)
+    }
+  })
+
+  it('页面仍然可见时不会因为这个事件而落盘（避免每次切焦点都写一次）', async () => {
+    prepareDeterministicGame()
+    const { container } = render(<App />)
+    await waitFor(() => {
+      expect(container.querySelectorAll('.die').length).toBe(2)
+    })
+    await act(async () => {
+      useGameStore.setState({ lastSavedAt: null })
+    })
+
+    fireEvent(document, new Event('visibilitychange'))
+    await new Promise((resolve) => setTimeout(resolve, 60))
+    // jsdom 默认 visibilityState 是 'visible'，所以不该触发写入
+    expect(useGameStore.getState().lastSavedAt).toBeNull()
+  })
+
   it('撤销能把局面退回上一步', async () => {
     prepareDeterministicGame()
     const { container, getByText } = render(<App />)
