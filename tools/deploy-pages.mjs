@@ -14,9 +14,13 @@ import { cpSync, existsSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 
-const remote = process.env.GH_REMOTE ?? 'origin'
 const branch = process.env.GH_BRANCH ?? 'gh-pages'
 const distDir = join(process.cwd(), 'dist')
+
+// 临时仓库里没有 remote，所以这里直接取主仓库的 origin URL
+const remoteUrl =
+  process.env.GH_REMOTE_URL ??
+  execFileSync('git', ['remote', 'get-url', 'origin'], { cwd: process.cwd() }).toString().trim()
 
 if (!existsSync(distDir)) {
   console.error('找不到 dist/，请先运行 pnpm build')
@@ -42,7 +46,7 @@ try {
     ['-c', 'user.name=deploy', '-c', 'user.email=deploy@local', 'commit', '-q', '-m', 'deploy'],
     work,
   )
-  run('git', ['push', '--force', remote, `HEAD:${branch}`], work)
+  run('git', ['push', '--force', remoteUrl, `HEAD:${branch}`], work)
 
   console.log(`\n已发布到 ${branch}。Pages 生效后地址在仓库的 Settings → Pages。`)
 } finally {
