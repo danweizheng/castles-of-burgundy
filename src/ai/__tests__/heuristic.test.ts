@@ -182,11 +182,21 @@ describe('选招', () => {
     expect(easyChoices.size).toBeGreaterThan(1)
   })
 
-  it('hard 难度的两层前瞻不会超时（评估次数有上限）', () => {
+  it('hard 难度的整回合束搜索在预算内完成（并报告耗时）', () => {
+    const started = Date.now()
+    const move = pickMove(CONFIG, BASE_STATE, ACTIVE, { difficulty: 'hard', rng: createRng(3) })
+    const elapsed = Date.now() - started
+    console.info(`[性能] hard 单次回合搜索耗时 ${elapsed}ms`)
+    expect(move).toBeDefined()
+    // 界面上给 hard 的思考延迟是 420ms，搜索必须明显快于"人感觉卡住"的量级
+    expect(elapsed).toBeLessThan(3000)
+  })
+
+  it('评估预算上限会被尊重（可以主动调小）', () => {
     const move = pickMove(CONFIG, BASE_STATE, ACTIVE, {
       difficulty: 'hard',
       rng: createRng(3),
-      maxEvaluations: 200,
+      maxEvaluations: 50,
     })
     expect(move).toBeDefined()
   })
@@ -212,6 +222,42 @@ describe('AI 能自己打完整局', () => {
     const emptySlots = Object.values(state.depotSlots).filter((tile) => tile === null).length
     console.info(`[自对弈] 终局空仓库格位 ${emptySlots}/12（供应堆耗尽会导致格位长期为空）`)
   })
+})
+
+describe('难度分层是否真的分层（hard vs normal）', () => {
+  const SEEDS = Array.from({ length: 12 }, (_, index) => 7001 + index * 137)
+
+  it('hard 对 normal：胜率与均分都不落下风', () => {
+    let hardWins = 0
+    let normalWins = 0
+    let hardTotal = 0
+    let normalTotal = 0
+
+    for (const seed of SEEDS) {
+      const state = playMatch(
+        seed,
+        policyHeuristic(createRng(seed), 'hard'),
+        policyHeuristic(createRng(seed + 31), 'normal'),
+      )
+      const result = finalScore(CONFIG, state)
+      const hard = result.scores.find((score) => score.playerId === 'p1')?.totalVp ?? 0
+      const normal = result.scores.find((score) => score.playerId === 'p2')?.totalVp ?? 0
+      hardTotal += hard
+      normalTotal += normal
+      if (result.winnerId === 'p1') hardWins += 1
+      else normalWins += 1
+    }
+
+    const rate = hardWins / SEEDS.length
+    console.info(
+      `[难度分层] hard vs normal：hard ${hardWins} 胜 / normal ${normalWins} 胜（hard 胜率 ${(rate * 100).toFixed(0)}%），` +
+        `hard 平均 ${(hardTotal / SEEDS.length).toFixed(1)} 分，normal 平均 ${(normalTotal / SEEDS.length).toFixed(1)} 分`,
+    )
+
+    // 固定种子 → 结果确定；要求 hard 至少不输（整回合搜索不该比贪心更差）
+    expect(rate).toBeGreaterThanOrEqual(0.5)
+    expect(hardTotal).toBeGreaterThanOrEqual(normalTotal)
+  }, 600_000)
 })
 
 describe('AI 强度（对随机对手的胜率）', () => {

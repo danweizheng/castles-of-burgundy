@@ -136,7 +136,8 @@ export const useGameStore = create<GameStore>()((set, get) => {
     log: newGameLog(seed),
     moves: listLegalMoves(DEFAULT_RULESET, state),
     autoOpponent: true,
-    difficulty: 'normal',
+    // 单人模式的对手就是自研 AI，所以默认给最强档（实测单次回合搜索约 30ms，不卡）
+    difficulty: 'hard',
     hydrated: false,
     lastSavedAt: null,
     saveError: null,

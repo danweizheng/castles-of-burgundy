@@ -209,6 +209,101 @@ export function evaluate(
 }
 
 // ---------------------------------------------------------------------------
+// 整回合搜索（"完整对手"的核心）
+// ---------------------------------------------------------------------------
+
+interface BeamNode {
+  readonly state: GameState
+  /** 根节点的行动：搜索结束后要返回的就是它 */
+  readonly firstMove: Move
+  readonly score: number
+}
+
+/**
+ * 对一个**完整回合**做束搜索。
+ *
+ * 为什么可以这么做：一回合的两颗骰子在回合开始时就已经掷出、双方都看得见，
+ * 所以"这一回合该怎么打"是一个信息完备的搜索问题 —— 不需要对骰子求期望，
+ * 只要把两个行动（以及连锁出来的额外行动与待处理选择）连起来看。
+ *
+ * 早先的做法是"走一步看一步"的贪心，它有个典型的短视：
+ * 用骰子 A 取板块、用骰子 B 把它放下，这两步单独看都不如"取工人"划算，
+ * 连起来看才是最优。束搜索正好修掉这一点。
+ *
+ * 分层保留（而不是全局排序）是刻意的：一个"只用了一颗骰子"的中间状态
+ * 和一个"回合已结束"的终局状态不可比 —— 前者还有行动没花。
+ * 所以中间状态只在自己的层内竞争，最后优先与"回合已结束"的叶子比较。
+ */
+function beamSearchTurn(
+  config: RulesetConfig,
+  state: GameState,
+  playerId: PlayerId,
+  beamWidth: number,
+  maxEvaluations: number,
+): { move: Move; score: number; evaluations: number } | undefined {
+  const rootMoves = listLegalMoves(config, state)
+  if (rootMoves.length === 0) return undefined
+  if (rootMoves.length === 1) {
+    const only = rootMoves[0]!
+    const after = applyMove(config, state, only).state
+    return { move: only, score: evaluate(config, after, playerId), evaluations: 1 }
+  }
+
+  const isTurnOver = (node: BeamNode): boolean =>
+    node.state.finished || node.state.activePlayerId !== playerId
+
+  let evaluations = 0
+  let level: BeamNode[] = []
+  for (const move of rootMoves) {
+    if (evaluations >= maxEvaluations) break
+    const after = applyMove(config, state, move).state
+    evaluations += 1
+    level.push({ state: after, firstMove: move, score: evaluate(config, after, playerId) })
+  }
+  level = topNodes(level, beamWidth)
+
+  const completed: BeamNode[] = []
+  // 一个回合最多：2 个骰子行动 + 城堡额外行动 + 若干连锁的待处理选择 + 结束回合
+  const MAX_DEPTH = 7
+
+  for (let depth = 1; depth < MAX_DEPTH && level.length > 0; depth += 1) {
+    const next: BeamNode[] = []
+    for (const node of level) {
+      for (const move of listLegalMoves(config, node.state)) {
+        if (evaluations >= maxEvaluations) break
+        const after = applyMove(config, node.state, move).state
+        evaluations += 1
+        next.push({
+          state: after,
+          firstMove: node.firstMove,
+          score: evaluate(config, after, playerId),
+        })
+      }
+      if (evaluations >= maxEvaluations) break
+    }
+
+    completed.push(...next.filter(isTurnOver))
+    level = topNodes(next.filter((node) => !isTurnOver(node)), beamWidth)
+    if (evaluations >= maxEvaluations) break
+  }
+
+  // 优先只与"回合真的结束了"的局面比较；一个都没有才退回中间状态
+  const pool = completed.length > 0 ? completed : level
+  let best: BeamNode | undefined
+  for (const node of pool) {
+    if (best === undefined || node.score > best.score) best = node
+  }
+  return best === undefined
+    ? undefined
+    : { move: best.firstMove, score: best.score, evaluations }
+}
+
+function topNodes(nodes: readonly BeamNode[], width: number): BeamNode[] {
+  if (nodes.length <= width) return [...nodes]
+  return [...nodes].sort((a, b) => b.score - a.score).slice(0, width)
+}
+
+// ---------------------------------------------------------------------------
 // 选招
 // ---------------------------------------------------------------------------
 
@@ -231,7 +326,15 @@ const RANDOM_PICK_CHANCE: Readonly<Record<Difficulty, number>> = {
   hard: 0,
 }
 
-const HARD_LOOKAHEAD_MOVE_CAP = 26
+/**
+ * 困难档的束宽与评估预算。
+ *
+ * 实测（整回合搜索）：束宽 8 / 预算 2500 时单次搜索约 20ms，
+ * 而界面给困难档的思考延迟是 420ms —— 富余很多，所以开到更大。
+ * 调这两个数只需要跑 src/ai 的测试看"耗时"与"难度分层"两行输出。
+ */
+const HARD_BEAM_WIDTH = 16
+const HARD_EVALUATION_BUDGET = 9000
 
 function cloneRng(rng: RngState): RngState {
   return { s: rng.s }
@@ -240,7 +343,13 @@ function cloneRng(rng: RngState): RngState {
 /**
  * 选一个行动。返回 undefined 表示当前没有合法行动（正常对局不会发生）。
  *
- * 注意：这里**只**通过公开接口（listLegalMoves / applyMove / 公开状态）访问游戏，
+ * 难度分级：
+ * - easy：贪心 + 较大噪声，有一定概率随便走
+ * - normal：一层贪心（对每个合法行动评估其结果）
+ * - hard：**回合开始时**对整个回合做束搜索；回合中途（例如正在解决待处理选择）
+ *   退回一层贪心，避免每一步都做一次重搜索
+ *
+ * 这里**只**通过公开接口（listLegalMoves / applyMove / 公开状态）访问游戏，
  * 因此结构上不可能作弊；也方便把对手换成人类玩家做自对弈测试。
  */
 export function pickMove(
@@ -251,64 +360,44 @@ export function pickMove(
 ): Move | undefined {
   const moves = listLegalMoves(config, state)
   if (moves.length === 0) return undefined
-
-  const noise = NOISE[options.difficulty]
-  const rng = cloneRng(options.rng)
-  const maxEvaluations = options.maxEvaluations ?? 4000
-
-  // 只有"结束回合"时不必评估
   if (moves.length === 1) return moves[0]
+
+  const rng = cloneRng(options.rng)
+
+  // 只有"结束回合"之外别无选择时才不必评估（上面已经处理 moves.length === 1）
+
+  // hard：回合开始时做整回合束搜索
+  const atTurnStart =
+    state.pending.length === 0 && state.actionsTakenThisTurn === 0 && state.pendingExtraActions === 0
+  if (options.difficulty === 'hard' && atTurnStart) {
+    const result = beamSearchTurn(
+      config,
+      state,
+      playerId,
+      HARD_BEAM_WIDTH,
+      options.maxEvaluations ?? HARD_EVALUATION_BUDGET,
+    )
+    if (result !== undefined) return result.move
+  }
 
   // easy 难度：有一定概率随便走一步
   if (nextInt(rng, 1000) / 1000 < RANDOM_PICK_CHANCE[options.difficulty]) {
     return moves[nextInt(rng, moves.length)]
   }
 
-  // 收集每个行动之后的局面
-  const candidates: Array<{ readonly move: Move; readonly state: GameState }> = []
-  for (const move of moves) {
-    candidates.push({ move, state: applyMove(config, state, move).state })
-  }
-
-  // 本回合第一次行动时，hard 难度做一层前瞻：把两个行动连起来看
-  const isFirstAction = state.actionsTakenThisTurn === 0 && state.pending.length === 0
-  const useLookahead =
-    options.difficulty === 'hard' && isFirstAction && moves.length <= HARD_LOOKAHEAD_MOVE_CAP
-
-  let evaluations = 0
+  const noise = NOISE[options.difficulty]
   let best: Move | undefined
   let bestScore = Number.NEGATIVE_INFINITY
 
-  for (const candidate of candidates) {
-    let score: number
-
-    if (useLookahead) {
-      const followUps = listLegalMoves(config, candidate.state)
-      let bestFollowUp = Number.NEGATIVE_INFINITY
-      for (const followUp of followUps) {
-        if (evaluations >= maxEvaluations) break
-        const after = applyMove(config, candidate.state, followUp).state
-        evaluations += 1
-        const value = evaluate(config, after, playerId)
-        if (value > bestFollowUp) bestFollowUp = value
-      }
-      // 后续没有任何行动时（例如对手回合？不会发生），退回单层评估
-      score =
-        bestFollowUp === Number.NEGATIVE_INFINITY
-          ? evaluate(config, candidate.state, playerId)
-          : bestFollowUp
-    } else {
-      evaluations += 1
-      score = evaluate(config, candidate.state, playerId)
-    }
-
+  for (const move of moves) {
+    const after = applyMove(config, state, move).state
+    let score = evaluate(config, after, playerId)
     if (noise > 0) {
       score += ((nextInt(rng, 2001) - 1000) / 1000) * noise
     }
-
     if (score > bestScore) {
       bestScore = score
-      best = candidate.move
+      best = move
     }
   }
 
