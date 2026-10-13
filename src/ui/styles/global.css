@@ -528,6 +528,15 @@ button {
   margin-top: 6px;
 }
 
+.offline {
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.offline--ready {
+  color: var(--ok);
+}
+
 /* ---------------- 规则速查 ---------------- */
 
 .tabs {

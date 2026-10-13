@@ -28,6 +28,7 @@ import {
 } from '../selection'
 import { PHASE_LETTERS, playerLabel, tileGlyph } from '../tiles'
 import { threatsFor } from '../threats'
+import { offlineLabel, useOfflineState } from '../useOfflineReady'
 
 const HUMAN = 'p1' as const
 const PHASE_COUNT = 5
@@ -95,6 +96,7 @@ export function GameScreen() {
   const [showSave, setShowSave] = useState(false)
   const [showRules, setShowRules] = useState(false)
   const [showOpponent, setShowOpponent] = useState(false)
+  const offlineState = useOfflineState()
   const [hint, setHint] = useState<string | null>(null)
   /** 对手决策用的随机源；每次决策前推进一下，避免相同局面永远得到同一套噪声 */
   const opponentRng = useRef(createRng(Math.floor(Math.random() * 1_000_000_000)))
@@ -520,6 +522,9 @@ export function GameScreen() {
           <button type="button" className="btn btn--ghost btn--sm" onClick={toggleAutoOpponent}>
             对手：{autoOpponent ? '自动' : '暂停'}
           </button>
+          <span className={offlineState === 'ready' ? 'offline offline--ready' : 'offline'}>
+            {offlineLabel(offlineState)}
+          </span>
           <span className="muted">种子 {state.seed}</span>
         </div>
       </footer>
