@@ -10,7 +10,7 @@
  */
 
 import { execFileSync } from 'node:child_process'
-import { cpSync, existsSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
+import { cpSync, existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 
@@ -47,6 +47,18 @@ try {
     work,
   )
   run('git', ['push', '--force', remoteUrl, `HEAD:${branch}`], work)
+
+  // 发布后立刻自检：把线上产物的资源图整条走一遍。
+  // 传入本次构建的 JS 资源名，好让自检先等 Pages 换成新构建再检查。
+  const indexHtml = readFileSync(join(distDir, 'index.html'), 'utf8')
+  const asset = /src="\.\/(assets\/[^"]+\.js)"/.exec(indexHtml)?.[1]
+  console.log('')
+  // 用 process.execPath 而不是字面量 'node'：这个脚本可能在 PATH 里没有 node 的环境下运行
+  run(
+    process.execPath,
+    [join(process.cwd(), 'tools', 'check-deploy.mjs'), ...(asset ? ['--expect', asset] : [])],
+    process.cwd(),
+  )
 
   console.log(`\n已发布到 ${branch}。Pages 生效后地址在仓库的 Settings → Pages。`)
 } finally {

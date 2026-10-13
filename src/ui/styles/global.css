@@ -189,7 +189,10 @@ button {
   display: block;
   width: 100%;
   height: auto;
-  overflow: visible;
+  /* 注意：这里刻意**不设** overflow: visible。
+     SVG 的 viewBox 已经留了 1.25 格的内边距，高亮光晕完全装得下；
+     一旦设成 visible，SVG 会溢出自己的布局盒、画到上方文字上面，
+     结果就是"面板里的说明文字被吃掉半行"这种很难查的问题。 */
 }
 
 .hex {
@@ -801,6 +804,18 @@ button {
   margin: 0 0 10px;
   font-size: 16px;
   color: var(--gold);
+}
+
+/* 弹层里的说明文字比默认的 .muted(12px) 大一点：手机竖屏下 12px 偏挤 */
+.sheet__panel p {
+  font-size: 13px;
+  line-height: 1.55;
+  margin: 0 0 8px;
+}
+
+/* 弹层里的棋盘不要顶掉文字：限制高度，超出的部分由面板自己滚动 */
+.sheet__panel .hexboard {
+  max-height: 46vh;
 }
 
 .sheet__list {
