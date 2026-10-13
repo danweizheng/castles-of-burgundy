@@ -51,6 +51,9 @@ pwsh tools/measure-layout.ps1 -Width 844 -Height 390   # 直接开窗口，适�
 
 # 部署后自检：把线上产物的资源图整条走一遍（含 sw.js 的每一条预缓存）
 node tools/check-deploy.mjs
+
+# 真实浏览器完整对局冒烟：脚本自动打完一整局，必须出现终局结算
+pwsh tools/smoke-play.ps1
 ```
 
 ## 版图录入器
