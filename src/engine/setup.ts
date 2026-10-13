@@ -113,11 +113,24 @@ export interface CreateGameOptions {
   readonly startingSpaces?: Readonly<Partial<Record<PlayerId, Axial>>>
 }
 
+/**
+ * 人数 → 玩家编号。
+ *
+ * ⚠️ 这里曾经写成 `playerCount === 2 ? ['p1','p2'] : ['p1','p2','p3','p4']`，
+ * 于是**3 人局会创建 4 个玩家** —— 而且因为 3/4 人局此前完全没有测试，
+ * 这个错误一直没被发现。所以下面这张表加上测试一起钉住。
+ */
+const PLAYER_IDS_BY_COUNT: Readonly<Record<2 | 3 | 4, readonly PlayerId[]>> = {
+  2: ['p1', 'p2'],
+  3: ['p1', 'p2', 'p3'],
+  4: ['p1', 'p2', 'p3', 'p4'],
+}
+
 export function createGame(config: RulesetConfig, options: CreateGameOptions): GameState {
   const { playerCount } = config
   const rng = createRng(options.seed)
 
-  const playerIds: PlayerId[] = playerCount === 2 ? ['p1', 'p2'] : ['p1', 'p2', 'p3', 'p4']
+  const playerIds = [...PLAYER_IDS_BY_COUNT[playerCount]]
   const turnOrder = rollOff(rng, playerIds)
   const startPlayerId = turnOrder[0]
   if (startPlayerId === undefined) throw new Error('先手未确定')
