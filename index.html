@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- viewport-fit=cover：iPhone 刘海/圆角需要配合 env(safe-area-inset-*) 使用 -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no"
+    />
+    <meta name="description" content="单人离线版勃艮第城堡，含 AI 对手" />
+    <meta name="theme-color" content="#16110c" />
+
+    <link rel="icon" href="./icons/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+
+    <!-- iOS Safari 安装到主屏幕所需（Safari 不支持 beforeinstallprompt，只能靠这些 meta） -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="勃艮第" />
+
+    <!--
+      iOS 启动画面。没有它，从主屏图标启动时会先闪一下空白。
+      media 里必须同时写设备点数与像素比，否则 iOS 匹配不到、等于没配。
+      图片由 tools/make-icons.py 生成（与图标同源的矢量城堡，不依赖字体）。
+    -->
+    <link
+      rel="apple-touch-startup-image"
+      href="./splash/splash-375x667.png"
+      media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="./splash/splash-375x812.png"
+      media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="./splash/splash-390x844.png"
+      media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="./splash/splash-393x852.png"
+      media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="./splash/splash-430x932.png"
+      media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3)"
+    />
+
+    <title>勃艮第城堡 · 单人版</title>
+    <script type="module" crossorigin src="./assets/main-BGWCr6Z2.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/global-CGSFUczO.js">
+    <link rel="stylesheet" crossorigin href="./assets/global-OdDqm7Cs.css">
+  <link rel="manifest" href="./manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="./registerSW.js"></script></head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
