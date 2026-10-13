@@ -7,6 +7,7 @@
  */
 
 import { create } from 'zustand'
+import type { Difficulty } from '../ai/heuristic'
 import { applyMove } from '../engine/apply'
 import { DEFAULT_RULESET } from '../engine/config'
 import { listLegalMoves, type Move } from '../engine/moves'
@@ -36,10 +37,15 @@ interface GameStore {
   readonly moves: readonly Move[]
   /** 临时占位对手的开关（Automa 做好后可以去掉，或改成难度选择） */
   readonly autoOpponent: boolean
+  /**
+   * 对手强度。'random' 是早期那个纯随机占位对手，保留下来当"最弱的一档"。
+   */
+  readonly difficulty: Difficulty | 'random'
   newGame: (seed?: number) => void
   play: (move: Move) => void
   undo: () => void
   toggleAutoOpponent: () => void
+  setDifficulty: (difficulty: Difficulty | 'random') => void
 }
 
 let entryId = 0
@@ -70,6 +76,8 @@ export const useGameStore = create<GameStore>()((set, get) => {
     log: newGameLog(seed),
     moves: listLegalMoves(DEFAULT_RULESET, state),
     autoOpponent: true,
+    difficulty: 'normal',
+    setDifficulty: (difficulty) => set({ difficulty }),
 
     newGame: (requestedSeed) => {
       const nextSeed = requestedSeed ?? freshSeed()

@@ -1,7 +1,9 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { pickMove, suggestMove, type Difficulty } from '../../ai/heuristic'
 import { pickRandomMove } from '../../ai/random'
 import { axialKey } from '../../engine/hex'
 import { listLegalMoves, type DieRef, type Move } from '../../engine/moves'
+import { createRng, nextInt } from '../../engine/rng'
 import { finalScore } from '../../engine/scoring'
 import { playerById, type GameState, type PendingChoice } from '../../engine/state'
 import type { BoardSpace, DieValue, GoodsKind } from '../../engine/types'
@@ -69,6 +71,8 @@ export function GameScreen() {
   const log = useGameStore((store) => store.log)
   const past = useGameStore((store) => store.past)
   const autoOpponent = useGameStore((store) => store.autoOpponent)
+  const difficulty = useGameStore((store) => store.difficulty)
+  const setDifficulty = useGameStore((store) => store.setDifficulty)
   const play = useGameStore((store) => store.play)
   const undo = useGameStore((store) => store.undo)
   const newGame = useGameStore((store) => store.newGame)
@@ -77,6 +81,9 @@ export function GameScreen() {
   const [selectedDie, setSelectedDie] = useState<DieRef | null>(null)
   const [chooser, setChooser] = useState<{ title: string; options: ChooserOption[] } | null>(null)
   const [showLog, setShowLog] = useState(false)
+  const [hint, setHint] = useState<string | null>(null)
+  /** 对手决策用的随机源；每次决策前推进一下，避免相同局面永远得到同一套噪声 */
+  const opponentRng = useRef(createRng(Math.floor(Math.random() * 1_000_000_000)))
 
   const human = playerById(state, HUMAN)
   const opponent = state.players.find((player) => player.id !== HUMAN) ?? human
@@ -90,18 +97,29 @@ export function GameScreen() {
   useEffect(() => {
     setSelectedDie(null)
     setChooser(null)
+    setHint(null)
   }, [state])
 
-  // 占位对手（随机行动）。Automa 做好后这里换成同一个接口的调用即可。
+  // Automa 对手行动
   useEffect(() => {
     if (!autoOpponent || state.finished) return
     if (state.activePlayerId === HUMAN) return
-    const timer = window.setTimeout(() => {
-      const move = pickRandomMove(listLegalMoves(config, state))
-      if (move !== undefined) play(move)
-    }, 320)
+    const timer = window.setTimeout(
+      () => {
+        const moves = listLegalMoves(config, state)
+        if (moves.length === 0) return
+        const rng = opponentRng.current
+        nextInt(rng, 1_000_000)
+        const move =
+          difficulty === 'random'
+            ? pickRandomMove(moves)
+            : pickMove(config, state, state.activePlayerId, { difficulty, rng })
+        if (move !== undefined) play(move)
+      },
+      difficulty === 'hard' ? 420 : 300,
+    )
     return () => window.clearTimeout(timer)
-  }, [state, autoOpponent, config, play])
+  }, [state, autoOpponent, config, play, difficulty])
 
   const availableDice = useMemo<DieRef[]>(() => {
     if (!isHumanTurn || pending !== undefined) return []
@@ -242,6 +260,21 @@ export function GameScreen() {
           <span className="badge badge--dim">已推进 {turnsTaken}/{PHASE_COUNT * ROUND_COUNT}</span>
         </div>
         <div className="topbar__actions">
+          <button
+            type="button"
+            className="btn btn--ghost btn--sm"
+            disabled={!isHumanTurn || pending !== undefined}
+            onClick={() => {
+              const suggestion = suggestMove(config, state, HUMAN)
+              setHint(
+                suggestion === undefined
+                  ? '当前没有可选行动'
+                  : `推荐：${moveLabel(suggestion.move, state)}`,
+              )
+            }}
+          >
+            提示
+          </button>
           <button type="button" className="btn btn--ghost btn--sm" onClick={() => setShowLog((v) => !v)}>
             {showLog ? '收起日志' : '日志'}
           </button>
@@ -314,6 +347,7 @@ export function GameScreen() {
       <div className="actionbar">
         {pending === undefined ? (
           <>
+            {hint === null ? null : <p className="banner banner--hint">{hint}</p>}
             <div className="dice">
               {availableDice.length === 0 ? (
                 <span className="muted">
@@ -387,10 +421,31 @@ export function GameScreen() {
       </div>
 
       <footer className="footer">
-        <button type="button" className="btn btn--ghost btn--sm" onClick={toggleAutoOpponent}>
-          占位对手：{autoOpponent ? '开（随机行动）' : '关'}
-        </button>
-        <span className="muted">种子 {state.seed}</span>
+        <div className="footer__row">
+          {(
+            [
+              ['easy', '轻松'],
+              ['normal', '普通'],
+              ['hard', '困难'],
+              ['random', '随机'],
+            ] as ReadonlyArray<readonly [Difficulty | 'random', string]>
+          ).map(([value, label]) => (
+            <button
+              key={value}
+              type="button"
+              className={difficulty === value ? 'btn btn--sm btn--primary' : 'btn btn--sm'}
+              onClick={() => setDifficulty(value)}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+        <div className="footer__row">
+          <button type="button" className="btn btn--ghost btn--sm" onClick={toggleAutoOpponent}>
+            对手：{autoOpponent ? '自动' : '暂停'}
+          </button>
+          <span className="muted">种子 {state.seed}</span>
+        </div>
       </footer>
 
       {chooser === null ? null : (

@@ -469,6 +469,23 @@ button {
   color: var(--gold-bright);
 }
 
+.banner--hint {
+  background: #14242e;
+  border: 1px solid var(--ship, #5486b5);
+  color: #cfe6f5;
+}
+
+.footer__row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.footer__row + .footer__row {
+  margin-top: 6px;
+}
+
 /* ---------------- 底部操作条 ---------------- */
 
 .actionbar {
