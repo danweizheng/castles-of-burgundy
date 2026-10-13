@@ -53,6 +53,9 @@ function playMatch(
     state = applyMove(CONFIG, state, move).state
     steps += 1
   }
+  // 必须打完。这一条是修一个真实死循环之后加的：早先 5 号知识板块会让"选择相邻货物格"
+  // 无限自我复制，而 playMatch 遇到步数上限只是静默退出，于是活锁被当成了正常对局。
+  expect(state.finished, `对局没打完（走了 ${steps} 步）——可能存在活锁`).toBe(true)
   return state
 }
 
@@ -258,6 +261,51 @@ describe('难度分层是否真的分层（hard vs normal）', () => {
     expect(rate).toBeGreaterThanOrEqual(0.5)
     expect(hardTotal).toBeGreaterThanOrEqual(normalTotal)
   }, 600_000)
+})
+
+describe('诊断：AI 到底把行动花在哪了', () => {
+  it('一场 hard vs hard 的行动类型分布与终局状态', () => {
+    const counts = new Map<string, number>()
+    let state = createGame(CONFIG, { seed: 424242 })
+    let steps = 0
+    const workersSpent = new Map<string, number>()
+
+    while (!state.finished && steps < 5000) {
+      const id = state.activePlayerId
+      const move = pickMove(CONFIG, state, id, { difficulty: 'hard', rng: createRng(steps + 1) })
+      if (move === undefined) break
+      counts.set(move.kind, (counts.get(move.kind) ?? 0) + 1)
+      const before = state.players.find((player) => player.id === id)?.workers ?? 0
+      state = applyMove(CONFIG, state, move).state
+      const after = state.players.find((player) => player.id === id)?.workers ?? 0
+      if (after > before) workersSpent.set(id, (workersSpent.get(id) ?? 0) + (after - before))
+      steps += 1
+    }
+
+    const distribution = [...counts.entries()]
+      .sort((a, b) => b[1] - a[1])
+      .map(([kind, count]) => `${kind}=${count}`)
+      .join(' ')
+    console.info(`[诊断] 共 ${steps} 步；行动分布：${distribution}`)
+
+    for (const player of state.players) {
+      console.info(
+        `[诊断] ${player.id}：放置 ${Object.keys(player.estate).length}/37 格，分 ${player.vp}，` +
+          `工人 ${player.workers}（累计获得 ${workersSpent.get(player.id) ?? 0}），银币 ${player.silverlings}，` +
+          `仓储 ${player.storage.length}，奖励板块 ${Object.keys(player.bonusTiles).length}`,
+      )
+    }
+
+    const takeWorkers = counts.get('takeWorkers') ?? 0
+    const takeTile = counts.get('takeTile') ?? 0
+    const placeTile = counts.get('placeTile') ?? 0
+
+    // 取板块与放板块应当大体配对：严重失衡说明 AI 在囤积或空转
+    expect(takeTile).toBeGreaterThan(0)
+    expect(placeTile).toBeGreaterThan(0)
+    // 取工人是"保底行动"，不该成为主要行动（占比低于三分之一）
+    expect(takeWorkers / Math.max(1, steps / 2)).toBeLessThan(0.34)
+  }, 300_000)
 })
 
 describe('AI 强度（对随机对手的胜率）', () => {

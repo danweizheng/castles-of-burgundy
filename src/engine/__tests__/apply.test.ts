@@ -289,6 +289,68 @@ describe('放置与即时效果', () => {
     expect(resolved.state.actionsTakenThisTurn).toBe(1)
   })
 
+  it('5 号知识板块（双港）：第二次选格不会再抛出第三次，也不会再次前移顺位', () => {
+    // 这是修一个真实死循环时补的回归测试：早先两次选格共用同一个函数且无条件抛出
+    // 新的"第二次选择"，于是每次解决都生出下一个 —— AI 自对弈里出现 5000 步中
+    // 4877 步都在解决同一个选择的活锁。
+    let state: GameState = estateOf(BASE_STATE, ACTIVE, [
+      [{ q: 0, r: -1 }, buildingTile('seed-b', 'bank')],
+      [{ q: -2, r: 0 }, knowledgeTile('k5', 5)],
+    ])
+    state = patchPlayer(state, ACTIVE, {
+      storage: [shipTile('t-ship')],
+      workers: 0,
+      // 手上不留货：两次取货一共会拿到 1/4/5 三种颜色，正好占满"最多 3 种"的额度
+      goods: {},
+    })
+    state = setDice(state, ACTIVE, [numberAt(0, -2), 1])
+    // 第 3 号与第 4 号货物格相邻，且都放了货
+    state = { ...state, goodsSpaces: { ...state.goodsSpaces, '3': [1, 4], '4': [5] } }
+
+    const placed = applyMove(CONFIG, state, {
+      kind: 'placeTile',
+      die: { kind: 'die', index: 0 },
+      storageIndex: 0,
+      to: { q: 0, r: -2 },
+    })
+    expect(placed.state.pending[0]).toEqual({ kind: 'shipGoodsSpace', exclude: [] })
+
+    const first = applyMove(CONFIG, placed.state, { kind: 'resolveShipGoodsSpace', space: 3 })
+    // 双港生效：抛出"再选一个相邻货物格"
+    expect(first.state.pending[0]).toEqual({ kind: 'shipGoodsSecondSpace', firstSpace: 3 })
+
+    const second = applyMove(CONFIG, first.state, {
+      kind: 'resolveShipGoodsSecondSpace',
+      space: 4,
+    })
+    // 关键：第二次解决之后必须干净收尾
+    expect(second.state.pending).toEqual([])
+    // 关键：顺位只在第一次选格时前移过一次
+    expect(second.state.turnOrder).toEqual(first.state.turnOrder)
+    // 两个格子的货都取到了
+    expect(player(second.state).goods['1']).toBe(1)
+    expect(player(second.state).goods['4']).toBe(1)
+    expect(player(second.state).goods['5']).toBe(1)
+  })
+
+  it('知识板块 5 号：没有这张板块时不会抛出第二次选择', () => {
+    let state: GameState = estateOf(BASE_STATE, ACTIVE, [
+      [{ q: 0, r: -1 }, buildingTile('seed-b', 'bank')],
+    ])
+    state = patchPlayer(state, ACTIVE, { storage: [shipTile('t-ship')], workers: 0, goods: { 2: 1 } })
+    state = setDice(state, ACTIVE, [numberAt(0, -2), 1])
+    state = { ...state, goodsSpaces: { ...state.goodsSpaces, '3': [1, 4], '4': [5] } }
+
+    const placed = applyMove(CONFIG, state, {
+      kind: 'placeTile',
+      die: { kind: 'die', index: 0 },
+      storageIndex: 0,
+      to: { q: 0, r: -2 },
+    })
+    const resolved = applyMove(CONFIG, placed.state, { kind: 'resolveShipGoodsSpace', space: 3 })
+    expect(resolved.state.pending).toEqual([])
+  })
+
   it('货物仓储最多 3 种颜色，装不下的留在原处', () => {
     let state: GameState = estateOf(BASE_STATE, ACTIVE, [
       [{ q: 0, r: -1 }, buildingTile('seed-b', 'bank')],

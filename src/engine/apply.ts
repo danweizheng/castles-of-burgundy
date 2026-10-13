@@ -458,7 +458,24 @@ function advanceTurnOrderForShip(
   return { state: { ...state, turnOrder: order }, moved: true }
 }
 
-function resolveShipGoods(config: RulesetConfig, state: GameState, space: DieValue): ApplyResult {
+/**
+ * 结算船只取货。
+ *
+ * `isFirstChoice` 区分"第一次选货物格"与"5 号知识板块带来的第二次选格"，
+ * 它同时控制两件事，两件都是必须的：
+ *
+ * 1. **顺位前移只做一次。** 官方规则里前移顺位是"放置船只"这一步的一部分，
+ *    而双港只是多取一个相邻货物格的货物，不该再前移一次。
+ * 2. **只有第一次选择才会再抛出"第二次选格"。** 这一条是修一个真实的死循环：
+ *    早先两处共用同一个函数且无条件抛出第二次选择，于是每次解决都会生出下一个，
+ *    AI 自对弈里出现了 5000 步中 4877 步都在解决同一个选择的活锁。
+ */
+function resolveShipGoods(
+  config: RulesetConfig,
+  state: GameState,
+  space: DieValue,
+  isFirstChoice: boolean,
+): ApplyResult {
   const events: GameEvent[] = []
   let s: GameState = { ...state, pending: state.pending.slice(1) }
 
@@ -474,20 +491,22 @@ function resolveShipGoods(config: RulesetConfig, state: GameState, space: DieVal
     left: result.left,
   })
 
-  const advanced = advanceTurnOrderForShip(s, player.id)
-  s = advanced.state
-  if (advanced.moved) {
-    events.push({
-      kind: 'turnOrderAdvanced',
-      player: player.id,
-      isStartPlayer: s.turnOrder[0] === player.id,
-    })
-  }
+  if (isFirstChoice) {
+    const advanced = advanceTurnOrderForShip(s, player.id)
+    s = advanced.state
+    if (advanced.moved) {
+      events.push({
+        kind: 'turnOrderAdvanced',
+        player: player.id,
+        isStartPlayer: s.turnOrder[0] === player.id,
+      })
+    }
 
-  // 5 号知识板块：再取一个相邻货物格
-  if (capabilitiesOf(currentPlayer(s)).shipTakesTwoGoodsSpaces) {
-    const second: PendingChoice = { kind: 'shipGoodsSecondSpace', firstSpace: space }
-    if (canResolvePending(config, s, second)) s = { ...s, pending: [second, ...s.pending] }
+    // 5 号知识板块：再取一个相邻货物格
+    if (capabilitiesOf(currentPlayer(s)).shipTakesTwoGoodsSpaces) {
+      const second: PendingChoice = { kind: 'shipGoodsSecondSpace', firstSpace: space }
+      if (canResolvePending(config, s, second)) s = { ...s, pending: [second, ...s.pending] }
+    }
   }
 
   return { state: s, events }
@@ -765,7 +784,7 @@ function applyPendingMove(config: RulesetConfig, state: GameState, move: Move): 
       if (move.kind !== 'resolveShipGoodsSpace') {
         throw new Error(`当前要解决的是"选择货物格"，不能执行 ${move.kind}`)
       }
-      return resolveShipGoods(config, state, move.space)
+      return resolveShipGoods(config, state, move.space, true)
     }
     case 'shipGoodsSecondSpace': {
       if (move.kind !== 'resolveShipGoodsSecondSpace') {
@@ -774,7 +793,8 @@ function applyPendingMove(config: RulesetConfig, state: GameState, move: Move): 
       if (!goodsSpaceNeighbours(pending.firstSpace).includes(move.space)) {
         throw new Error('第二格必须与第一格相邻')
       }
-      return resolveShipGoods(config, state, move.space)
+      // 第二次选择不会再抛出第三次（也不会再次前移顺位）
+      return resolveShipGoods(config, state, move.space, false)
     }
     case 'warehouseSellGoods': {
       if (move.kind !== 'resolveWarehouseSellGoods') {
