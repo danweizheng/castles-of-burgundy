@@ -558,6 +558,49 @@ button {
   color: var(--gold-bright);
 }
 
+/* ---------------- 错误边界（兜底，正常不该看到） ---------------- */
+
+.crash {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: calc(env(safe-area-inset-top, 0px) + 24px) 16px
+    calc(env(safe-area-inset-bottom, 0px) + 24px);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.crash__title {
+  margin: 0;
+  font-size: 20px;
+  color: var(--bad);
+}
+
+.crash__text {
+  margin: 0;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+.crash__detail {
+  margin: 0;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  background: #100c08;
+  border: 1px solid var(--line);
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  word-break: break-all;
+  user-select: text;
+}
+
+.crash__buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
 /* ---------------- 规则速查 ---------------- */
 
 .tabs {

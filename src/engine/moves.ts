@@ -82,6 +82,24 @@ export type Move =
   | { readonly kind: 'endTurn' }
 
 /**
+ * 动作的结构化标识，用于判断"这个动作此刻还是不是合法的"。
+ *
+ * 使用场景：界面上的按钮持有渲染那一刻算出来的动作。手机上的快速连点、
+ * 或者 React 尚未重渲染就再次触发，都会送来一个**此刻已经不合法**的动作。
+ * 直接把它交给 applyMove 会抛异常，而异常发生在 React 事件处理器里 ——
+ * 没有错误边界时就是白屏。所以需要一种便宜的"同一个动作吗"的判据。
+ *
+ * 只对顶层键排序即可：Move 的嵌套对象（die / to / source）都由同一处代码构造，
+ * 键序一致，所以浅排序足够区分不同的动作。
+ */
+export function moveKey(move: Move): string {
+  const entries = Object.entries(move as Record<string, unknown>).sort(([a], [b]) =>
+    a < b ? -1 : a > b ? 1 : 0,
+  )
+  return JSON.stringify(entries)
+}
+
+/**
  * 6 个货物格的相邻关系（供 5 号知识板块"取两个相邻货物格"使用）。
  *
  * ⚠️ 官方只说"two neighbouring goods spaces"，没说相邻的判定方式。

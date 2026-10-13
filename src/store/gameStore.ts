@@ -14,7 +14,7 @@ import { pickStartingCastle, type Difficulty } from '../ai/heuristic'
 import { applyMove } from '../engine/apply'
 import { DEFAULT_RULESET } from '../engine/config'
 import type { Axial } from '../engine/hex'
-import { listLegalMoves, type Move } from '../engine/moves'
+import { listLegalMoves, moveKey, type Move } from '../engine/moves'
 import { createGame } from '../engine/setup'
 import type { GameState, RulesetConfig } from '../engine/state'
 import type { PlayerId } from '../engine/types'
@@ -193,6 +193,14 @@ export const useGameStore = create<GameStore>()((set, get) => {
 
     play: (move) => {
       const current = get()
+
+      // 陈旧动作守卫。按钮持有的是渲染那一刻算出来的动作，而手机上的快速连点
+      // （或 React 还没重渲染就再次触发）会送来一个此刻已不合法的动作。
+      // 交给 applyMove 会抛异常，异常又发生在 React 事件处理器里 —— 没有错误边界时就是白屏。
+      // 这里用 store 已缓存的合法动作列表核对，不额外重算。
+      // 注意这不是"吞掉引擎错误"：真正的引擎 bug 发生在合法动作的判断之后，照旧会抛出来。
+      if (!current.moves.some((candidate) => moveKey(candidate) === moveKey(move))) return
+
       const result = applyMove(current.config, current.state, move)
       const entries = result.events.map((event) => {
         const { player, text } = uiEventText(event)

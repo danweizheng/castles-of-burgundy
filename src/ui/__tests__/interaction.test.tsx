@@ -10,8 +10,9 @@
  */
 
 import { act, cleanup, fireEvent, render, waitFor } from '@testing-library/react'
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { App } from '../App'
+import { ErrorBoundary } from '../components/ErrorBoundary'
 import { useGameStore } from '../../store/gameStore'
 import { axialKey } from '../../engine/hex'
 import { listLegalMoves } from '../../engine/moves'
@@ -176,6 +177,46 @@ describe('真实点击能推动对局', () => {
         useGameStore.getState().humanPlayerId,
       )
     })
+  })
+
+  it('错误边界：子组件抛错时显示兜底界面而不是白屏，并给出恢复入口', () => {
+    // 这是"飞机上离线玩"场景的最后一道保险：没有它，任何未捕获异常都是白屏，
+    // 而玩家在飞机上既不能刷新缓存、也看不到任何提示。
+    const Boom = (): never => {
+      throw new Error('测试用的爆炸')
+    }
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {})
+    try {
+      const { getByText } = render(
+        <ErrorBoundary>
+          <Boom />
+        </ErrorBoundary>,
+      )
+      expect(getByText('界面出错了')).toBeDefined()
+      expect(getByText('刷新并恢复对局')).toBeDefined()
+      expect(getByText('尝试继续')).toBeDefined()
+      // 原始报错信息要能看到，便于事后查
+      expect(getByText('测试用的爆炸')).toBeDefined()
+    } finally {
+      spy.mockRestore()
+    }
+  })
+
+  it('错误边界能接受自定义提示（录入器要说明录入内容没有存盘）', () => {
+    const Boom = (): never => {
+      throw new Error('录入器爆炸')
+    }
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {})
+    try {
+      const { getByText } = render(
+        <ErrorBoundary hint="录入的内容没有存盘。">
+          <Boom />
+        </ErrorBoundary>,
+      )
+      expect(getByText('录入的内容没有存盘。')).toBeDefined()
+    } finally {
+      spy.mockRestore()
+    }
   })
 
   it('撤销能把局面退回上一步', async () => {

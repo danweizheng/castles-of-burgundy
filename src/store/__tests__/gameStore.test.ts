@@ -1,0 +1,155 @@
+import { beforeEach, describe, expect, it } from 'vitest'
+import { applyMove } from '../../engine/apply'
+import { moveKey, type Move } from '../../engine/moves'
+import { useGameStore } from '../gameStore'
+
+/**
+ * 陈旧动作守卫。
+ *
+ * 场景：按钮持有的是**渲染那一刻**算出来的动作。手机上的快速连点，
+ * 或者 React 还没来得及重渲染就再次触发，都会送来一个此刻已不合法的动作。
+ * 直接交给 applyMove 会抛异常，而异常发生在 React 事件处理器里 ——
+ * 没有错误边界时就是白屏（错误边界本身也是这一轮加的）。
+ */
+
+function startDeterministicGame(seed = 20240101): void {
+  useGameStore.getState().newGame(seed)
+  const afterNew = useGameStore.getState()
+  const board = afterNew.config.playerBoards[afterNew.state.players[0]!.boardId]!
+  afterNew.chooseStartingCastle(board.startingSpace)
+
+  useGameStore.setState((current) => {
+    const human = current.humanPlayerId
+    const others = current.state.turnOrder.filter((id) => id !== human)
+    return {
+      autoOpponent: false,
+      state: {
+        ...current.state,
+        activePlayerId: human,
+        startPlayerId: human,
+        turnIndex: 0,
+        turnOrder: [human, ...others],
+      },
+    }
+  })
+}
+
+function usedDiceCount(): number {
+  const snapshot = useGameStore.getState()
+  return (snapshot.state.dice[snapshot.humanPlayerId] ?? []).filter((die) => die.used).length
+}
+
+describe('动作标识 moveKey', () => {
+  it('结构相同即相同，与键的书写顺序无关', () => {
+    expect(moveKey({ kind: 'takeWorkers', die: { kind: 'die', index: 0 } })).toBe(
+      moveKey({ die: { kind: 'die', index: 0 }, kind: 'takeWorkers' }),
+    )
+  })
+
+  it('骰子序号不同视为不同动作', () => {
+    expect(moveKey({ kind: 'takeWorkers', die: { kind: 'die', index: 0 } })).not.toBe(
+      moveKey({ kind: 'takeWorkers', die: { kind: 'die', index: 1 } }),
+    )
+  })
+
+  it('可选字段"缺席"与"存在"必须区分（否则弃牌与不弃牌会被当成同一个动作）', () => {
+    const without: Move = { kind: 'takeTile', die: { kind: 'die', index: 0 }, slotId: 'a' }
+    const withDiscard: Move = {
+      kind: 'takeTile',
+      die: { kind: 'die', index: 0 },
+      slotId: 'a',
+      discardStorageIndex: 0,
+    }
+    expect(moveKey(without)).not.toBe(moveKey(withDiscard))
+  })
+
+  it('目标格位不同视为不同动作', () => {
+    expect(
+      moveKey({ kind: 'placeTile', die: { kind: 'die', index: 0 }, storageIndex: 0, to: { q: 0, r: 0 } }),
+    ).not.toBe(
+      moveKey({ kind: 'placeTile', die: { kind: 'die', index: 0 }, storageIndex: 0, to: { q: 1, r: 0 } }),
+    )
+  })
+})
+
+describe('守卫的前提：陈旧动作直接交给引擎会怎样', () => {
+  beforeEach(() => {
+    startDeterministicGame()
+  })
+
+  it('同一个骰子动作第二次直接交给 applyMove 会抛异常 —— 这正是需要守卫的原因', () => {
+    const store = useGameStore.getState()
+    const move = store.moves.find((candidate) => candidate.kind === 'takeWorkers')!
+    const once = applyMove(store.config, store.state, move)
+
+    // 如果没有守卫，这个异常会发生在 React 事件处理器里
+    expect(() => applyMove(store.config, once.state, move)).toThrow()
+  })
+})
+
+describe('play 对陈旧动作的处理', () => {
+  beforeEach(() => {
+    startDeterministicGame()
+  })
+
+  it('同一个动作重复提交：第二次被忽略，不多花骰子、也不多一条撤销记录', () => {
+    const store = useGameStore.getState()
+    const move = store.moves.find((candidate) => candidate.kind === 'takeWorkers')
+    expect(move).toBeDefined()
+
+    store.play(move!)
+    const stateAfterFirst = useGameStore.getState().state
+    const diceAfterFirst = usedDiceCount()
+    const undoDepthAfterFirst = useGameStore.getState().past.length
+
+    // 模拟连点：同一个（此刻已不合法的）动作再提交一次
+    expect(() => useGameStore.getState().play(move!)).not.toThrow()
+
+    expect(useGameStore.getState().state).toBe(stateAfterFirst)
+    expect(usedDiceCount()).toBe(diceAfterFirst)
+    expect(useGameStore.getState().past).toHaveLength(undoDepthAfterFirst)
+  })
+
+  it('完全不合法的动作被忽略，且不会抛到调用方（事件处理器）', () => {
+    const bogus: Move = { kind: 'resolveWarehouseSellGoods', goods: 1 }
+    // 先确认它此刻真的不合法，否则这条测试就没有意义
+    expect(useGameStore.getState().moves.some((move) => moveKey(move) === moveKey(bogus))).toBe(false)
+
+    const before = useGameStore.getState().state
+    expect(() => useGameStore.getState().play(bogus)).not.toThrow()
+    expect(useGameStore.getState().state).toBe(before)
+  })
+
+  it('篡改过的动作（合法但字段被动过）同样被忽略', () => {
+    const store = useGameStore.getState()
+    const real = store.moves.find((candidate) => candidate.kind === 'takeTile')
+    expect(real).toBeDefined()
+    const tampered: Move = { ...(real as Extract<Move, { kind: 'takeTile' }>), slotId: '根本不存在的格位' }
+
+    const before = useGameStore.getState().state
+    expect(() => useGameStore.getState().play(tampered)).not.toThrow()
+    expect(useGameStore.getState().state).toBe(before)
+  })
+
+  it('合法动作照常生效（守卫不能把关卡设得太严）', () => {
+    const store = useGameStore.getState()
+    const move = store.moves.find((candidate) => candidate.kind === 'takeWorkers')
+    const before = usedDiceCount()
+    store.play(move!)
+    expect(usedDiceCount()).toBe(before + 1)
+  })
+
+  it('撤销之后，同一个动作又能重新提交（守卫看的是当前局面，不是历史）', () => {
+    const store = useGameStore.getState()
+    const move = store.moves.find((candidate) => candidate.kind === 'takeWorkers')!
+    store.play(move)
+    expect(usedDiceCount()).toBe(1)
+
+    useGameStore.getState().undo()
+    expect(usedDiceCount()).toBe(0)
+
+    // 撤销后同一个动作重新合法：这时连点不该被误挡
+    expect(() => useGameStore.getState().play(move)).not.toThrow()
+    expect(usedDiceCount()).toBe(1)
+  })
+})
