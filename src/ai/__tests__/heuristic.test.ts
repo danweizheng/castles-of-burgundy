@@ -1,11 +1,13 @@
 import { describe, expect, it } from 'vitest'
 import { applyMove } from '../../engine/apply'
+import { castleSpacesOf } from '../../engine/board'
+import { axialKey } from '../../engine/hex'
 import { createGame } from '../../engine/setup'
 import { listLegalMoves, type Move } from '../../engine/moves'
 import { createRng, nextInt, type RngState } from '../../engine/rng'
 import { finalScore } from '../../engine/scoring'
 import { playerById, type GameState, type RulesetConfig } from '../../engine/state'
-import type { PlayerId } from '../../engine/types'
+import type { PlayerBoardDef, PlayerId } from '../../engine/types'
 import {
   BASE_STATE,
   CONFIG,
@@ -17,7 +19,7 @@ import {
   patchPlayer,
   setDice,
 } from '../../engine/__tests__/testUtils'
-import { DEFAULT_WEIGHTS, evaluate, pickMove, scorePlayer, type Difficulty } from '../heuristic'
+import { DEFAULT_WEIGHTS, evaluate, pickMove, pickStartingCastle, scorePlayer, type Difficulty } from '../heuristic'
 
 const ACTIVE: PlayerId = BASE_STATE.activePlayerId
 
@@ -53,6 +55,30 @@ function playMatch(
   }
   return state
 }
+
+describe('AI 选开局城堡格', () => {
+  it('返回的必须是版图上的某个深红格', () => {
+    const board = CONFIG.playerBoards['1'] as PlayerBoardDef
+    const castles = castleSpacesOf(board).map(axialKey)
+    expect(castles.length).toBeGreaterThan(1)
+    for (const player of BASE_STATE.players) {
+      const choice = pickStartingCastle(CONFIG, player)
+      expect(castles).toContain(axialKey(choice))
+    }
+  })
+
+  it('对同一版图是确定的（不引入额外随机）', () => {
+    const player = BASE_STATE.players[0]!
+    expect(pickStartingCastle(CONFIG, player)).toEqual(pickStartingCastle(CONFIG, player))
+  })
+
+  it('选中后确实能开局（引擎接受这个出生点）', () => {
+    const player = BASE_STATE.players[0]!
+    const choice = pickStartingCastle(CONFIG, player)
+    const state = createGame(CONFIG, { seed: 9, startingSpaces: { p1: choice } })
+    expect(state.players[0]?.estate[axialKey(choice)]?.color).toBe('castle')
+  })
+})
 
 describe('局面评估', () => {
   it('同一局面下，自己的分数高于对手时评估为正', () => {

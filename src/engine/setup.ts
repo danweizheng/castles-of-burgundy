@@ -9,6 +9,7 @@
  */
 
 import { activeSlots } from './gameBoard'
+import { isCastleSpace } from './board'
 import { axialKey, type Axial } from './hex'
 import { createRng, rollDie, shuffle } from './rng'
 import { applyPhaseEnd } from './scoring'
@@ -103,6 +104,13 @@ export interface CreateGameOptions {
   readonly seed: number
   /** 每位玩家使用的玩家版图 id。默认全部用 '1'（两人同版图，公平且是常见玩法）。 */
   readonly boardIds?: readonly string[]
+  /**
+   * 每位玩家开局城堡所在的深红格。
+   *
+   * 官方规则是**选定**一个深红格（不是固定中央格）；缺省时用版图给出的推荐格
+   * （也就是中央那个 6 号格，规则书对"第一次玩"的推荐）。
+   */
+  readonly startingSpaces?: Readonly<Partial<Record<PlayerId, Axial>>>
 }
 
 export function createGame(config: RulesetConfig, options: CreateGameOptions): GameState {
@@ -141,7 +149,12 @@ export function createGame(config: RulesetConfig, options: CreateGameOptions): G
     const board = config.playerBoards[boardId]
     if (board === undefined) throw new Error(`找不到玩家版图 ${boardId}`)
 
-    const start: Axial = board.startingSpace
+    const start: Axial = options.startingSpaces?.[id] ?? board.startingSpace
+    if (!isCastleSpace(board, start)) {
+      throw new Error(
+        `玩家 ${id} 的开局城堡格 ${axialKey(start)} 不是深红格（开局城堡必须放在深红格上）`,
+      )
+    }
     const castle = drawByColor(supply, 'castle')
     if (castle === undefined) throw new Error('供应堆里没有城堡板块，无法完成开局')
 

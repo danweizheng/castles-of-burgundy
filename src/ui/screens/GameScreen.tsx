@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { pickMove, suggestMove, type Difficulty } from '../../ai/heuristic'
 import { pickRandomMove } from '../../ai/random'
+import { castleSpacesOf } from '../../engine/board'
 import { axialKey } from '../../engine/hex'
 import { listLegalMoves, type DieRef, type Move } from '../../engine/moves'
 import { createRng, nextInt } from '../../engine/rng'
@@ -81,6 +82,8 @@ export function GameScreen() {
   const hydrate = useGameStore((store) => store.hydrate)
   const hydrated = useGameStore((store) => store.hydrated)
   const saveError = useGameStore((store) => store.saveError)
+  const needsSetup = useGameStore((store) => store.needsSetup)
+  const chooseStartingCastle = useGameStore((store) => store.chooseStartingCastle)
 
   const [selectedDie, setSelectedDie] = useState<DieRef | null>(null)
   const [chooser, setChooser] = useState<{ title: string; options: ChooserOption[] } | null>(null)
@@ -110,9 +113,9 @@ export function GameScreen() {
     setHint(null)
   }, [state])
 
-  // Automa 对手行动
+  // Automa 对手行动（选出生点阶段不能开跑，否则会抢在玩家之前行动）
   useEffect(() => {
-    if (!autoOpponent || state.finished) return
+    if (!autoOpponent || state.finished || needsSetup) return
     if (state.activePlayerId === HUMAN) return
     const timer = window.setTimeout(
       () => {
@@ -129,7 +132,15 @@ export function GameScreen() {
       difficulty === 'hard' ? 420 : 300,
     )
     return () => window.clearTimeout(timer)
-  }, [state, autoOpponent, config, play, difficulty])
+  }, [state, autoOpponent, config, play, difficulty, needsSetup])
+
+  /** 选出生点时，把版图上所有深红格点亮 */
+  const castleTargets = useMemo<ReadonlyMap<string, readonly number[]> | undefined>(() => {
+    if (!needsSetup || board === undefined) return undefined
+    const targets = new Map<string, readonly number[]>()
+    for (const space of castleSpacesOf(board)) targets.set(axialKey(space), [])
+    return targets
+  }, [needsSetup, board])
 
   const availableDice = useMemo<DieRef[]>(() => {
     if (!isHumanTurn || pending !== undefined) return []
@@ -463,6 +474,35 @@ export function GameScreen() {
           <span className="muted">种子 {state.seed}</span>
         </div>
       </footer>
+
+      {needsSetup ? (
+        <div className="sheet" role="dialog" aria-modal="true">
+          <div className="sheet__panel">
+            <h2 className="sheet__title">选择出生点</h2>
+            <p className="muted">
+              官方规则：起始城堡放在你选定的深红格上。点亮的就是可选格；第一次玩推荐中央的 6 号格。
+            </p>
+            {board === undefined ? null : (
+              <HexBoard
+                board={board}
+                estate={human.estate}
+                targets={castleTargets}
+                onTapSpace={(space) => chooseStartingCastle({ q: space.q, r: space.r })}
+                size={16}
+              />
+            )}
+            <button
+              type="button"
+              className="btn btn--primary btn--block"
+              onClick={() => {
+                if (board !== undefined) chooseStartingCastle(board.startingSpace)
+              }}
+            >
+              用推荐的中央格
+            </button>
+          </div>
+        </div>
+      ) : null}
 
       {showSave ? <SaveMenu onClose={() => setShowSave(false)} /> : null}
 

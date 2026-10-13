@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Automa 对手：局面评估 + 选招。
  *
  * 设计取舍：**不做 MCTS**。原因是这个游戏的决策点密度不高（每人每局约 50 次），
@@ -13,11 +13,11 @@
  */
 
 import { applyMove } from '../engine/apply'
-import { isAdjacentToAny, regionsOf } from '../engine/board'
+import { boardIndexOf, castleSpacesOf, isAdjacentToAny, regionsOf } from '../engine/board'
 import { knowledgeIdsInEstate } from '../engine/capabilities'
 import { knowledgeDef } from '../engine/data/knowledge'
 import { bonusTileVp, phaseCompletionBonus, regionSizeVp } from '../engine/data/scoring'
-import { axialKey } from '../engine/hex'
+import { axialDistance, axialKey, neighbors, type Axial } from '../engine/hex'
 import { listLegalMoves, type Move } from '../engine/moves'
 import { createRng, nextInt, type RngState } from '../engine/rng'
 import { playerById, type GameState, type RulesetConfig } from '../engine/state'
@@ -328,4 +328,52 @@ export function suggestMove(
   if (move === undefined) return undefined
   const after = applyMove(config, state, move).state
   return { move, score: evaluate(config, after, playerId) }
+}
+
+// ---------------------------------------------------------------------------
+// 开局城堡选点
+// ---------------------------------------------------------------------------
+
+/**
+ * 选开局城堡所在的深红格。
+ *
+ * 官方规则允许任选深红格（只有"第一次玩"才推荐中央 6 号格），所以 AI 也该自己选。
+ * 这里用一个很便宜的结构性指标，避免为了开局一行就套整局评估：
+ * - **相邻空格数**：能往几个方向铺开
+ * - **相邻空格的颜色种类**：开局最缺的是"能立刻放下的板块"，颜色越杂越灵活
+ * - 平手时偏好版图推荐的中央格
+ */
+export function pickStartingCastle(config: RulesetConfig, player: PlayerState): Axial {
+  const board = config.playerBoards[player.boardId]
+  if (board === undefined) return { q: 0, r: 0 }
+
+  const candidates = castleSpacesOf(board)
+  if (candidates.length === 0) return board.startingSpace
+
+  const index = boardIndexOf(board)
+  const recommended = axialKey(board.startingSpace)
+  let best = candidates[0] ?? board.startingSpace
+  let bestScore = Number.NEGATIVE_INFINITY
+
+  for (const candidate of candidates) {
+    let empty = 0
+    const colors = new Set<TileColor>()
+    for (const neighbor of neighbors(candidate)) {
+      const space = index.get(axialKey(neighbor))
+      if (space === undefined) continue
+      empty += 1
+      colors.add(space.color)
+    }
+    // 离推荐格越近越稳（权重刻意很小，只用作平手偏好）
+    const centrality = -axialDistance(candidate, board.startingSpace) * 0.01
+    const score =
+      empty + colors.size * 0.4 + centrality + (axialKey(candidate) === recommended ? 0.001 : 0)
+
+    if (score > bestScore) {
+      bestScore = score
+      best = candidate
+    }
+  }
+
+  return best
 }

@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { activeSlots } from '../gameBoard'
 import { DEFAULT_RULESET } from '../config'
 import { boardIndexOf } from '../board'
+import { castleSpacesOf } from '../board'
 import { axialKey } from '../hex'
 import { ROUNDS_PER_PHASE, TOTAL_PHASES } from '../data/scoring'
 import {
@@ -159,6 +160,68 @@ describe('开局设置', () => {
     expect(state.startPlayerId).toBe(state.turnOrder[0])
     expect(state.activePlayerId).toBe(state.startPlayerId)
     expect(state.turnIndex).toBe(0)
+  })
+})
+
+describe('开局城堡选点（官方规则：放在你选定的深红格上）', () => {
+  it('不指定时放在版图推荐的中央格', () => {
+    const state = createGame(CONFIG, { seed: 42 })
+    for (const player of state.players) {
+      const board = CONFIG.playerBoards[player.boardId]
+      expect(board).toBeDefined()
+      expect(Object.keys(player.estate)).toEqual([axialKey(board!.startingSpace)])
+    }
+  })
+
+  it('可以指定任意深红格', () => {
+    const board = CONFIG.playerBoards['1']!
+    const other = castleSpacesOf(board).find(
+      (space) => axialKey(space) !== axialKey(board.startingSpace),
+    )
+    expect(other).toBeDefined()
+
+    const state = createGame(CONFIG, {
+      seed: 42,
+      startingSpaces: { p1: other!, p2: board.startingSpace },
+    })
+    const p1 = playerById(state, 'p1')
+    expect(Object.keys(p1.estate)).toEqual([axialKey(other!)])
+    expect(p1.estate[axialKey(other!)]?.color).toBe('castle')
+  })
+
+  it('指定非深红格会抛错，而不是静默接受', () => {
+    const board = CONFIG.playerBoards['1']!
+    const notCastle = board.spaces.find((space) => space.color !== 'castle')
+    expect(notCastle).toBeDefined()
+    expect(() =>
+      createGame(CONFIG, {
+        seed: 1,
+        startingSpaces: { p1: { q: notCastle!.q, r: notCastle!.r } },
+      }),
+    ).toThrow(/深红格/)
+  })
+
+  it('同一颗种子下换出生点，只改变城堡位置（仓库/货物/骰子完全一致）', () => {
+    const board = CONFIG.playerBoards['1']!
+    const other = castleSpacesOf(board).find(
+      (space) => axialKey(space) !== axialKey(board.startingSpace),
+    )!
+
+    const a = createGame(CONFIG, { seed: 777 })
+    const b = createGame(CONFIG, {
+      seed: 777,
+      startingSpaces: { p1: other, p2: board.startingSpace },
+    })
+
+    expect(b.depotSlots).toEqual(a.depotSlots)
+    expect(b.phaseGoodsPiles).toEqual(a.phaseGoodsPiles)
+    expect(b.dice).toEqual(a.dice)
+    expect(b.whiteDie).toBe(a.whiteDie)
+    expect(b.turnOrder).toEqual(a.turnOrder)
+    expect(Object.keys(playerById(b, 'p1').estate)).not.toEqual(
+      Object.keys(playerById(a, 'p1').estate),
+    )
+    expect(countAllTiles(b)).toBe(TOTAL_TILE_COUNT)
   })
 })
 

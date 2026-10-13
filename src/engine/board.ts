@@ -171,3 +171,21 @@ export function validatePlayerBoard(
 export function isAdjacentToAny(space: Axial, placedKeys: ReadonlySet<string>): boolean {
   return neighbors(space).some((n) => placedKeys.has(axialKey(n)))
 }
+
+/**
+ * 版图上所有深红（城堡）格。
+ *
+ * 官方规则：开局城堡放在玩家**选定**的深红格上，不是固定中央格。
+ * 原文："Take 1 castle and place it face-up on the chosen burgundy space on your duchy board"；
+ * 只有"第一次玩"才推荐放中央 6 号格。
+ */
+export function castleSpacesOf(board: PlayerBoardDef): Axial[] {
+  return board.spaces
+    .filter((space) => space.color === 'castle')
+    .map((space) => ({ q: space.q, r: space.r }))
+}
+
+export function isCastleSpace(board: PlayerBoardDef, space: Axial): boolean {
+  const target = boardIndexOf(board).get(axialKey(space))
+  return target?.color === 'castle'
+}

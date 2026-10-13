@@ -10,9 +10,10 @@
  */
 
 import { create } from 'zustand'
-import type { Difficulty } from '../ai/heuristic'
+import { pickStartingCastle, type Difficulty } from '../ai/heuristic'
 import { applyMove } from '../engine/apply'
 import { DEFAULT_RULESET } from '../engine/config'
+import type { Axial } from '../engine/hex'
 import { listLegalMoves, type Move } from '../engine/moves'
 import { createGame } from '../engine/setup'
 import type { GameState, RulesetConfig } from '../engine/state'
@@ -56,12 +57,16 @@ interface GameStore {
   readonly hydrated: boolean
   readonly lastSavedAt: number | null
   readonly saveError: string | null
+  /** 新开一局后、玩家还没选出生点之前为 true */
+  readonly needsSetup: boolean
 
   newGame: (seed?: number) => void
   play: (move: Move) => void
   undo: () => void
   toggleAutoOpponent: () => void
   setDifficulty: (difficulty: Difficulty | 'random') => void
+  /** 官方规则：起始城堡放在玩家**选定**的深红格上（不是固定中央格） */
+  chooseStartingCastle: (space: Axial) => void
   hydrate: () => Promise<void>
   exportSaveText: () => string
   importSaveText: (text: string) => { readonly ok: boolean; readonly error?: string }
@@ -127,9 +132,37 @@ export const useGameStore = create<GameStore>()((set, get) => {
     hydrated: false,
     lastSavedAt: null,
     saveError: null,
+    needsSetup: true,
 
     setDifficulty: (difficulty) => {
       set({ difficulty })
+      scheduleSave()
+    },
+
+    /**
+     * 选定出生点后重开一局：**沿用同一颗种子**，只改起始城堡格，
+     * 所以仓库、货物、掷骰结果都不变，玩家看到的只是城堡换了位置。
+     * 对手的出生点由 AI 自己选（官方规则允许任选深红格）。
+     */
+    chooseStartingCastle: (space) => {
+      const current = get()
+      const humanId = current.humanPlayerId
+      const opponent = current.state.players.find((player) => player.id !== humanId)
+
+      const startingSpaces: Partial<Record<PlayerId, Axial>> = { [humanId]: space }
+      if (opponent !== undefined) {
+        startingSpaces[opponent.id] = pickStartingCastle(current.config, opponent)
+      }
+
+      const fresh = createGame(current.config, { seed: current.seed, startingSpaces })
+      set({
+        state: fresh,
+        past: [],
+        log: newGameLog(current.seed),
+        moves: listLegalMoves(current.config, fresh),
+        needsSetup: false,
+        saveError: null,
+      })
       scheduleSave()
     },
 
@@ -143,6 +176,7 @@ export const useGameStore = create<GameStore>()((set, get) => {
         log: newGameLog(nextSeed),
         moves: listLegalMoves(DEFAULT_RULESET, fresh),
         saveError: null,
+        needsSetup: true,
       })
       scheduleSave()
     },
@@ -197,6 +231,7 @@ export const useGameStore = create<GameStore>()((set, get) => {
           log: save.log.map((entry) => ({ ...entry })),
           moves: listLegalMoves(DEFAULT_RULESET, save.state),
           difficulty: save.difficulty,
+          needsSetup: false,
           hydrated: true,
           lastSavedAt: save.savedAt,
           saveError: null,
@@ -226,6 +261,7 @@ export const useGameStore = create<GameStore>()((set, get) => {
         log: save.log.map((entry) => ({ ...entry })),
         moves: listLegalMoves(DEFAULT_RULESET, save.state),
         difficulty: save.difficulty,
+        needsSetup: false,
         lastSavedAt: save.savedAt,
         saveError: null,
       })
