@@ -316,6 +316,8 @@ describe('多种子批量自对弈：找"逻辑没错但玩起来不对"的异�
     const workersAtEnd: number[] = []
     const scores: number[] = []
     const storageAtEnd: number[] = []
+    const tileCounts = new Map<string, number>()
+    const startPlayerWins = { p1: 0, p2: 0 }
 
     for (const seed of SEEDS) {
       const state = playMatch(
@@ -341,6 +343,14 @@ describe('多种子批量自对弈：找"逻辑没错但玩起来不对"的异�
         expect(player.storage.length).toBeLessThanOrEqual(3)
       }
 
+      // 各类板块的放置量：用来看 AI 有没有系统性忽略某条得分路线
+      for (const [color, count] of Object.entries(playerTilesOf(state))) {
+        tileCounts.set(color, (tileCounts.get(color) ?? 0) + count)
+      }
+      // 终局是谁先手。注意别用"两人顺位索引的平均值"——那永远是 0.5，什么都没测。
+      if (state.turnOrder[0] === 'p1') startPlayerWins.p1 += 1
+      else startPlayerWins.p2 += 1
+
       const result = finalScore(CONFIG, state)
       for (const score of result.scores) {
         scores.push(score.totalVp)
@@ -358,8 +368,29 @@ describe('多种子批量自对弈：找"逻辑没错但玩起来不对"的异�
         `终局仓储 ${Math.min(...storageAtEnd)}-${Math.max(...storageAtEnd)}，` +
         `分数 ${Math.min(...scores)}-${Math.max(...scores)}（均 ${avg(scores).toFixed(1)}）`,
     )
+    console.info(
+      `[板块路线] 每局平均放置：` +
+        [...tileCounts.entries()]
+          .sort((a, b) => b[1] - a[1])
+          .map(([kind, count]) => `${kind}=${(count / SEEDS.length).toFixed(1)}`)
+          .join(' '),
+    )
+    console.info(
+      `[先手] 终局先手归属：p1 ${startPlayerWins.p1} 局 / p2 ${startPlayerWins.p2} 局（共 ${SEEDS.length} 局）`,
+    )
   }, 600_000)
 })
+
+/** 统计两位玩家领地上各色板块的数量（用来发现 AI 是否系统性忽略某条得分路线）。 */
+function playerTilesOf(state: GameState): Record<string, number> {
+  const counts: Record<string, number> = {}
+  for (const player of state.players) {
+    for (const tile of Object.values(player.estate)) {
+      counts[tile.color] = (counts[tile.color] ?? 0) + 1
+    }
+  }
+  return counts
+}
 
 describe('AI 强度（对随机对手的胜率）', () => {
   const SEEDS = Array.from({ length: 20 }, (_, i) => 101 + i * 101)

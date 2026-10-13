@@ -47,6 +47,15 @@ export interface Weights {
   readonly knowledgeFinal: number
   /** 牧场上已有动物的潜力（以后每次同种动物都能重复计分） */
   readonly animalPotential: number
+  /**
+   * 下一轮先手的价值。
+   *
+   * 这条是**与版图无关**的原则性价值：先手意味着下一轮先挑重新铺满的仓库
+   * （2 人局每阶段 12 个格位）以及本轮那枚货物。早先这里硬编码成 1.5 分，
+   * 基本等于忽略 —— 而船只的主要作用之一就是抢顺位；
+   * 攻略也明确说 2 人局控制船位很重要。
+   */
+  readonly turnOrder: number
   /** 对手分数在评估里的负权重（零和倾向，促使 AI 学会卡人） */
   readonly opponentWeight: number
 }
@@ -75,6 +84,7 @@ export const DEFAULT_WEIGHTS: Weights = {
   knowledgeContinuous: 7,
   knowledgeFinal: 2.5,
   animalPotential: 0.22,
+  turnOrder: 6,
   opponentWeight: 0.9,
 }
 
@@ -201,9 +211,11 @@ export function evaluate(
     total -= scorePlayer(config, state, opponent, weights) * weights.opponentWeight
   }
 
-  // 顺位越靠前，下一轮先手，略微加分
+  // 顺位越靠前，下一轮越早挑重新铺满的仓库，按名次给分
   const order = state.turnOrder.indexOf(playerId)
-  if (order === 0) total += 1.5
+  if (order >= 0) {
+    total += (state.playerCount - 1 - order) * weights.turnOrder
+  }
 
   return total
 }
