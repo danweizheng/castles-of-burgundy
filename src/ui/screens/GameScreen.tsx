@@ -85,6 +85,7 @@ export function GameScreen() {
   const saveError = useGameStore((store) => store.saveError)
   const needsSetup = useGameStore((store) => store.needsSetup)
   const chooseStartingCastle = useGameStore((store) => store.chooseStartingCastle)
+  const lastVp = useGameStore((store) => store.lastVp)
 
   const [selectedDie, setSelectedDie] = useState<DieRef | null>(null)
   const [chooser, setChooser] = useState<{ title: string; options: ChooserOption[] } | null>(null)
@@ -107,6 +108,13 @@ export function GameScreen() {
 
   const pending: PendingChoice | undefined = state.pending[0]
   const isHumanTurn = state.activePlayerId === HUMAN && !state.finished
+
+  /**
+   * 只在"日志长度仍然对得上"时才显示飘字。
+   * 撤销、新局、导入存档都会改变日志长度，于是过期的飘字自动被抑制，
+   * 不需要在 store 的每个 set() 里手工清空。
+   */
+  const floats = lastVp !== null && lastVp.logLength === log.length ? lastVp.deltas : {}
 
   // 每次状态变化都清空选择与弹层：一步走完，界面回到"等下一次点选"的干净状态
   useEffect(() => {
@@ -330,6 +338,11 @@ export function GameScreen() {
           <span className="muted">
             {opponent.vp} 分 · {opponent.silverlings} 银币 · {opponent.workers} 工人 · 仓储{' '}
             {opponent.storage.length}/3
+            {floats[opponent.id] === undefined ? null : (
+              <span key={`float-opp-${log.length}`} className="scorefloat">
+                +{floats[opponent.id]}
+              </span>
+            )}
           </span>
         </div>
         {opponentBoard === undefined ? null : (
@@ -344,6 +357,11 @@ export function GameScreen() {
           <span>你的领地</span>
           <span className="muted">
             已放 {Object.keys(human.estate).length}/{board?.spaces.length ?? 0} 格
+            {floats[HUMAN] === undefined ? null : (
+              <span key={`float-me-${log.length}`} className="scorefloat">
+                +{floats[HUMAN]}
+              </span>
+            )}
           </span>
         </div>
         {board === undefined ? null : (
@@ -400,10 +418,13 @@ export function GameScreen() {
                     </button>
                   ) : (
                     <button
-                      key={`die-${die.index}`}
+                      // 按"阶段-轮"做 key：每轮重掷时元素重新挂载，于是掷骰动画会播一次；
+                      // 同一轮内用掉一颗骰子不会重播（因为那时 actionsTakenThisTurn 已经不是 0）
+                      key={`die-${state.phaseIndex}-${state.roundIndex}-${die.index}`}
                       type="button"
                       className={
-                        selectedDie !== null && sameDie(selectedDie, die) ? 'die die--selected' : 'die'
+                        (selectedDie !== null && sameDie(selectedDie, die) ? 'die die--selected' : 'die') +
+                        (state.actionsTakenThisTurn === 0 ? ' die--roll' : '')
                       }
                       onClick={() => setSelectedDie(selectedDie !== null && sameDie(selectedDie, die) ? null : die)}
                     >

@@ -106,7 +106,12 @@ export function HexBoard({
                 </text>
               )
             ) : (
-              <>
+              /*
+               * 用 tile.id 做 key：空格变有牌时这个 <g> 是全新的挂载，
+               * 于是 CSS 动画会自然播放一次；之后任何重渲染它都保持同一个 key，
+               * 不会反复闪。这是不用 JS 就能做落位动画的常用手法。
+               */
+              <g key={tile.id} className="hex__tile">
                 <text
                   x={x}
                   y={glyph?.sub === undefined ? y : y - size * 0.1}
@@ -129,7 +134,7 @@ export function HexBoard({
                     {glyph.sub}
                   </text>
                 )}
-              </>
+              </g>
             )}
           </g>
         )

@@ -29,6 +29,7 @@ import {
   writeSave,
   type SaveStorage,
 } from './persistence'
+import { vpDeltas, type VpDeltas } from './vpDelta'
 
 export interface LogEntry {
   readonly id: number
@@ -59,6 +60,13 @@ interface GameStore {
   readonly saveError: string | null
   /** 新开一局后、玩家还没选出生点之前为 true */
   readonly needsSetup: boolean
+  /**
+   * 最近一手的得分增量，用于飘字。
+   *
+   * 一起记下产生它时的日志长度：界面只在「日志长度仍然相等」时才显示，
+   * 于是撤销、新局、导入存档都会自动抑制掉过期的飘字，不需要在每处 set() 里手工清空。
+   */
+  readonly lastVp: { readonly logLength: number; readonly deltas: VpDeltas } | null
 
   newGame: (seed?: number) => void
   play: (move: Move) => void
@@ -133,6 +141,7 @@ export const useGameStore = create<GameStore>()((set, get) => {
     lastSavedAt: null,
     saveError: null,
     needsSetup: true,
+    lastVp: null,
 
     setDifficulty: (difficulty) => {
       set({ difficulty })
@@ -188,11 +197,16 @@ export const useGameStore = create<GameStore>()((set, get) => {
         const { player, text } = uiEventText(event)
         return nextEntry(player, text)
       })
+      const nextLog = [...current.log, ...entries].slice(-150)
       set({
         state: result.state,
         past: [...current.past, { state: current.state, logLength: current.log.length }],
-        log: [...current.log, ...entries].slice(-150),
+        log: nextLog,
         moves: listLegalMoves(current.config, result.state),
+        lastVp: {
+          logLength: nextLog.length,
+          deltas: vpDeltas(current.state.players, result.state.players),
+        },
       })
       scheduleSave()
     },

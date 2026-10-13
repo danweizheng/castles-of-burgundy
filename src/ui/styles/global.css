@@ -590,6 +590,85 @@ button {
   color: var(--text-dim);
 }
 
+/* ---------------- 动效 ---------------- */
+
+@keyframes tilePop {
+  from {
+    opacity: 0;
+    transform: scale(0.45);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.14);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+/* transform-box: fill-box 让 SVG 里的 transform-origin 以元素自身为基准（现代浏览器支持） */
+.hex__tile {
+  animation: tilePop 260ms ease-out;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@keyframes dieRoll {
+  from {
+    transform: rotate(-16deg) scale(0.82);
+    opacity: 0.35;
+  }
+  to {
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
+  }
+}
+
+.die--roll {
+  animation: dieRoll 320ms ease-out;
+}
+
+@keyframes scoreFloat {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-18px);
+  }
+}
+
+.scorefloat {
+  display: inline-block;
+  margin-left: 6px;
+  color: var(--gold-bright);
+  font-weight: 800;
+  font-size: 14px;
+  animation: scoreFloat 1.6s ease-out forwards;
+  pointer-events: none;
+}
+
+/* 尊重系统的"减少动态效果"设置 */
+@media (prefers-reduced-motion: reduce) {
+  .hex__tile,
+  .die--roll,
+  .scorefloat,
+  .hex--target,
+  .slot--target,
+  .goodsbin--target {
+    animation: none;
+  }
+}
+
 /* ---------------- 底部操作条 ---------------- */
 
 .actionbar {
