@@ -63,9 +63,12 @@ button {
 .screen {
   max-width: 520px;
   margin: 0 auto;
+  /* 底部不再需要为固定操作条预留硬编码高度：操作条改成 sticky 后自己占布局空间。
+     之前用 --actionbar-height: 132px 预留，那个数字必然随字体与换行而不准 ——
+     小了会挡住内容，大了白留一条空白。 */
   padding: calc(env(safe-area-inset-top, 0px) + 8px)
     calc(env(safe-area-inset-right, 0px) + 10px)
-    calc(env(safe-area-inset-bottom, 0px) + var(--actionbar-height) + 16px)
+    16px
     calc(env(safe-area-inset-left, 0px) + 10px);
   display: flex;
   flex-direction: column;
@@ -672,16 +675,95 @@ button {
   }
 }
 
+/* ---------------- 宽屏（iPad / 桌面）：别只是把内容拉长 ---------------- */
+
+@media (min-width: 700px) {
+  .screen {
+    max-width: 640px;
+  }
+}
+
+/* ---------------- 极矮视口（手机横屏）：固定操作条不能吃掉三分之一屏幕 ----------------
+ *
+ * 实测：横屏时视口只有 ~295px 高，而固定操作条占 99px。所以这里把操作条压扁、
+ * 隐藏那一行提示文字、缩小骰子与领地棋盘，并在底部少留一些空间。
+ */
+
+@media (max-height: 520px) {
+  .screen {
+    gap: 6px;
+  }
+
+  .actionbar {
+    gap: 4px;
+    padding: 4px 10px calc(env(safe-area-inset-bottom, 0px) + 4px);
+  }
+
+  /* 提示文字在竖屏是引导，在横屏是奢侈：先让位给可操作区域 */
+  .actionbar .hint {
+    display: none;
+  }
+
+  .dice {
+    min-height: 38px;
+  }
+
+  .die {
+    width: 42px;
+    height: 42px;
+    font-size: 19px;
+    border-radius: 9px;
+  }
+
+  .die--virtual {
+    padding: 0 9px;
+    font-size: 13px;
+  }
+
+  .btn {
+    min-height: 38px;
+    padding: 0 10px;
+    font-size: 13px;
+  }
+
+  /* 领地棋盘不能高过视口的一半，否则要滚很久才看得到操作区 */
+  .mine .hexboard {
+    max-height: 46vh;
+  }
+
+  .opponent .hexboard {
+    max-height: 80px;
+  }
+
+  .depot {
+    min-height: 40px;
+  }
+
+  .slot,
+  .tileface {
+    width: 38px;
+    height: 38px;
+    font-size: 15px;
+  }
+
+  .ruleblock p,
+  .ruleblock li,
+  .ruleblock ul,
+  .ruleblock ol,
+  .sheet__panel p {
+    font-size: 12px;
+  }
+}
+
 /* ---------------- 底部操作条 ---------------- */
 
 .actionbar {
-  position: fixed;
-  left: 0;
-  right: 0;
+  /* sticky 而不是 fixed：同样是"始终贴在视口底部"，但它**占布局空间**，
+     所以永远不需要用一个猜出来的高度去给内容留白。 */
+  position: sticky;
   bottom: 0;
   z-index: 20;
-  max-width: 520px;
-  margin: 0 auto;
+  width: 100%;
   padding: 8px 10px calc(env(safe-area-inset-bottom, 0px) + 8px);
   background: linear-gradient(180deg, rgba(22, 17, 12, 0.92), #16110c 40%);
   border-top: 1px solid var(--line);
